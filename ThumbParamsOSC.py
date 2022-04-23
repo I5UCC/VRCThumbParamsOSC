@@ -60,6 +60,12 @@ def handle_input():
     oscClient.send_message("/avatar/parameters/LeftThumb", int(leftThumb))
     oscClient.send_message("/avatar/parameters/RightThumb", int(rightThumb))
 
+print("=======================")
+print("VRCThumbParamsOSC running...")
+print("=======================")
+print("you can minimize this window...")
+print("Press CTRL+C to exit or just close the window")
+
 while True:
     handle_input()
     time.sleep(0.005)

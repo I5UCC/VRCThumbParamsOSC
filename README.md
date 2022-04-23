@@ -1,5 +1,29 @@
 # VRCThumbParamsOSC
-VRChat OSC Script that makes Valve Index thumb positions accessible in Avatar V3 Parameters (Potentially also other Controllers)
+VRChat OSC Script that makes Valve Index thumb positions accessible in Avatar V3 Parameters (Theoretically also other Controllers)
+
+This program is very much in alpha, it just opens a console application with no output, it doesnt really need any UI but i might add something soon.
 
 # Credit
 - ![benaclejames](https://github.com/benaclejames) for the idea!
+
+## Avatar Setup
+
+If you're here with the intention to use this mod for sign language, read my guide on it ![here!](https://github.com/I5UCC/VRC-ASL_Gestures)
+
+The program simply reads all Index controller face buttons "touching" states and outputs them to two avatar params of "int" type.
+You'll need to add these **case-sensitive** parameters to your avatar's base parameters:
+
+- ***RightThumb***
+- ***LeftThumb***
+
+The mod will set these parameters with an integer from 0-4 representing the position of each thumb.
+
+| Value | Real Position |
+| ----- | ------------- |
+| 0     | Not Touching  |
+| 1     | A Button      |
+| 2     | B Button      |
+| 3     | Trackpad      |
+| 4     | Thumbstick    |
+
+After that, you can use them just like other parameters in your Animation Controllers

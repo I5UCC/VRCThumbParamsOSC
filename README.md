@@ -3,6 +3,9 @@ VRChat OSC Script that makes Valve Index thumb positions accessible in Avatar V3
 
 This program is very much in alpha, it hasn't been thoroughly tested yet... it just opens a console application with no output, it doesn't really need any UI but I might add something soon.
 
+## Use
+
+Just run the *ThumbParamsOSC.exe* and you are all set!
 If you want to see the output in real time, launch the program with ```--debug``` and it will create an output with every poll.
 
 ## Avatar Setup

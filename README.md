@@ -26,4 +26,4 @@ The mod will set these parameters with an integer from 0-4 representing the posi
 After that, you can use them just like other parameters in your Animation Controllers
 
 # Credit
-- ![benaclejames](https://github.com/benaclejames) for the idea!
+- ![benaclejames](https://github.com/benaclejames) for the inspiration!

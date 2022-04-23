@@ -3,9 +3,6 @@ VRChat OSC Script that makes Valve Index thumb positions accessible in Avatar V3
 
 This program is very much in alpha, it just opens a console application with no output, it doesnt really need any UI but i might add something soon.
 
-# Credit
-- ![benaclejames](https://github.com/benaclejames) for the idea!
-
 ## Avatar Setup
 
 If you're here with the intention to use this mod for sign language, read my guide on it ![here!](https://github.com/I5UCC/VRC-ASL_Gestures)
@@ -27,3 +24,6 @@ The mod will set these parameters with an integer from 0-4 representing the posi
 | 4     | Thumbstick    |
 
 After that, you can use them just like other parameters in your Animation Controllers
+
+# Credit
+- ![benaclejames](https://github.com/benaclejames) for the idea!

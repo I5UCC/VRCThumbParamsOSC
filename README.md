@@ -18,7 +18,7 @@ You'll need to add these **case-sensitive** parameters to your avatar's base par
 - ***RightThumb***
 - ***LeftThumb***
 
-The mod will set these parameters with an integer from 0-4 representing the position of each thumb.
+The program will set these parameters with an integer from 0-4 representing the position of each thumb.
 
 | Value | Real Position |
 | ----- | ------------- |

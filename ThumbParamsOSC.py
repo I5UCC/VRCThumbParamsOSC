@@ -11,7 +11,7 @@ try:
 except IndexError:
     pass
 
-client_osc = udp_client.SimpleUDPClient("127.0.0.1", 9000)
+oscClient = udp_client.SimpleUDPClient("127.0.0.1", 9000)
 
 def resource_path(relative_path):
     base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
@@ -54,10 +54,11 @@ def handle_input():
     rightThumb = lrInputs[4:].rfind("1") + 1
 
     if debugenabled:
-        print("left: ", leftThumb)
-        print("right: ", rightThumb)
-    client_osc.send_message("/avatar/parameters/LeftThumb", int(leftThumb))
-    client_osc.send_message("/avatar/parameters/RightThumb", int(rightThumb))
+        print("left:\t ", leftThumb)
+        print("right:\t ", rightThumb)
+        print("==============")
+    oscClient.send_message("/avatar/parameters/LeftThumb", int(leftThumb))
+    oscClient.send_message("/avatar/parameters/RightThumb", int(rightThumb))
 
 while True:
     handle_input()

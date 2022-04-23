@@ -3,6 +3,8 @@ VRChat OSC Script that makes Valve Index thumb positions accessible in Avatar V3
 
 This program is very much in alpha, it hasn't been thoroughly tested yet... it just opens a console application with no output, it doesn't really need any UI but I might add something soon.
 
+If you want to see the output in real time, launch the program with ```--debug``` and it will create an output with every poll.
+
 ## Avatar Setup
 
 If you're here with the intention to use this mod for sign language, read my guide on it ![here!](https://github.com/I5UCC/VRC-ASL_Gestures)

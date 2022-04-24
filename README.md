@@ -10,7 +10,7 @@ If you want to see the output in real time, launch the program with ```--debug``
 
 ## Avatar Setup
 
-If you're here with the intention to use this mod for sign language, read my guide on it ![here!](https://github.com/I5UCC/VRC-ASL_Gestures)
+If you're here with the intention to use this mod for sign language, ![read my guide on it here!](https://github.com/I5UCC/VRC-ASL_Gestures)
 
 The program simply reads all Index controller face buttons "touching" states and outputs them to two avatar params of "int" type.
 You'll need to add these **case-sensitive** parameters to your avatar's base parameters:

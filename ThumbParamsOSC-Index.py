@@ -27,8 +27,6 @@ config = json.load(open(os.path.join(os.path.join(resource_path('config.json')))
 for k in config:
     inputActionHandles.append(openvr.VRInput().getActionHandle(config[k]))
 
-
-
 def handle_input():
     event = openvr.VREvent_t()
     has_events = True

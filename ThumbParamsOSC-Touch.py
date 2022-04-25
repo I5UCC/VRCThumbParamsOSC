@@ -18,7 +18,7 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 application = openvr.init(openvr.VRApplication_Utility)
-action_path = os.path.join(resource_path('bindings'), 'knuckles_thumbparams_actions.json')
+action_path = os.path.join(resource_path('bindings'), 'touch_thumbparams_actions.json')
 openvr.VRInput().setActionManifestPath(action_path)
 actionSet_thumbparams = openvr.VRInput().getActionSetHandle('/actions/thumbparams')
 
@@ -27,7 +27,8 @@ config = json.load(open(os.path.join(os.path.join(resource_path('config.json')))
 for k in config:
     inputActionHandles.append(openvr.VRInput().getActionHandle(config[k]))
 
-
+leftTrigger = openvr.VRInput().getActionHandle('/actions/thumbparams/in/lefttrigger')
+rightTrigger = openvr.VRInput().getActionHandle('/actions/thumbparams/in/righttrigger')
 
 def handle_input():
     event = openvr.VREvent_t()
@@ -45,15 +46,22 @@ def handle_input():
 
     leftThumb = lrInputs[:4].rfind("1") + 1
     rightThumb = lrInputs[4:].rfind("1") + 1
+    
+    leftTriggerValue =  openvr.VRInput().getAnalogActionData(leftTrigger, openvr.k_ulInvalidInputValueHandle).x
+    rightTriggerValue =  openvr.VRInput().getAnalogActionData(rightTrigger, openvr.k_ulInvalidInputValueHandle).x
+                                             
+    oscClient.send_message("/avatar/parameters/LeftTrigger", float(leftTriggerValue))
+    oscClient.send_message("/avatar/parameters/RightTrigger", float(rightTriggerValue))
+    oscClient.send_message("/avatar/parameters/LeftThumb", int(leftThumb))
+    oscClient.send_message("/avatar/parameters/RightThumb", int(rightThumb))
 
     if debugenabled:
         print("Inputs:", lrInputs )
         print("left:\t", leftThumb)
         print("right:\t", rightThumb)
+        print("Tright:\t", rightTriggerValue)
+        print("Tleft:\t", leftTriggerValue)
         print("=================")
-
-    oscClient.send_message("/avatar/parameters/LeftThumb", int(leftThumb))
-    oscClient.send_message("/avatar/parameters/RightThumb", int(rightThumb))
 
 print("============================")
 print("VRCThumbParamsOSC running...")

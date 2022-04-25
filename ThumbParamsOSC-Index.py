@@ -63,7 +63,7 @@ def handle_input():
 print("=======================")
 print("VRCThumbParamsOSC running...")
 print("=======================")
-print("you can minimize this window...")
+print("You can minimize this window...")
 print("Press CTRL+C to exit or just close the window")
 
 while True:

@@ -56,12 +56,12 @@ def handle_input():
     oscClient.send_message("/avatar/parameters/RightThumb", int(rightThumb))
 
     if debugenabled:
-        print("Inputs:", lrInputs )
+        print("=================")
+        print("Inputs:\t", lrInputs)
         print("left:\t", leftThumb)
         print("right:\t", rightThumb)
         print("Tright:\t", rightTriggerValue)
         print("Tleft:\t", leftTriggerValue)
-        print("=================")
 
 print("============================")
 print("VRCThumbParamsOSC running...")

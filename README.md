@@ -31,4 +31,4 @@ The program will set these parameters with an integer from 0-4 representing the 
 After that, you can use them just like other parameters in your Animation Controllers
 
 # Credit
-- ![benaclejames](https://github.com/benaclejames) for the inspiration!
+- ![benaclejames](https://github.com/benaclejames) and ![Greendayle](https://github.com/Greendayle) for the inspiration!

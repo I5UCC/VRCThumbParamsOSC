@@ -1,10 +1,19 @@
 {
-        "leftabutton": "/actions/thumbparams/in/leftabutton",
-        "leftbbutton": "/actions/thumbparams/in/leftbbutton",
-        "lefttrackpad": "/actions/thumbparams/in/lefttrackpad",
-        "leftstick": "/actions/thumbparams/in/leftstick",
-        "rightabutton": "/actions/thumbparams/in/rightabutton",
-        "rightbbutton": "/actions/thumbparams/in/rightbbutton",
-        "righttrackpad": "/actions/thumbparams/in/righttrackpad",
-        "rightstick": "/actions/thumbparams/in/rightstick"
+        "Buttons": 
+        {
+                "leftabutton": "/actions/thumbparams/in/leftabutton",
+                "leftbbutton": "/actions/thumbparams/in/leftbbutton",
+                "lefttrackpad": "/actions/thumbparams/in/lefttrackpad",
+                "leftstick": "/actions/thumbparams/in/leftstick",
+                "rightabutton": "/actions/thumbparams/in/rightabutton",
+                "rightbbutton": "/actions/thumbparams/in/rightbbutton",
+                "righttrackpad": "/actions/thumbparams/in/righttrackpad",
+                "rightstick": "/actions/thumbparams/in/rightstick"
+        },
+        "Trigger":
+        {
+                "lefttrigger": "/actions/thumbparams/in/lefttrigger",
+                "righttrigger": "/actions/thumbparams/in/righttrigger"
+        }
+        
 }

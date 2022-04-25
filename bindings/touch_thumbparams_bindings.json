@@ -79,6 +79,42 @@
             },
             {
                "inputs" : {
+                  "touch" : {
+                     "output" : "/actions/thumbparams/in/rightstick"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/joystick"
+            },
+            {
+               "inputs" : {
+                  "touch" : {
+                     "output" : "/actions/thumbparams/in/leftstick"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/joystick"
+            },
+            {
+               "inputs" : {
+                  "touch" : {
+                     "output" : "/actions/thumbparams/in/leftabutton"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/x"
+            },
+            {
+               "inputs" : {
+                  "touch" : {
+                     "output" : "/actions/thumbparams/in/leftbbutton"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/y"
+            },
+            {
+               "inputs" : {
                   "pull" : {
                      "output" : "/actions/thumbparams/in/lefttrigger"
                   }
@@ -99,9 +135,9 @@
       }
    },
    "category" : "steamvr_input",
-   "controller_type" : "knuckles",
+   "controller_type" : "oculus_touch",
    "description" : "",
-   "name" : "Default configuration for ThumbParamsOSC Index Knuckles Controller",
+   "name" : "Default configuration for ThumbParamsOSC Oculus Touch Controller",
    "options" : {},
    "simulated_actions" : []
 }

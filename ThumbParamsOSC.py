@@ -18,14 +18,17 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 application = openvr.init(openvr.VRApplication_Utility)
-action_path = os.path.join(resource_path('bindings'), 'knuckles_thumbparams_actions.json')
+action_path = os.path.join(resource_path('bindings'), 'thumbparams_actions.json')
 openvr.VRInput().setActionManifestPath(action_path)
 actionSet_thumbparams = openvr.VRInput().getActionSetHandle('/actions/thumbparams')
 
-inputActionHandles = []
+buttonActionHandles = []
 config = json.load(open(os.path.join(os.path.join(resource_path('config.json')))))
-for k in config:
-    inputActionHandles.append(openvr.VRInput().getActionHandle(config[k]))
+for k in config["Buttons"]:
+    buttonActionHandles.append(openvr.VRInput().getActionHandle(config["Buttons"][k]))
+
+leftTrigger = openvr.VRInput().getActionHandle(config["Trigger"]["lefttrigger"])
+rightTrigger = openvr.VRInput().getActionHandle(config["Trigger"]["righttrigger"])
 
 def handle_input():
     event = openvr.VREvent_t()
@@ -38,20 +41,27 @@ def handle_input():
     openvr.VRInput().updateActionState(actionSets)
 
     lrInputs = ""
-    for i in inputActionHandles:
+    for i in buttonActionHandles:
         lrInputs += str(openvr.VRInput().getDigitalActionData(i, openvr.k_ulInvalidInputValueHandle).bState)
 
     leftThumb = lrInputs[:4].rfind("1") + 1
     rightThumb = lrInputs[4:].rfind("1") + 1
+    
+    leftTriggerValue =  openvr.VRInput().getAnalogActionData(leftTrigger, openvr.k_ulInvalidInputValueHandle).x
+    rightTriggerValue =  openvr.VRInput().getAnalogActionData(rightTrigger, openvr.k_ulInvalidInputValueHandle).x
+                                             
+    oscClient.send_message("/avatar/parameters/LeftTrigger", float(leftTriggerValue))
+    oscClient.send_message("/avatar/parameters/RightTrigger", float(rightTriggerValue))
+    oscClient.send_message("/avatar/parameters/LeftThumb", int(leftThumb))
+    oscClient.send_message("/avatar/parameters/RightThumb", int(rightThumb))
 
     if debugenabled:
         print("Inputs:", lrInputs )
         print("left:\t", leftThumb)
         print("right:\t", rightThumb)
+        print("Tright:\t", rightTriggerValue)
+        print("Tleft:\t", leftTriggerValue)
         print("=================")
-
-    oscClient.send_message("/avatar/parameters/LeftThumb", int(leftThumb))
-    oscClient.send_message("/avatar/parameters/RightThumb", int(rightThumb))
 
 print("============================")
 print("VRCThumbParamsOSC running...")

@@ -1,7 +1,7 @@
 # VRCThumbParamsOSC
-VRChat OSC program that makes Valve Index thumb positions accessible in Avatar V3 Parameters (Theoretically also other Controllers)
+VRChat OSC program that makes controller thumb positions accessible in Avatar V3 Parameters (For now only Index Controllers) 
 
-This program is very much in alpha, it hasn't been thoroughly tested yet. it just opens a console application with no output, it doesn't really need any UI but I might add something soon.
+This program just opens a console application with no output, it doesn't really need any UI but I might add something soon.
 
 ## Use
 

@@ -20,52 +20,50 @@ def resource_path(relative_path):
 application = openvr.init(openvr.VRApplication_Utility)
 action_path = os.path.join(resource_path('bindings'), 'knuckles_thumbparams_actions.json')
 openvr.VRInput().setActionManifestPath(action_path)
-action_set_thumbparams = openvr.VRInput().getActionSetHandle('/actions/thumbparams')
+actionSet_thumbparams = openvr.VRInput().getActionSetHandle('/actions/thumbparams')
 
 inputActionHandles = []
 config = json.load(open(os.path.join(os.path.join(resource_path('config.json')))))
 for k in config:
     inputActionHandles.append(openvr.VRInput().getActionHandle(config[k]))
 
+
+
 def handle_input():
-    lrInputs = ""
-    leftThumb = 0
-    rightThumb = 0
-    
     event = openvr.VREvent_t()
     has_events = True
     while has_events:
         has_events = application.pollNextEvent(event)
-    action_sets = (openvr.VRActiveActionSet_t * 1)()
-    action_set = action_sets[0]
-    action_set.ulActionSet = action_set_thumbparams
+    actionSets = (openvr.VRActiveActionSet_t * 1)()
+    actionSet = actionSets[0]
+    actionSet.ulActionSet = actionSet_thumbparams
+    openvr.VRInput().updateActionState(actionSets)
 
-    openvr.VRInput().updateActionState(action_sets)
-
+    lrInputs = ""
     for i in inputActionHandles:
         lrInputs += str(openvr.VRInput().getDigitalActionData(i, openvr.k_ulInvalidInputValueHandle).bState)
 
-    # 0 Not touching
-    # 1 A Button
-    # 2 B Button
-    # 3 Trackpad
-    # 4 Thumbstick
     leftThumb = lrInputs[:4].rfind("1") + 1
     rightThumb = lrInputs[4:].rfind("1") + 1
 
     if debugenabled:
-        print("left:\t ", leftThumb)
-        print("right:\t ", rightThumb)
-        print("==============")
+        print("Inputs:", lrInputs )
+        print("left:\t", leftThumb)
+        print("right:\t", rightThumb)
+        print("=================")
+
     oscClient.send_message("/avatar/parameters/LeftThumb", int(leftThumb))
     oscClient.send_message("/avatar/parameters/RightThumb", int(rightThumb))
 
-print("=======================")
+print("============================")
 print("VRCThumbParamsOSC running...")
-print("=======================")
+print("============================")
 print("You can minimize this window...")
 print("Press CTRL+C to exit or just close the window")
 
 while True:
-    handle_input()
-    time.sleep(0.005)
+    try:
+        handle_input()
+        time.sleep(0.005)
+    except KeyboardInterrupt:
+        exit()

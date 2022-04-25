@@ -83,7 +83,7 @@
    "category" : "steamvr_input",
    "controller_type" : "knuckles",
    "description" : "",
-   "name" : "My python configuration for Index Controller",
+   "name" : "Default configuration for ThumbParamsOSC",
    "options" : {},
    "simulated_actions" : []
 }

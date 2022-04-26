@@ -3,6 +3,12 @@ VRChat OSC program that makes Valve Index and Oculus Touch controller thumb posi
 
 ## Use
 
+Activate OSC in VRChat:
+
+In Action menu, got to Options>OSC>Enable
+![image](https://user-images.githubusercontent.com/43730681/165360919-826cdee2-2783-485c-a980-a69cc0d2f678.png)
+
+
 Just run the ```ThumbParamsOSC.exe``` and you are all set! <br/>
 ### You might need to restart it after first run
 

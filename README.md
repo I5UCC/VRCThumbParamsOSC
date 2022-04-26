@@ -3,7 +3,7 @@ VRChat OSC program that makes Valve Index and Oculus Touch controller thumb posi
 
 ## Use
 
-Just run the ***ThumbParamsOSC.exe*** and you are all set! <br/>
+Just run the ```ThumbParamsOSC.exe``` and you are all set! <br/>
 If you want to see the output in real time, launch the program with ```--debug``` and it will create an output with every poll.
 
 ## Avatar Setup
@@ -36,6 +36,8 @@ The values range from 0.0 to 1.0 for both of these parameters.
 After that, you can use them just like other parameters in your Animation Controllers.
 
 # Command line Arguments
+You can run this by using ```ThumbParamsOSC.exe {Arguments}``` in command line.
+
 | Argument | Real Position |
 | ----- | ------------- |
 | -d, --debug     | prints values for debugging |

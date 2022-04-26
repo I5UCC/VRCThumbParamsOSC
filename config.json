@@ -14,6 +14,12 @@
         {
                 "lefttrigger": "/actions/thumbparams/in/lefttrigger",
                 "righttrigger": "/actions/thumbparams/in/righttrigger"
+        },
+        "VRCParameters":
+        {
+                "LeftThumb": "/avatar/parameters/LeftThumb",
+                "RightThumb": "/avatar/parameters/RightThumb",
+                "LeftTrigger": "/avatar/parameters/LeftTrigger",
+                "RightTrigger": "/avatar/parameters/RightTrigger"
         }
-        
 }

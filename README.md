@@ -1,5 +1,5 @@
 # VRCThumbParamsOSC
-VRChat OSC program that makes controller thumb positions and Trigger values accessible in Avatar V3 Parameters.
+VRChat OSC program that makes Valve Index and Oculus Touch controller thumb positions and Trigger values accessible in Avatar V3 Parameters.
 
 This program just opens a console application with no output, it doesn't really need any UI but I might add something soon.
 

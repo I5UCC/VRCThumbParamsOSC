@@ -4,7 +4,6 @@ VRChat OSC program that makes Valve Index and Oculus Touch controller thumb posi
 ## Use
 
 Just run the ```ThumbParamsOSC.exe``` and you are all set! <br/>
-If you want to see the output in real time, launch the program with ```--debug``` and it will create an output with every poll.
 
 ## Avatar Setup
 

@@ -9,7 +9,7 @@ In Action menu, got to Options>OSC>Enable <br/>
 ![image](https://user-images.githubusercontent.com/43730681/165360919-826cdee2-2783-485c-a980-a69cc0d2f678.png)
 
 
-Just run the ```ThumbParamsOSC.exe``` and you are all set! <br/>
+Then just run the ```ThumbParamsOSC.exe``` and you are all set! <br/>
 ### You might need to restart it after first run
 
 ## Avatar Setup

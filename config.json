@@ -1,4 +1,7 @@
 {
+        "BindingsFolder": "bindings",
+        "ActionManifestFile": "thumbparams_actions.json",
+        "ActionSetHandle": "/actions/thumbparams",
         "Buttons": 
         {
                 "leftabutton": "/actions/thumbparams/in/leftabutton",

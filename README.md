@@ -35,5 +35,12 @@ The values range from 0.0 to 1.0 for both of these parameters.
 
 After that, you can use them just like other parameters in your Animation Controllers.
 
+# Command line Arguments
+| Argument | Real Position |
+| ----- | ------------- |
+| -d, --debug     | prints values for debugging |
+| -i IP, --ip IP    | set OSC IP. Default=127.0.0.1  |
+| -p PORT, --port PORT    | set OSC port. Default=9000      |
+
 # Credit
 - ![benaclejames](https://github.com/benaclejames) and ![Greendayle](https://github.com/Greendayle) for the inspiration!

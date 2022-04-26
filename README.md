@@ -10,7 +10,7 @@ In Action menu, got to Options>OSC>Enable <br/>
 
 
 Then just run the ```ThumbParamsOSC.exe``` and you are all set! <br/>
-### You might need to restart it after first run
+### You might need to restart ThumbParamsOSC.exe or even SteamVR after first run
 
 ## Avatar Setup
 

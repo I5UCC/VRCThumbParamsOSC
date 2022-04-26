@@ -31,7 +31,7 @@ If you also need the Triggers to be set, you'll have to add two additional param
 - ***LeftTrigger***
 - ***RightTrigger***
 
-The values range from 0.0 to 1.0 for both of these parameters.
+The values range from 0.0 to 1.0 for both of these parameters, depending on how much you pull the trigger.
 
 After that, you can use them just like other parameters in your Animation Controllers.
 

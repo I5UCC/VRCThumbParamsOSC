@@ -9,7 +9,7 @@ added_files = [
          ]
 a = Analysis(['ThumbParamsOSC.py'],
              pathex=['F:\GitRepos\VRCThumbParamsOSC'],
-             binaries=[ (r'F:\GitRepos\VRCThumbParamsOSC\openvr\libopenvr_api_32.dll', '.' ), ],
+             binaries=[ (r'F:\GitRepos\VRCThumbParamsOSC\openvr\libopenvr_api_64.dll', '.' ), ],
              datas = added_files,
              hiddenimports=['ctypes'],
              hookspath=[],

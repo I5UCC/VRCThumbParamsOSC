@@ -21,8 +21,8 @@ The program will set these parameters with an integer from 0-4 representing the 
 | Value | Real Position |
 | ----- | ------------- |
 | 0     | Not Touching  |
-| 1     | A Button      |
-| 2     | B Button      |
+| 1     | A/X Button      |
+| 2     | B/Y Button      |
 | 3     | Trackpad      |
 | 4     | Thumbstick    |
 

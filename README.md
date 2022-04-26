@@ -37,7 +37,7 @@ After that, you can use them just like other parameters in your Animation Contro
 # Command line Arguments
 You can run this by using ```ThumbParamsOSC.exe {Arguments}``` in command line.
 
-| Argument | Real Position |
+| Option | Value |
 | ----- | ------------- |
 | -d, --debug     | prints values for debugging |
 | -i IP, --ip IP    | set OSC IP. Default=127.0.0.1  |

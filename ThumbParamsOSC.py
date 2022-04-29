@@ -17,18 +17,22 @@ args = parser.parse_args()
 # Set window name
 ctypes.windll.kernel32.SetConsoleTitleW("ThumbParamsOSC")
 
-# Moves Console Cursor
-def move (y, x):
+
+def move(y, x):
+    """Moves console cursor."""
     print("\033[%d;%dH" % (y, x))
 
-# Clears Console
-def cls():
-    os.system('cls' if os.name=='nt' else 'clear')
 
-# Gets absolute path from relative path
+def cls():
+    """Clears Console"""
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+
 def resource_path(relative_path):
+    """Gets absolute path from relative path"""
     base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
     return os.path.join(base_path, relative_path)
+
 
 # load config
 config = json.load(open(os.path.join(os.path.join(resource_path('config.json')))))
@@ -49,7 +53,9 @@ buttonActionHandles = []
 for k in config["ButtonActions"]:
     buttonActionHandles.append(openvr.VRInput().getActionHandle(config["ButtonActions"][k]))
 
+
 def handle_input():
+    """Handles all the OpenVR Input and sends it via OSC"""
     # Set up OpenVR events and Action sets
     event = openvr.VREvent_t()
     has_events = True
@@ -68,11 +74,11 @@ def handle_input():
     # Get values for leftThumb and rightThumb (0-4)
     leftThumb = lrInputs[:4].rfind("1") + 1
     rightThumb = lrInputs[4:].rfind("1") + 1
-    
+
     # Get values for TriggerLeft and TriggerRight (0.0-1.0)
     leftTriggerValue = openvr.VRInput().getAnalogActionData(leftTrigger, openvr.k_ulInvalidInputValueHandle).x
     rightTriggerValue = openvr.VRInput().getAnalogActionData(rightTrigger, openvr.k_ulInvalidInputValueHandle).x
-    
+
     # Send data via OSC
     oscClient.send_message(config["VRCParameters"]["LeftTrigger"], float(leftTriggerValue))
     oscClient.send_message(config["VRCParameters"]["RightTrigger"], float(rightTriggerValue))
@@ -81,7 +87,7 @@ def handle_input():
 
     # debug output
     if args.debug:
-        move(7,0)
+        move(7, 0)
         print("DEBUG OUTPUT:")
         print("============================")
         print("Arguments:\t", args)
@@ -100,6 +106,7 @@ print("============================")
 print("You can minimize this window...")
 print("Press CTRL+C to exit or just close the window")
 
+# Main Loop
 while True:
     try:
         handle_input()

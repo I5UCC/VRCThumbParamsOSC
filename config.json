@@ -1,8 +1,10 @@
 {
+        "IP": "127.0.0.1",
+        "Port": 9000,
         "BindingsFolder": "bindings",
         "ActionManifestFile": "thumbparams_actions.json",
         "ActionSetHandle": "/actions/thumbparams",
-        "Buttons": 
+        "ButtonActions": 
         {
                 "leftabutton": "/actions/thumbparams/in/leftabutton",
                 "leftbbutton": "/actions/thumbparams/in/leftbbutton",
@@ -13,7 +15,7 @@
                 "righttrackpad": "/actions/thumbparams/in/righttrackpad",
                 "rightstick": "/actions/thumbparams/in/rightstick"
         },
-        "Trigger":
+        "TriggerActions":
         {
                 "lefttrigger": "/actions/thumbparams/in/lefttrigger",
                 "righttrigger": "/actions/thumbparams/in/righttrigger"

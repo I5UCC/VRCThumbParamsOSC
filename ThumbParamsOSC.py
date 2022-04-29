@@ -13,15 +13,19 @@ parser.add_argument('-d', '--debug', required=False, action='store_true', help='
 parser.add_argument('-i', '--ip', required=False, type=str, help="set OSC ip. Default=127.0.0.1")
 parser.add_argument('-p', '--port', required=False, type=str, help="set OSC port. Default=9000")
 args = parser.parse_args()
+
 # Set window name
 ctypes.windll.kernel32.SetConsoleTitleW("ThumbParamsOSC")
 
+# Moves Console Cursor
 def move (y, x):
     print("\033[%d;%dH" % (y, x))
 
+# Clears Console
 def cls():
     os.system('cls' if os.name=='nt' else 'clear')
 
+# Gets absolute path from relative path
 def resource_path(relative_path):
     base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
     return os.path.join(base_path, relative_path)
@@ -30,7 +34,7 @@ def resource_path(relative_path):
 config = json.load(open(os.path.join(os.path.join(resource_path('config.json')))))
 
 # Set up UDP OSC client
-oscClient = udp_client.SimpleUDPClient(args.ip if args.ip else "127.0.0.1", args.port if args.port else 9000)
+oscClient = udp_client.SimpleUDPClient(args.ip if args.ip else config["IP"], args.port if args.port else config["Port"])
 
 # Init OpenVR and Actionsets
 application = openvr.init(openvr.VRApplication_Utility)
@@ -39,12 +43,11 @@ openvr.VRInput().setActionManifestPath(action_path)
 actionSetHandle = openvr.VRInput().getActionSetHandle(config["ActionSetHandle"])
 
 # Set up OpenVR Action Handles
+leftTrigger = openvr.VRInput().getActionHandle(config["TriggerActions"]["lefttrigger"])
+rightTrigger = openvr.VRInput().getActionHandle(config["TriggerActions"]["righttrigger"])
 buttonActionHandles = []
-for k in config["Buttons"]:
-    buttonActionHandles.append(openvr.VRInput().getActionHandle(config["Buttons"][k]))
-
-leftTrigger = openvr.VRInput().getActionHandle(config["Trigger"]["lefttrigger"])
-rightTrigger = openvr.VRInput().getActionHandle(config["Trigger"]["righttrigger"])
+for k in config["ButtonActions"]:
+    buttonActionHandles.append(openvr.VRInput().getActionHandle(config["ButtonActions"][k]))
 
 def handle_input():
     # Set up OpenVR events and Action sets
@@ -78,7 +81,7 @@ def handle_input():
 
     # debug output
     if args.debug:
-        move(6,0)
+        move(7,0)
         print("DEBUG OUTPUT:")
         print("============================")
         print("Arguments:\t", args)
@@ -92,6 +95,7 @@ def handle_input():
 cls()
 print("============================")
 print("VRCThumbParamsOSC running...")
+print("Sending to {}:{}".format(config["IP"], config["Port"]))
 print("============================")
 print("You can minimize this window...")
 print("Press CTRL+C to exit or just close the window")

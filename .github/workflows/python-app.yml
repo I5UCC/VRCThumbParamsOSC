@@ -40,5 +40,5 @@ jobs:
       uses: JackMcKew/pyinstaller-action-windows@v0.1.2
       with:
         # Directory containing source code (optional requirements.txt).
-        path: ThumbParamsOSC.py
+        path: .
         spec: ThumbParamsOSC.spec # optional, default is 

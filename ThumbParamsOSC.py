@@ -14,9 +14,9 @@ parser.add_argument('-i', '--ip', required=False, type=str, help="set OSC ip. De
 parser.add_argument('-p', '--port', required=False, type=str, help="set OSC port. Default=9000")
 args = parser.parse_args()
 
-# Set window name
-ctypes.windll.kernel32.SetConsoleTitleW("ThumbParamsOSC")
-
+# Set window name on Windows
+if os.name == 'nt':
+    ctypes.windll.kernel32.SetConsoleTitleW("ThumbParamsOSC")
 
 def move(y, x):
     """Moves console cursor."""

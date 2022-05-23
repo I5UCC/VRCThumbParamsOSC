@@ -9,7 +9,7 @@ added_files = [
          ( 'Run Debug Mode.bat', '.' ),
          ]
 a = Analysis(['ThumbParamsOSC.py'],
-             pathex=['F:\GitRepos\VRCThumbParamsOSC'],
+             pathex=[],
              binaries=[],
              datas = added_files,
              hiddenimports=['ctypes', 'colorama'],

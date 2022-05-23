@@ -1,3 +1,2 @@
 python-osc==1.8.0
 openvr==1.16.802
-pywin32-ctypes==0.2.0

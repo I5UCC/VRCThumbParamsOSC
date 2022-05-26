@@ -50,5 +50,21 @@ You can run this by using ```ThumbParamsOSC.exe {Arguments}``` in command line.
 | -i IP, --ip IP    | set OSC IP. Default=127.0.0.1  |
 | -p PORT, --port PORT    | set OSC port. Default=9000      |
 
+# Configuration File
+
+Editing the ***config.json*** file:
+
+| Option | Value |
+| ----- | ------------- |
+| IP | OSC IP |
+| Port | OSC Port |
+| - | - |
+| BindingsFolder | Relative path to folder that holds SteamVRBindings  |
+| ActionManifestFile | Name of the Manifest file |
+| ActionSetHandle | This applications ActionSetHandle |
+| ButtonActions | Actions for SteamVR |
+| TriggerActions | Actions for SteamVR |
+| VRCParameters | Names for VRChat parameters |
+
 # Credit
 - ![benaclejames](https://github.com/benaclejames) and ![Greendayle](https://github.com/Greendayle) for the inspiration!

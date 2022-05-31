@@ -58,7 +58,11 @@ Editing the ***config.json*** file:
 | ----- | ------------- |
 | IP | OSC IP |
 | Port | OSC Port |
-| ***PATHS*** | ***DON'T EDIT*** |
+
+Don't Edit the folowing, if you don't know what you are doing:
+
+| Option | Value |
+| ----- | ------------- |
 | BindingsFolder | Relative path to folder that holds SteamVRBindings  |
 | ActionManifestFile | Name of the Manifest file |
 | ActionSetHandle | This applications ActionSetHandle |

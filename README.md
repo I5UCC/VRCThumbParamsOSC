@@ -7,6 +7,7 @@ Activate OSC in VRChat:
 
 In Action menu, got to Options>OSC>Enable <br/>
 ![image](https://user-images.githubusercontent.com/43730681/165360919-826cdee2-2783-485c-a980-a69cc0d2f678.png)
+![EnableOSC](https://user-images.githubusercontent.com/43730681/172059310-b94b8efe-0158-479c-9b07-f10e7512bb19.gif)
 
 
 Then just run the ```ThumbParamsOSC.exe``` and you are all set! <br/>

@@ -13,7 +13,7 @@ Then just run the ```ThumbParamsOSC.exe``` and you are all set! <br/>
 
 ## Avatar Setup
 
-If you're here with the intention to use this mod for sign language, ![read my guide on it here!](https://github.com/I5UCC/VRC-ASL_Gestures)
+If you're here with the intention to use this program for sign language, ![read my guide on it here!](https://github.com/I5UCC/VRC-ASL_Gestures)
 
 The program reads all controller face buttons "touching" states and outputs them to two avatar parameters of "int" type.
 You'll need to add these **case-sensitive** parameters to your avatar's base parameters:

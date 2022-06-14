@@ -1,4 +1,6 @@
 import json
+from multiprocessing.connection import wait
+import traceback
 import openvr
 import sys
 import os
@@ -113,4 +115,11 @@ while True:
         time.sleep(0.005)
     except KeyboardInterrupt:
         cls()
+        exit()
+    except Exception as e:
+        cls()
+        print("UNEXPECTED ERROR\n")
+        print("Please Create an Issue on GitHub with the following information:\n")
+        traceback.print_exc()
+        input("\nPress ENTER to exit")
         exit()

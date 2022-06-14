@@ -1,3 +1,4 @@
 output/
 build/
 dist/
+errorlog.log

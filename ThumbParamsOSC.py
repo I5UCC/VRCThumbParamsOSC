@@ -4,6 +4,7 @@ import sys
 import os
 import time
 import ctypes
+import logging
 import argparse
 from pythonosc import udp_client
 
@@ -97,7 +98,6 @@ def handle_input():
         print("LeftTrigger:\t", f'{leftTriggerValue:.6f}')
         print("RightTrigger:\t", f'{rightTriggerValue:.6f}')
 
-
 cls()
 print("============================")
 print("VRCThumbParamsOSC running...")
@@ -106,6 +106,7 @@ print("============================")
 print("You can minimize this window...")
 print("Press CTRL+C to exit or just close the window")
 
+logging.basicConfig(filename='errorlog.log')
 # Main Loop
 while True:
     try:
@@ -114,3 +115,7 @@ while True:
     except KeyboardInterrupt:
         cls()
         exit()
+    except openvr.OpenVRError as err:
+        logging.error("OpenVR Error: {}".format(err))
+    except Exception as err:
+        logging.error("Unexpected Error: {}".format(err))

@@ -1,7 +1,7 @@
 # VRCThumbParamsOSC
 VRChat OSC program that makes Valve Index and Oculus Touch controller thumb positions and Trigger values accessible in Avatar V3 Parameters.
 
-If you were looking for the MOD version of this, look [here](https://github.com/I5UCC/VRCThumbParamsMOD)
+If you were looking for the MOD version of this, [look here](https://github.com/I5UCC/VRCThumbParamsMOD)
 
 ## Use
 

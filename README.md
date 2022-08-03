@@ -1,8 +1,6 @@
 # VRCThumbParamsOSC
 VRChat OSC program that makes Valve Index and Oculus Touch controller thumb positions and Trigger values accessible in Avatar V3 Parameters.
 
-### If you're here with the intention to use this program for american sign language, ![read my guide on it here!](https://github.com/I5UCC/VRC-ASL_Gestures) and run this with it if needed. You dont really need to read the rest of how it functions here if you dont intend to make your own!
-
 ## Use
 
 Activate OSC in VRChat: <br/><br/>
@@ -12,6 +10,8 @@ In Action menu, got to Options>OSC>Enable <br/>
 
 Then just run the ```ThumbParamsOSC.exe``` and you are all set! <br/>
 ### You might need to restart ThumbParamsOSC.exe or even SteamVR after first run
+
+### If you're here with the intention to use this program for american sign language, ![read my guide on it here!](https://github.com/I5UCC/VRC-ASL_Gestures) and run this with it if needed. You dont really need to read the rest of how it functions here if you dont intend to make your own!
 
 ## Avatar Setup
 

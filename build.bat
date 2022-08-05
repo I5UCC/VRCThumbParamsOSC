@@ -1,7 +1,8 @@
 @echo off
-pyinstaller .\ThumbParamsOSC.spec
-
 RMDIR /S /Q build
+RMDIR /S /Q dist
+
+pyinstaller --clean -y .\ThumbParamsOSC.spec
 
 DEL /F /Q dist\ThumbParamsOSC\_bz2.pyd
 DEL /F /Q dist\ThumbParamsOSC\_decimal.pyd

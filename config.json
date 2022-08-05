@@ -1,6 +1,7 @@
 {
         "IP": "127.0.0.1",
         "Port": 9000,
+        "SendBools": true,
         "BindingsFolder": "bindings",
         "ActionManifestFile": "thumbparams_actions.json",
         "ActionSetHandle": "/actions/thumbparams",
@@ -20,11 +21,27 @@
                 "lefttrigger": "/actions/thumbparams/in/lefttrigger",
                 "righttrigger": "/actions/thumbparams/in/righttrigger"
         },
-        "VRCParameters":
+        "ParametersInt":
         {
                 "LeftThumb": "/avatar/parameters/LeftThumb",
-                "RightThumb": "/avatar/parameters/RightThumb",
+                "RightThumb": "/avatar/parameters/RightThumb"
+        },
+        "ParametersFloat":
+        {
                 "LeftTrigger": "/avatar/parameters/LeftTrigger",
                 "RightTrigger": "/avatar/parameters/RightTrigger"
+        },
+        "ParametersBool":
+        {
+                "LeftAButton": "/avatar/parameters/LeftAButton",
+                "LeftBButton": "/avatar/parameters/LeftBButton",
+                "LeftTrackPad": "/avatar/parameters/LeftTrackPad",
+                "LeftThumbStick": "/avatar/parameters/LeftThumbStick",
+                "RightAButton": "/avatar/parameters/RightAButton",
+                "RightBButton": "/avatar/parameters/RightBButton",
+                "RightTrackPad": "/avatar/parameters/RightTrackPad",
+                "RightThumbStick": "/avatar/parameters/RightThumbStick",
+                "LeftABButton": "/avatar/parameters/LeftABButton",
+                "RightABButton": "/avatar/parameters/RightABButton"
         }
 }

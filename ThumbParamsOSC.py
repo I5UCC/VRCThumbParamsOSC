@@ -37,9 +37,11 @@ def resource_path(relative_path):
 
 # load config
 config = json.load(open(os.path.join(os.path.join(resource_path('config.json')))))
+IP = args.ip if args.ip else config["IP"]
+PORT = args.port if args.port else config["Port"]
 
 # Set up UDP OSC client
-oscClient = udp_client.SimpleUDPClient(args.ip if args.ip else config["IP"], args.port if args.port else config["Port"])
+oscClient = udp_client.SimpleUDPClient(IP, PORT)
 
 # Init OpenVR and Actionsets
 application = openvr.init(openvr.VRApplication_Utility)
@@ -81,31 +83,57 @@ def handle_input():
     rightTriggerValue = openvr.VRInput().getAnalogActionData(rightTrigger, openvr.k_ulInvalidInputValueHandle).x
 
     # Send data via OSC
-    oscClient.send_message(config["VRCParameters"]["LeftTrigger"], float(leftTriggerValue))
-    oscClient.send_message(config["VRCParameters"]["RightTrigger"], float(rightTriggerValue))
-    oscClient.send_message(config["VRCParameters"]["LeftThumb"], int(leftThumb))
-    oscClient.send_message(config["VRCParameters"]["RightThumb"], int(rightThumb))
+    oscClient.send_message(config["ParametersInt"]["LeftThumb"], int(leftThumb))
+    oscClient.send_message(config["ParametersInt"]["RightThumb"], int(rightThumb))
+
+    oscClient.send_message(config["ParametersFloat"]["LeftTrigger"], float(leftTriggerValue))
+    oscClient.send_message(config["ParametersFloat"]["RightTrigger"], float(rightTriggerValue))
+
+    if config["SendBools"]:
+        oscClient.send_message(config["ParametersBool"]["LeftAButton"], bool(int(lrInputs[0])))
+        oscClient.send_message(config["ParametersBool"]["LeftBButton"], bool(int(lrInputs[1])))
+        oscClient.send_message(config["ParametersBool"]["LeftTrackPad"], bool(int(lrInputs[2])))
+        oscClient.send_message(config["ParametersBool"]["LeftThumbStick"], bool(int(lrInputs[3])))
+        oscClient.send_message(config["ParametersBool"]["RightAButton"], bool(int(lrInputs[4])))
+        oscClient.send_message(config["ParametersBool"]["RightBButton"], bool(int(lrInputs[5])))
+        oscClient.send_message(config["ParametersBool"]["RightTrackPad"], bool(int(lrInputs[6])))
+        oscClient.send_message(config["ParametersBool"]["RightThumbStick"], bool(int(lrInputs[7])))
+
+        oscClient.send_message(config["ParametersBool"]["LeftABButton"], bool(int(lrInputs[0])) & bool(int(lrInputs[1])))
+        oscClient.send_message(config["ParametersBool"]["RightABButton"], bool(int(lrInputs[4])) & bool(int(lrInputs[5])))
 
     # debug output
     if args.debug:
-        move(7, 0)
+        move(10, 0)
         print("DEBUG OUTPUT:")
-        print("============================")
-        print("Arguments:\t", args)
-        print("Inputs:\t\t", lrInputs)
+        print("---------- Ints ------------")
         print("LeftThumb:\t", leftThumb)
         print("RightThumb:\t", rightThumb)
+        print("--------- Floats -----------")
         print("LeftTrigger:\t", f'{leftTriggerValue:.6f}')
         print("RightTrigger:\t", f'{rightTriggerValue:.6f}')
+        if config["SendBools"]:
+            print("--------- Bools ------------")
+            print("LeftAButton:\t", bool(int(lrInputs[0])))
+            print("LeftBButton:\t", bool(int(lrInputs[1])))
+            print("LeftABButton:\t", bool(int(lrInputs[0])) & bool(int(lrInputs[1])))
+            print("LeftTrackPad:\t", bool(int(lrInputs[2])))
+            print("LeftThumbStick:\t", bool(int(lrInputs[3])))
+            print("RightAButton:\t", bool(int(lrInputs[4])))
+            print("RightBButton:\t", bool(int(lrInputs[5])))
+            print("RightABButton:\t", bool(int(lrInputs[4])) & bool(int(lrInputs[5])))
+            print("RightTrackPad:\t", bool(int(lrInputs[6])))
+            print("RightThumbStick:", bool(int(lrInputs[7])))
+        
 
 
 cls()
-print("============================")
-print("VRCThumbParamsOSC running...")
-print("Sending to {}:{}".format(config["IP"], config["Port"]))
-print("============================")
-print("You can minimize this window...")
-print("Press CTRL+C to exit or just close the window")
+print("ThumbParamsOSC running...\n")
+print("IP:\t\t", IP)
+print("Port:\t\t", PORT)
+print("SendBools:\t", config["SendBools"])
+print("\nYou can minimize this window.")
+print("\nPress CTRL + C to exit or just close the window.")
 
 # Main Loop
 while True:

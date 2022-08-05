@@ -42,16 +42,16 @@ Additionally, bool versions of the thumb positions are available, They're mapped
 - \[Left/Right]TrackPad
 - \[Left/Right]ThumbStick
 
+Another bool is also available to detect if the thumb is on *either* the A or B buttons, or Touching both *at the same time*.
+
+- \[Left/Right]ABButtons
+
 If you also need the Trigger pull values, you'll have to add two additional parameters of "float" type.
 
 - LeftTrigger
 - RightTrigger
 
 The values range from 0.0 to 1.0 for both of these parameters, depending on how much you pull the trigger.
-
-Another bool is also available to detect if the thumb is on *either* the A or B buttons, or Touching both *at the same time*.
-
-- \[Left/Right]ABButtons
 
 After that, you can use them just like other parameters in your Animation Controllers.
 

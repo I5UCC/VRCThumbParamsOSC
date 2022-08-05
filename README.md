@@ -1,5 +1,7 @@
 # VRCThumbParamsOSC
-OSC program that makes SteamVR controller thumb positions and Trigger values accessible in Avatar V3 Parameters. 
+OSC program that makes SteamVR controller thumb positions and Trigger values accessible in Avatar V3 Parameters. <br>
+
+Supports every controller that exposes Touch states to SteamVR. Including ***Valve-Index*** and ***Oculus(Meta)-Touch*** Controllers
 
 ## Use
 

@@ -114,16 +114,16 @@ def handle_input():
         print("RightTrigger:\t", f'{rightTriggerValue:.6f}')
         if config["SendBools"]:
             print("--------- Bools ------------")
-            print("LeftAButton:\t", bool(int(lrInputs[0])))
-            print("LeftBButton:\t", bool(int(lrInputs[1])))
-            print("LeftABButton:\t", bool(int(lrInputs[0])) & bool(int(lrInputs[1])))
-            print("LeftTrackPad:\t", bool(int(lrInputs[2])))
-            print("LeftThumbStick:\t", bool(int(lrInputs[3])))
-            print("RightAButton:\t", bool(int(lrInputs[4])))
-            print("RightBButton:\t", bool(int(lrInputs[5])))
-            print("RightABButton:\t", bool(int(lrInputs[4])) & bool(int(lrInputs[5])))
-            print("RightTrackPad:\t", bool(int(lrInputs[6])))
-            print("RightThumbStick:", bool(int(lrInputs[7])))
+            print("LeftAButton:\t", bool(int(lrInputs[0])), " ")
+            print("LeftBButton:\t", bool(int(lrInputs[1])), " ")
+            print("LeftABButton:\t", bool(int(lrInputs[0])) & bool(int(lrInputs[1])), " ")
+            print("LeftTrackPad:\t", bool(int(lrInputs[2])), " ")
+            print("LeftThumbStick:\t", bool(int(lrInputs[3])), " ")
+            print("RightAButton:\t", bool(int(lrInputs[4])), " ")
+            print("RightBButton:\t", bool(int(lrInputs[5])), " ")
+            print("RightABButton:\t", bool(int(lrInputs[4])) & bool(int(lrInputs[5])), " ")
+            print("RightTrackPad:\t", bool(int(lrInputs[6])), " ")
+            print("RightThumbStick:", bool(int(lrInputs[7])), " ")
         
 
 

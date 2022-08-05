@@ -35,7 +35,8 @@ The program will set these parameters with an integer from 0-4 representing the 
 | 3     | Trackpad      |
 | 4     | Thumbstick    |
 
-Additionally, bool versions of the thumb positions are available, They're mapped as: (You can deactivate those in the config by setting "SendBools" to false.)
+Additionally, bool versions of the thumb positions are available, They're mapped as: 
+(You can deactivate those in the config by setting "SendBools" to false.)
 
 - \[Left/Right]AButton
 - \[Left/Right]BButton

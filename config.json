@@ -41,7 +41,7 @@
                 "RightBButton": "/avatar/parameters/RightBButton",
                 "RightTrackPad": "/avatar/parameters/RightTrackPad",
                 "RightThumbStick": "/avatar/parameters/RightThumbStick",
-                "LeftABButton": "/avatar/parameters/LeftABButton",
-                "RightABButton": "/avatar/parameters/RightABButton"
+                "LeftABButtons": "/avatar/parameters/LeftABButtons",
+                "RightABButtons": "/avatar/parameters/RightABButtons"
         }
 }

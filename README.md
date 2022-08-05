@@ -35,12 +35,23 @@ The program will set these parameters with an integer from 0-4 representing the 
 | 3     | Trackpad      |
 | 4     | Thumbstick    |
 
-If you also need the Triggers to be set, you'll have to add two additional parameters of "float" type.
+Additionally, bool versions of the thumb positions are available, They're mapped as: (You can deactivate those in the config by setting "SendBools" to false.)
 
-- ***LeftTrigger***
-- ***RightTrigger***
+- \[Left/Right]AButton
+- \[Left/Right]BButton
+- \[Left/Right]TrackPad
+- \[Left/Right]ThumbStick
+
+If you also need the Trigger pull values, you'll have to add two additional parameters of "float" type.
+
+- LeftTrigger
+- RightTrigger
 
 The values range from 0.0 to 1.0 for both of these parameters, depending on how much you pull the trigger.
+
+Another bool is also available to detect if the thumb is on *either* the A or B buttons, or Touching both *at the same time*.
+
+- \[Left/Right]ABButtons
 
 After that, you can use them just like other parameters in your Animation Controllers.
 
@@ -61,6 +72,7 @@ Editing the ***config.json*** file:
 | ----- | ------------- |
 | IP | OSC IP |
 | Port | OSC Port |
+| SendBools | Whether to send additional Bools for the Thumb Position or not  |
 
 Don't Edit the folowing, if you don't know what you are doing:
 

@@ -100,8 +100,8 @@ def handle_input():
         oscClient.send_message(config["ParametersBool"]["RightTrackPad"], bool(int(_strinputs[6])))
         oscClient.send_message(config["ParametersBool"]["RightThumbStick"], bool(int(_strinputs[7])))
 
-        oscClient.send_message(config["ParametersBool"]["LeftABButton"], bool(int(_strinputs[0])) & bool(int(_strinputs[1])))
-        oscClient.send_message(config["ParametersBool"]["RightABButton"], bool(int(_strinputs[4])) & bool(int(_strinputs[5])))
+        oscClient.send_message(config["ParametersBool"]["LeftABButtons"], bool(int(_strinputs[0])) & bool(int(_strinputs[1])))
+        oscClient.send_message(config["ParametersBool"]["RightABButtons"], bool(int(_strinputs[4])) & bool(int(_strinputs[5])))
 
     # debug output
     if args.debug:
@@ -117,12 +117,12 @@ def handle_input():
             print("--------- Bools ------------")
             print("LeftAButton:\t", bool(int(_strinputs[0])), " ")
             print("LeftBButton:\t", bool(int(_strinputs[1])), " ")
-            print("LeftABButton:\t", bool(int(_strinputs[0])) & bool(int(_strinputs[1])), " ")
+            print("LeftABButtons:\t", bool(int(_strinputs[0])) & bool(int(_strinputs[1])), " ")
             print("LeftTrackPad:\t", bool(int(_strinputs[2])), " ")
             print("LeftThumbStick:\t", bool(int(_strinputs[3])), " ")
             print("RightAButton:\t", bool(int(_strinputs[4])), " ")
             print("RightBButton:\t", bool(int(_strinputs[5])), " ")
-            print("RightABButton:\t", bool(int(_strinputs[4])) & bool(int(_strinputs[5])), " ")
+            print("RightABButtons:\t", bool(int(_strinputs[4])) & bool(int(_strinputs[5])), " ")
             print("RightTrackPad:\t", bool(int(_strinputs[6])), " ")
             print("RightThumbStick:", bool(int(_strinputs[7])), " ")
 

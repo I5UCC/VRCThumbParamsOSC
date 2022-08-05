@@ -19,6 +19,7 @@ args = parser.parse_args()
 if os.name == 'nt':
     ctypes.windll.kernel32.SetConsoleTitleW("ThumbParamsOSC")
 
+
 def move(y, x):
     """Moves console cursor."""
     print("\033[%d;%dH" % (y, x))
@@ -64,67 +65,66 @@ def handle_input():
     has_events = True
     while has_events:
         has_events = application.pollNextEvent(event)
-    actionSets = (openvr.VRActiveActionSet_t * 1)()
-    actionSet = actionSets[0]
-    actionSet.ulActionSet = actionSetHandle
-    openvr.VRInput().updateActionState(actionSets)
+    _actionsets = (openvr.VRActiveActionSet_t * 1)()
+    _actionset = _actionsets[0]
+    _actionset.ulActionSet = actionSetHandle
+    openvr.VRInput().updateActionState(_actionsets)
 
     # Get data for all button actions
-    lrInputs = ""
+    _strinputs = ""
     for i in buttonActionHandles:
-        lrInputs += str(openvr.VRInput().getDigitalActionData(i, openvr.k_ulInvalidInputValueHandle).bState)
+        _strinputs += str(openvr.VRInput().getDigitalActionData(i, openvr.k_ulInvalidInputValueHandle).bState)
 
     # Get values for leftThumb and rightThumb (0-4)
-    leftThumb = lrInputs[:4].rfind("1") + 1
-    rightThumb = lrInputs[4:].rfind("1") + 1
+    _leftthumb = _strinputs[:4].rfind("1") + 1
+    _rightthumb = _strinputs[4:].rfind("1") + 1
 
     # Get values for TriggerLeft and TriggerRight (0.0-1.0)
-    leftTriggerValue = openvr.VRInput().getAnalogActionData(leftTrigger, openvr.k_ulInvalidInputValueHandle).x
-    rightTriggerValue = openvr.VRInput().getAnalogActionData(rightTrigger, openvr.k_ulInvalidInputValueHandle).x
+    _lefttriggervalue = openvr.VRInput().getAnalogActionData(leftTrigger, openvr.k_ulInvalidInputValueHandle).x
+    _righttriggervalue = openvr.VRInput().getAnalogActionData(rightTrigger, openvr.k_ulInvalidInputValueHandle).x
 
     # Send data via OSC
-    oscClient.send_message(config["ParametersInt"]["LeftThumb"], int(leftThumb))
-    oscClient.send_message(config["ParametersInt"]["RightThumb"], int(rightThumb))
+    oscClient.send_message(config["ParametersInt"]["LeftThumb"], int(_leftthumb))
+    oscClient.send_message(config["ParametersInt"]["RightThumb"], int(_rightthumb))
 
-    oscClient.send_message(config["ParametersFloat"]["LeftTrigger"], float(leftTriggerValue))
-    oscClient.send_message(config["ParametersFloat"]["RightTrigger"], float(rightTriggerValue))
+    oscClient.send_message(config["ParametersFloat"]["LeftTrigger"], float(_lefttriggervalue))
+    oscClient.send_message(config["ParametersFloat"]["RightTrigger"], float(_righttriggervalue))
 
     if config["SendBools"]:
-        oscClient.send_message(config["ParametersBool"]["LeftAButton"], bool(int(lrInputs[0])))
-        oscClient.send_message(config["ParametersBool"]["LeftBButton"], bool(int(lrInputs[1])))
-        oscClient.send_message(config["ParametersBool"]["LeftTrackPad"], bool(int(lrInputs[2])))
-        oscClient.send_message(config["ParametersBool"]["LeftThumbStick"], bool(int(lrInputs[3])))
-        oscClient.send_message(config["ParametersBool"]["RightAButton"], bool(int(lrInputs[4])))
-        oscClient.send_message(config["ParametersBool"]["RightBButton"], bool(int(lrInputs[5])))
-        oscClient.send_message(config["ParametersBool"]["RightTrackPad"], bool(int(lrInputs[6])))
-        oscClient.send_message(config["ParametersBool"]["RightThumbStick"], bool(int(lrInputs[7])))
+        oscClient.send_message(config["ParametersBool"]["LeftAButton"], bool(int(_strinputs[0])))
+        oscClient.send_message(config["ParametersBool"]["LeftBButton"], bool(int(_strinputs[1])))
+        oscClient.send_message(config["ParametersBool"]["LeftTrackPad"], bool(int(_strinputs[2])))
+        oscClient.send_message(config["ParametersBool"]["LeftThumbStick"], bool(int(_strinputs[3])))
+        oscClient.send_message(config["ParametersBool"]["RightAButton"], bool(int(_strinputs[4])))
+        oscClient.send_message(config["ParametersBool"]["RightBButton"], bool(int(_strinputs[5])))
+        oscClient.send_message(config["ParametersBool"]["RightTrackPad"], bool(int(_strinputs[6])))
+        oscClient.send_message(config["ParametersBool"]["RightThumbStick"], bool(int(_strinputs[7])))
 
-        oscClient.send_message(config["ParametersBool"]["LeftABButton"], bool(int(lrInputs[0])) & bool(int(lrInputs[1])))
-        oscClient.send_message(config["ParametersBool"]["RightABButton"], bool(int(lrInputs[4])) & bool(int(lrInputs[5])))
+        oscClient.send_message(config["ParametersBool"]["LeftABButton"], bool(int(_strinputs[0])) & bool(int(_strinputs[1])))
+        oscClient.send_message(config["ParametersBool"]["RightABButton"], bool(int(_strinputs[4])) & bool(int(_strinputs[5])))
 
     # debug output
     if args.debug:
         move(10, 0)
         print("DEBUG OUTPUT:")
         print("---------- Ints ------------")
-        print("LeftThumb:\t", leftThumb)
-        print("RightThumb:\t", rightThumb)
+        print("LeftThumb:\t", _leftthumb)
+        print("RightThumb:\t", _rightthumb)
         print("--------- Floats -----------")
-        print("LeftTrigger:\t", f'{leftTriggerValue:.6f}')
-        print("RightTrigger:\t", f'{rightTriggerValue:.6f}')
+        print("LeftTrigger:\t", f'{_lefttriggervalue:.6f}')
+        print("RightTrigger:\t", f'{_righttriggervalue:.6f}')
         if config["SendBools"]:
             print("--------- Bools ------------")
-            print("LeftAButton:\t", bool(int(lrInputs[0])), " ")
-            print("LeftBButton:\t", bool(int(lrInputs[1])), " ")
-            print("LeftABButton:\t", bool(int(lrInputs[0])) & bool(int(lrInputs[1])), " ")
-            print("LeftTrackPad:\t", bool(int(lrInputs[2])), " ")
-            print("LeftThumbStick:\t", bool(int(lrInputs[3])), " ")
-            print("RightAButton:\t", bool(int(lrInputs[4])), " ")
-            print("RightBButton:\t", bool(int(lrInputs[5])), " ")
-            print("RightABButton:\t", bool(int(lrInputs[4])) & bool(int(lrInputs[5])), " ")
-            print("RightTrackPad:\t", bool(int(lrInputs[6])), " ")
-            print("RightThumbStick:", bool(int(lrInputs[7])), " ")
-        
+            print("LeftAButton:\t", bool(int(_strinputs[0])), " ")
+            print("LeftBButton:\t", bool(int(_strinputs[1])), " ")
+            print("LeftABButton:\t", bool(int(_strinputs[0])) & bool(int(_strinputs[1])), " ")
+            print("LeftTrackPad:\t", bool(int(_strinputs[2])), " ")
+            print("LeftThumbStick:\t", bool(int(_strinputs[3])), " ")
+            print("RightAButton:\t", bool(int(_strinputs[4])), " ")
+            print("RightBButton:\t", bool(int(_strinputs[5])), " ")
+            print("RightABButton:\t", bool(int(_strinputs[4])) & bool(int(_strinputs[5])), " ")
+            print("RightTrackPad:\t", bool(int(_strinputs[6])), " ")
+            print("RightThumbStick:", bool(int(_strinputs[7])), " ")
 
 
 cls()
@@ -143,7 +143,7 @@ while True:
     except KeyboardInterrupt:
         cls()
         exit()
-    except Exception as e:
+    except Exception:
         cls()
         print("UNEXPECTED ERROR\n")
         print("Please Create an Issue on GitHub with the following information:\n")

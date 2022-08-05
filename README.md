@@ -1,4 +1,4 @@
-# VRCThumbParamsOSC
+# <img src="https://raw.githubusercontent.com/I5UCC/VRCThumbParamsOSC/main/icon.ico" width="32" height="32"> VRCThumbParamsOSC
 OSC program that makes SteamVR controller thumb positions and Trigger values accessible in Avatar V3 Parameters. <br>
 
 Supports every controller that exposes Touch states to SteamVR. Including ***Valve-Index*** and ***Oculus(Meta)-Touch*** Controllers

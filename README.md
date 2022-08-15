@@ -5,6 +5,8 @@ Works for both VRChat and ChilloutVR but requires an OSC Mod when used in Chillo
 
 Supports every controller that exposes Touch states to SteamVR. Including ***Valve-Index*** and ***Oculus(Meta)-Touch*** Controllers.
 
+# [Download here](https://github.com/I5UCC/VRCThumbParamsOSC/releases/download/v0.3.1/ThumbParamsOSC_Windows_v0.3.1.zip)
+
 ## How to use
 
 Activate OSC in VRChat: <br/><br/>

@@ -22,7 +22,7 @@ Then just run the ```ThumbParamsOSC.exe``` and you are all set! <br/>
 ## Troubleshoot
 
 If you have problems with this program, try any of these to fix it then create an Issue in the repository:
-- restart ThumbParamsOSC.exe and SteamVR
+- Restart ThumbParamsOSC.exe and SteamVR
 - Turn OSC OFF and ON
 - Reset OSC Config
 - Reset Avatar

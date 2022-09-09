@@ -13,7 +13,7 @@
                 "LeftTrigger": ["/avatar/parameters/LeftTrigger", true],
                 "RightTrigger": ["/avatar/parameters/RightTrigger", true]
         },
-        "SendBools": true,
+        "SendBools": false,
         "ParametersBool":
         {
                 "LeftAButton": ["/avatar/parameters/LeftAButton", true],

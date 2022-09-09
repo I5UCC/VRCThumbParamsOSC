@@ -36,8 +36,9 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 
-# load config
+# load configs
 config = json.load(open(os.path.join(os.path.join(resource_path('config.json')))))
+ovrConfig = json.load(open(os.path.join(os.path.join(resource_path('ovrConfig.json')))))
 IP = args.ip if args.ip else config["IP"]
 PORT = args.port if args.port else config["Port"]
 
@@ -46,16 +47,16 @@ oscClient = udp_client.SimpleUDPClient(IP, PORT)
 
 # Init OpenVR and Actionsets
 application = openvr.init(openvr.VRApplication_Utility)
-action_path = os.path.join(resource_path(config["BindingsFolder"]), config["ActionManifestFile"])
+action_path = os.path.join(resource_path(ovrConfig["BindingsFolder"]), ovrConfig["ActionManifestFile"])
 openvr.VRInput().setActionManifestPath(action_path)
-actionSetHandle = openvr.VRInput().getActionSetHandle(config["ActionSetHandle"])
+actionSetHandle = openvr.VRInput().getActionSetHandle(ovrConfig["ActionSetHandle"])
 
 # Set up OpenVR Action Handles
-leftTrigger = openvr.VRInput().getActionHandle(config["TriggerActions"]["lefttrigger"])
-rightTrigger = openvr.VRInput().getActionHandle(config["TriggerActions"]["righttrigger"])
+leftTrigger = openvr.VRInput().getActionHandle(ovrConfig["TriggerActions"]["lefttrigger"])
+rightTrigger = openvr.VRInput().getActionHandle(ovrConfig["TriggerActions"]["righttrigger"])
 buttonActionHandles = []
-for k in config["ButtonActions"]:
-    buttonActionHandles.append(openvr.VRInput().getActionHandle(config["ButtonActions"][k]))
+for k in ovrConfig["ButtonActions"]:
+    buttonActionHandles.append(openvr.VRInput().getActionHandle(ovrConfig["ButtonActions"][k]))
 
 
 def handle_input():
@@ -84,54 +85,74 @@ def handle_input():
     _righttriggervalue = openvr.VRInput().getAnalogActionData(rightTrigger, openvr.k_ulInvalidInputValueHandle).x
 
     # Send data via OSC
-    oscClient.send_message(config["ParametersInt"]["LeftThumb"], int(_leftthumb))
-    oscClient.send_message(config["ParametersInt"]["RightThumb"], int(_rightthumb))
+    if config["SendInts"]:
+        if config["ParametersInt"]["LeftThumb"][1]:
+            oscClient.send_message(config["ParametersInt"]["LeftThumb"][0], int(_leftthumb))
+        if config["ParametersInt"]["RightThumb"][1]:
+            oscClient.send_message(config["ParametersInt"]["RightThumb"][0], int(_rightthumb))
 
-    oscClient.send_message(config["ParametersFloat"]["LeftTrigger"], float(_lefttriggervalue))
-    oscClient.send_message(config["ParametersFloat"]["RightTrigger"], float(_righttriggervalue))
+    if config["SendFloats"]:
+        if config["ParametersFloat"]["LeftTrigger"][1]:
+            oscClient.send_message(config["ParametersFloat"]["LeftTrigger"][0], float(_lefttriggervalue))
+        if config["ParametersFloat"]["RightTrigger"][1]:
+            oscClient.send_message(config["ParametersFloat"]["RightTrigger"][0], float(_righttriggervalue))
 
     if config["SendBools"]:
-        oscClient.send_message(config["ParametersBool"]["LeftAButton"], bool(int(_strinputs[0])))
-        oscClient.send_message(config["ParametersBool"]["LeftBButton"], bool(int(_strinputs[1])))
-        oscClient.send_message(config["ParametersBool"]["LeftTrackPad"], bool(int(_strinputs[2])))
-        oscClient.send_message(config["ParametersBool"]["LeftThumbStick"], bool(int(_strinputs[3])))
-        oscClient.send_message(config["ParametersBool"]["RightAButton"], bool(int(_strinputs[4])))
-        oscClient.send_message(config["ParametersBool"]["RightBButton"], bool(int(_strinputs[5])))
-        oscClient.send_message(config["ParametersBool"]["RightTrackPad"], bool(int(_strinputs[6])))
-        oscClient.send_message(config["ParametersBool"]["RightThumbStick"], bool(int(_strinputs[7])))
+        if config["ParametersBool"]["LeftAButton"][1]:
+            oscClient.send_message(config["ParametersBool"]["LeftAButton"][0], bool(int(_strinputs[0])))
+        if config["ParametersBool"]["LeftBButton"][1]:
+            oscClient.send_message(config["ParametersBool"]["LeftBButton"][0], bool(int(_strinputs[1])))
+        if config["ParametersBool"]["LeftTrackPad"][1]:
+            oscClient.send_message(config["ParametersBool"]["LeftTrackPad"][0], bool(int(_strinputs[2])))
+        if config["ParametersBool"]["LeftThumbStick"][1]:
+            oscClient.send_message(config["ParametersBool"]["LeftThumbStick"][0], bool(int(_strinputs[3])))
+        if config["ParametersBool"]["RightAButton"][1]:
+            oscClient.send_message(config["ParametersBool"]["RightAButton"][0], bool(int(_strinputs[4])))
+        if config["ParametersBool"]["RightBButton"][1]:
+            oscClient.send_message(config["ParametersBool"]["RightBButton"][0], bool(int(_strinputs[5])))
+        if config["ParametersBool"]["RightTrackPad"][1]:
+            oscClient.send_message(config["ParametersBool"]["RightTrackPad"][0], bool(int(_strinputs[6])))
+        if config["ParametersBool"]["RightThumbStick"][1]:
+            oscClient.send_message(config["ParametersBool"]["RightThumbStick"][0], bool(int(_strinputs[7])))
 
-        oscClient.send_message(config["ParametersBool"]["LeftABButtons"], bool(int(_strinputs[0])) & bool(int(_strinputs[1])))
-        oscClient.send_message(config["ParametersBool"]["RightABButtons"], bool(int(_strinputs[4])) & bool(int(_strinputs[5])))
+        if config["ParametersBool"]["LeftABButtons"][1]:
+            oscClient.send_message(config["ParametersBool"]["LeftABButtons"][0], bool(int(_strinputs[0])) & bool(int(_strinputs[1])))
+        if config["ParametersBool"]["RightABButtons"][1]:
+            oscClient.send_message(config["ParametersBool"]["RightABButtons"][0], bool(int(_strinputs[4])) & bool(int(_strinputs[5])))
 
     # debug output
     if args.debug:
-        move(10, 0)
+        move(13, 0)
         print("DEBUG OUTPUT:")
-        print("---------- Ints ------------")
-        print("LeftThumb:\t", _leftthumb)
-        print("RightThumb:\t", _rightthumb)
-        print("--------- Floats -----------")
-        print("LeftTrigger:\t", f'{_lefttriggervalue:.6f}')
-        print("RightTrigger:\t", f'{_righttriggervalue:.6f}')
+        if config["SendInts"]:
+            print("---------- Ints ------------")
+            print("LeftThumb:\t", _leftthumb, "\t\tEnabled:", config["ParametersInt"]["LeftThumb"][1])
+            print("RightThumb:\t", _rightthumb, "\t\tEnabled:", config["ParametersInt"]["RightThumb"][1])
+        if config["SendFloats"]:
+            print("--------- Floats -----------")
+            print("LeftTrigger:\t", f'{_lefttriggervalue:.6f}', "\tEnabled:", config["ParametersFloat"]["LeftTrigger"][1])
+            print("RightTrigger:\t", f'{_righttriggervalue:.6f}', "\tEnabled:", config["ParametersFloat"]["RightTrigger"][1])
         if config["SendBools"]:
             print("--------- Bools ------------")
-            print("LeftAButton:\t", bool(int(_strinputs[0])), " ")
-            print("LeftBButton:\t", bool(int(_strinputs[1])), " ")
-            print("LeftABButtons:\t", bool(int(_strinputs[0])) & bool(int(_strinputs[1])), " ")
-            print("LeftTrackPad:\t", bool(int(_strinputs[2])), " ")
-            print("LeftThumbStick:\t", bool(int(_strinputs[3])), " ")
-            print("RightAButton:\t", bool(int(_strinputs[4])), " ")
-            print("RightBButton:\t", bool(int(_strinputs[5])), " ")
-            print("RightABButtons:\t", bool(int(_strinputs[4])) & bool(int(_strinputs[5])), " ")
-            print("RightTrackPad:\t", bool(int(_strinputs[6])), " ")
-            print("RightThumbStick:", bool(int(_strinputs[7])), " ")
+            print("LeftAButton:\t", bool(int(_strinputs[0])), " ", "\tEnabled:", config["ParametersBool"]["LeftAButton"][1])
+            print("LeftBButton:\t", bool(int(_strinputs[1])), " ", "\tEnabled:", config["ParametersBool"]["LeftBButton"][1])
+            print("LeftABButtons:\t", bool(int(_strinputs[0])) & bool(int(_strinputs[1])), " ", "\tEnabled:", config["ParametersBool"]["LeftABButtons"][1])
+            print("LeftTrackPad:\t", bool(int(_strinputs[2])), " ", "\tEnabled:", config["ParametersBool"]["LeftTrackPad"][1])
+            print("LeftThumbStick:\t", bool(int(_strinputs[3])), " ", "\tEnabled:", config["ParametersBool"]["LeftThumbStick"][1])
+            print("RightAButton:\t", bool(int(_strinputs[4])), " ", "\tEnabled:", config["ParametersBool"]["RightAButton"][1])
+            print("RightBButton:\t", bool(int(_strinputs[5])), " ", "\tEnabled:", config["ParametersBool"]["RightBButton"][1])
+            print("RightABButtons:\t", bool(int(_strinputs[4])) & bool(int(_strinputs[5])), " ", "\tEnabled:", config["ParametersBool"]["RightABButtons"][1])
+            print("RightTrackPad:\t", bool(int(_strinputs[6])), " ", "\tEnabled:", config["ParametersBool"]["RightTrackPad"][1])
+            print("RightThumbStick:", bool(int(_strinputs[7])), " ", "\tEnabled:", config["ParametersBool"]["RightThumbStick"][1])
 
 
 cls()
 print("ThumbParamsOSC running...\n")
 print("IP:\t\t", IP)
 print("Port:\t\t", PORT)
+print("SendInts:\t", config["SendInts"])
 print("SendBools:\t", config["SendBools"])
+print("SendFloats:\t", config["SendFloats"])
 print("\nYou can minimize this window.")
 print("\nPress CTRL + C to exit or just close the window.")
 

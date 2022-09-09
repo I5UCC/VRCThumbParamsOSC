@@ -1,47 +1,30 @@
 {
         "IP": "127.0.0.1",
         "Port": 9000,
-        "SendBools": true,
-        "BindingsFolder": "bindings",
-        "ActionManifestFile": "thumbparams_actions.json",
-        "ActionSetHandle": "/actions/thumbparams",
-        "ButtonActions": 
-        {
-                "leftabutton": "/actions/thumbparams/in/leftabutton",
-                "leftbbutton": "/actions/thumbparams/in/leftbbutton",
-                "lefttrackpad": "/actions/thumbparams/in/lefttrackpad",
-                "leftstick": "/actions/thumbparams/in/leftstick",
-                "rightabutton": "/actions/thumbparams/in/rightabutton",
-                "rightbbutton": "/actions/thumbparams/in/rightbbutton",
-                "righttrackpad": "/actions/thumbparams/in/righttrackpad",
-                "rightstick": "/actions/thumbparams/in/rightstick"
-        },
-        "TriggerActions":
-        {
-                "lefttrigger": "/actions/thumbparams/in/lefttrigger",
-                "righttrigger": "/actions/thumbparams/in/righttrigger"
-        },
+        "SendInts": true,
         "ParametersInt":
         {
-                "LeftThumb": "/avatar/parameters/LeftThumb",
-                "RightThumb": "/avatar/parameters/RightThumb"
+                "LeftThumb": ["/avatar/parameters/LeftThumb", true],
+                "RightThumb": ["/avatar/parameters/RightThumb", true]
         },
+        "SendFloats": true,
         "ParametersFloat":
         {
-                "LeftTrigger": "/avatar/parameters/LeftTrigger",
-                "RightTrigger": "/avatar/parameters/RightTrigger"
+                "LeftTrigger": ["/avatar/parameters/LeftTrigger", true],
+                "RightTrigger": ["/avatar/parameters/RightTrigger", true]
         },
+        "SendBools": true,
         "ParametersBool":
         {
-                "LeftAButton": "/avatar/parameters/LeftAButton",
-                "LeftBButton": "/avatar/parameters/LeftBButton",
-                "LeftTrackPad": "/avatar/parameters/LeftTrackPad",
-                "LeftThumbStick": "/avatar/parameters/LeftThumbStick",
-                "RightAButton": "/avatar/parameters/RightAButton",
-                "RightBButton": "/avatar/parameters/RightBButton",
-                "RightTrackPad": "/avatar/parameters/RightTrackPad",
-                "RightThumbStick": "/avatar/parameters/RightThumbStick",
-                "LeftABButtons": "/avatar/parameters/LeftABButtons",
-                "RightABButtons": "/avatar/parameters/RightABButtons"
+                "LeftAButton": ["/avatar/parameters/LeftAButton", true],
+                "LeftBButton": ["/avatar/parameters/LeftBButton", true],
+                "LeftTrackPad": ["/avatar/parameters/LeftTrackPad", true],
+                "LeftThumbStick": ["/avatar/parameters/LeftThumbStick", true],
+                "RightAButton": ["/avatar/parameters/RightAButton", true],
+                "RightBButton": ["/avatar/parameters/RightBButton", true],
+                "RightTrackPad": ["/avatar/parameters/RightTrackPad", true],
+                "RightThumbStick": ["/avatar/parameters/RightThumbStick", true],
+                "LeftABButtons": ["/avatar/parameters/LeftABButtons", true],
+                "RightABButtons": ["/avatar/parameters/RightABButtons", true]
         }
 }

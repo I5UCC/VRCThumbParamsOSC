@@ -84,12 +84,12 @@ Editing the ***config.json*** file:
 | ----- | ------------- |
 | IP | OSC IP |
 | Port | OSC Port |
-| SendInts | Whether to send Integers for the Thumb Positions or not <br>(True by default) |
-| SendFloats | Whether to send Floats for the Thumb Positions or not <br>(True by default) |
-| SendBools | Whether to send additional Bools for the Thumb Position or not <br>(False by default) |
-| ParametersInt | All the Int Parameters being sent. true or false determines if the paremeter is being sent. <br>(All set to true by default) |
-| ParametersFloat | All the Float Parameters being sent. true or false determines if the paremeter is being sent. <br>(All set to true by default) |
-| ParametersBool | All the Bool Parameters being sent. true or false determines if the paremeter is being sent. <br>(All set to true by default) |
+| SendInts | Whether to send Integers for the Thumb Positions or not <br>(***true*** by default) |
+| SendFloats | Whether to send Floats for the Thumb Positions or not <br>(***true*** by default) |
+| SendBools | Whether to send additional Bools for the Thumb Position or not <br>(***false*** by default) |
+| ParametersInt | All the Int Parameters being sent. true or false determines if the paremeter is being sent. <br>(All set to ***true*** by default) |
+| ParametersFloat | All the Float Parameters being sent. true or false determines if the paremeter is being sent. <br>(All set to ***true*** by default) |
+| ParametersBool | All the Bool Parameters being sent. true or false determines if the paremeter is being sent. <br>(All set to ***true*** by default) |
 
 
 # Credit

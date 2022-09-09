@@ -87,9 +87,9 @@ Editing the ***config.json*** file:
 | SendInts | Whether to send Integers for the Thumb Positions or not (True by default) |
 | SendFloats | Whether to send Floats for the Thumb Positions or not (True by default) |
 | SendBools | Whether to send additional Bools for the Thumb Position or not (False by default) |
-| ParametersInt | All the Int Parameters being sent. true or false determines if the paremeter is being sent or not (All set to true by default) |
-| ParametersFloat | All the Float Parameters being sent. true or false determines if the paremeter is being sent or not (All set to true by default) |
-| ParametersBool | All the Bool Parameters being sent. true or false determines if the paremeter is being sent or not (All set to true by default) |
+| ParametersInt | All the Int Parameters being sent. true or false determines if the paremeter is being sent or not <br>(All set to true by default) |
+| ParametersFloat | All the Float Parameters being sent. true or false determines if the paremeter is being sent or not <br>(All set to true by default) |
+| ParametersBool | All the Bool Parameters being sent. true or false determines if the paremeter is being sent or not <br>(All set to true by default) |
 
 
 # Credit

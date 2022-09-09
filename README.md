@@ -84,18 +84,13 @@ Editing the ***config.json*** file:
 | ----- | ------------- |
 | IP | OSC IP |
 | Port | OSC Port |
-| SendBools | Whether to send additional Bools for the Thumb Position or not  |
+| SendInts | Whether to send Integers for the Thumb Positions or not (True by default) |
+| SendFloats | Whether to send Floats for the Thumb Positions or not (True by default) |
+| SendBools | Whether to send additional Bools for the Thumb Position or not (False by default) |
+| ParametersInt | All the Int Parameters being sent. true or false determines if the paremeter is being sent or not |
+| ParametersFloat | All the Float Parameters being sent. true or false determines if the paremeter is being sent or not |
+| ParametersBool | All the Bool Parameters being sent. true or false determines if the paremeter is being sent or not |
 
-Don't Edit the folowing, if you don't know what you are doing:
-
-| Option | Value |
-| ----- | ------------- |
-| BindingsFolder | Relative path to folder that holds SteamVRBindings  |
-| ActionManifestFile | Name of the Manifest file |
-| ActionSetHandle | This applications ActionSetHandle |
-| ButtonActions | Actions for SteamVR |
-| TriggerActions | Actions for SteamVR |
-| VRCParameters | Names for VRChat parameters |
 
 # Credit
 - ![benaclejames](https://github.com/benaclejames) and ![Greendayle](https://github.com/Greendayle) for the inspiration!

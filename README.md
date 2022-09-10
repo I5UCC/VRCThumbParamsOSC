@@ -7,6 +7,8 @@ Supports every controller that exposes Touch states to SteamVR. Including ***Val
 
 # [Download here](https://github.com/I5UCC/VRCThumbParamsOSC/releases/download/v.0.3.2/ThumbParamsOSC_Windows_v0.3.2.zip)
 
+## If you're here with the intention to use this program for american sign language, ![read my guide on it here!](https://github.com/I5UCC/VRC-ASL_Gestures) and then continue reading here.
+
 ## How to use
 
 Activate OSC in VRChat: <br/><br/>
@@ -15,9 +17,7 @@ Activate OSC in VRChat: <br/><br/>
 In Action menu, got to Options>OSC>Enable <br/>
 
 Then just run the ```ThumbParamsOSC.exe``` and you are all set! <br/>
-### You might need to 
-
-### If you're here with the intention to use this program for american sign language, ![read my guide on it here!](https://github.com/I5UCC/VRC-ASL_Gestures) and run this with it if needed. You dont really need to read the rest of how it functions here if you dont intend to make your own!
+### You might need to restart ThumbParamsOSC.exe or even SteamVR after first run
 
 ## Troubleshoot
 
@@ -28,6 +28,8 @@ If you have problems with this program, try any of these to fix it then create a
 - Reset Avatar
 
 ## Avatar Setup
+
+### This step is not needed if used with ![my ASL package](https://github.com/I5UCC/VRC-ASL_Gestures)
 
 The program reads all controller face buttons "touching" states and outputs them to two avatar parameters of "int" type.
 You'll need to add these **case-sensitive** parameters to your avatar's base parameters:

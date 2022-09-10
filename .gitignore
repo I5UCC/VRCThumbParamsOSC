@@ -1,3 +1,6 @@
 output/
 build/
 dist/
+ThumbParamsOSC/output/
+ThumbParamsOSC/build/
+ThumbParamsOSC/dist/

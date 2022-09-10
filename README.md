@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/I5UCC/VRCThumbParamsOSC/main/icon.ico" width="32" height="32"> ThumbParamsOSC
+# <img src="https://github.com/I5UCC/VRCThumbParamsOSC/blob/468e25fb16f03daac756d693656c784094518efb/src/icon.ico" width="32" height="32"> ThumbParamsOSC
 OSC program that makes SteamVR controller thumb positions and Trigger values accessible as Avatar Parameters.
 
 Works for both VRChat and ChilloutVR but requires an OSC Mod when used in ChilloutVR.

@@ -26,6 +26,7 @@ If you have problems with this program, try any of these to fix it then create a
 - Turn OSC OFF and ON
 - Reset OSC Config
 - Reset Avatar
+- ***(Advanced) [Add the params manually to the OSC config of your avatar, if they dont exist there already](https://docs.vrchat.com/docs/osc-avatar-parameters)***
 
 ## Avatar Setup
 

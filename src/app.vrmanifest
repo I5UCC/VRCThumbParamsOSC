@@ -1,0 +1,19 @@
+{
+	"source": "builtin",
+	"applications": [
+		{
+			"app_key": "i5ucc.ThumbParamsOSC",
+			"launch_type": "binary",
+			"binary_path_windows": "./ThumbParamsOSC_NoConsole.exe",
+			"is_dashboard_overlay": true,
+			"action_manifest_path": "./bindings/thumbparams_actions.json",
+
+			"strings": {
+				"en_us": {
+					"name": "VRCThumbParamsOSC",
+					"description": "OpenVR ThumbParams implementation to send touched face buttons over OSC"
+				}
+			}
+		}
+	]
+}

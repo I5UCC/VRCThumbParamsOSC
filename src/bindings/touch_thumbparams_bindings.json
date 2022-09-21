@@ -1,7 +1,7 @@
 {
    "action_manifest_version" : 0,
    "alias_info" : {},
-   "app_key" : "system.generated.thumbparamsosc.exe",
+   "app_key" : "i5ucc.ThumbParamsOSC",
    "bindings" : {
       "/actions/thumbparams" : {
          "sources" : [

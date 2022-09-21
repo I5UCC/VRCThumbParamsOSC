@@ -1,5 +1,6 @@
 {
     "BindingsFolder": "bindings",
+    "AppManifestFile": "app.vrmanifest",
     "ActionManifestFile": "thumbparams_actions.json",
     "ActionSetHandle": "/actions/thumbparams",
     "ButtonActions": 

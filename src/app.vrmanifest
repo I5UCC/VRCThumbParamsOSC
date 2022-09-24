@@ -11,7 +11,7 @@
 			"strings": {
 				"en_us": {
 					"name": "VRCThumbParamsOSC",
-					"description": "OpenVR ThumbParams implementation to send touched face buttons over OSC"
+					"description": "ThumbParams implementation to send touched face buttons over OSC"
 				}
 			}
 		}

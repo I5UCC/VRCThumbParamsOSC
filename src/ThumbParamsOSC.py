@@ -124,7 +124,7 @@ def handle_input():
 
     # debug output
     if args.debug:
-        move(13, 0)
+        move(11, 0)
         print("DEBUG OUTPUT:")
         if config["SendInts"]:
             print("---------- Ints ------------")

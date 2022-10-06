@@ -37,8 +37,8 @@ def resource_path(relative_path):
 
 
 # load configs
-config = json.load(open(os.path.join(os.path.join(resource_path('config.json')))))
-ovrConfig = json.load(open(os.path.join(os.path.join(resource_path('ovrConfig.json')))))
+config = json.load(open(resource_path('config.json')))
+ovrConfig=json.load(open(resource_path('ovrConfig.json')))
 IP = args.ip if args.ip else config["IP"]
 PORT = args.port if args.port else config["Port"]
 
@@ -48,7 +48,7 @@ oscClient = udp_client.SimpleUDPClient(IP, PORT)
 # Init OpenVR and Actionsets
 application = openvr.init(openvr.VRApplication_Utility)
 action_path = os.path.join(resource_path(ovrConfig["BindingsFolder"]), ovrConfig["ActionManifestFile"])
-appmanifest_path = os.path.join(os.path.join(resource_path(ovrConfig["AppManifestFile"])))
+appmanifest_path = resource_path(ovrConfig["AppManifestFile"])
 openvr.VRApplications().addApplicationManifest(appmanifest_path)
 openvr.VRInput().setActionManifestPath(action_path)
 actionSetHandle = openvr.VRInput().getActionSetHandle(ovrConfig["ActionSetHandle"])
@@ -165,11 +165,11 @@ while True:
         time.sleep(0.005)
     except KeyboardInterrupt:
         cls()
-        exit()
+        sys.exit()
     except Exception:
         cls()
         print("UNEXPECTED ERROR\n")
         print("Please Create an Issue on GitHub with the following information:\n")
         traceback.print_exc()
         input("\nPress ENTER to exit")
-        exit()
+        sys.exit()

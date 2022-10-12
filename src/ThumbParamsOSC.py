@@ -53,13 +53,18 @@ openvr.VRApplications().addApplicationManifest(appmanifest_path)
 openvr.VRInput().setActionManifestPath(action_path)
 actionSetHandle = openvr.VRInput().getActionSetHandle(ovrConfig["ActionSetHandle"])
 
+def GetControllertype():
+    for i in range(1, openvr.k_unMaxTrackedDeviceCount):
+        device_class = openvr.VRSystem().getTrackedDeviceClass(i)
+        if device_class == 2:
+            return openvr.VRSystem().getStringTrackedDeviceProperty(i, openvr.Prop_ControllerType_String)
+
 # Set up OpenVR Action Handles
 leftTrigger = openvr.VRInput().getActionHandle(ovrConfig["TriggerActions"]["lefttrigger"])
 rightTrigger = openvr.VRInput().getActionHandle(ovrConfig["TriggerActions"]["righttrigger"])
 buttonActionHandles = []
 for k in ovrConfig["ButtonActions"]:
     buttonActionHandles.append(openvr.VRInput().getActionHandle(ovrConfig["ButtonActions"][k]))
-
 
 def handle_input():
     """Handles all the OpenVR Input and sends it via OSC"""
@@ -82,18 +87,24 @@ def handle_input():
     _leftthumb = _strinputs[:4].rfind("1") + 1
     _rightthumb = _strinputs[4:].rfind("1") + 1
 
-    # Get values for TriggerLeft and TriggerRight (0.0-1.0)
-    _lefttriggervalue = openvr.VRInput().getAnalogActionData(leftTrigger, openvr.k_ulInvalidInputValueHandle).x
-    _righttriggervalue = openvr.VRInput().getAnalogActionData(rightTrigger, openvr.k_ulInvalidInputValueHandle).x
-
     # Send data via OSC
     if config["SendInts"]:
+        if config["ParametersInt"]["ControllerType"][1]:
+            controller = GetControllertype()
+            match controller:
+                case 'knuckles':
+                    oscClient.send_message(config["ParametersInt"]["ControllerType"][0], 1)
+                case _:
+                    oscClient.send_message(config["ParametersInt"]["ControllerType"][0], 0)
         if config["ParametersInt"]["LeftThumb"][1]:
             oscClient.send_message(config["ParametersInt"]["LeftThumb"][0], int(_leftthumb))
         if config["ParametersInt"]["RightThumb"][1]:
             oscClient.send_message(config["ParametersInt"]["RightThumb"][0], int(_rightthumb))
 
     if config["SendFloats"]:
+        # Get values for TriggerLeft and TriggerRight (0.0-1.0)
+        _lefttriggervalue = openvr.VRInput().getAnalogActionData(leftTrigger, openvr.k_ulInvalidInputValueHandle).x
+        _righttriggervalue = openvr.VRInput().getAnalogActionData(rightTrigger, openvr.k_ulInvalidInputValueHandle).x
         if config["ParametersFloat"]["LeftTrigger"][1]:
             oscClient.send_message(config["ParametersFloat"]["LeftTrigger"][0], float(_lefttriggervalue))
         if config["ParametersFloat"]["RightTrigger"][1]:
@@ -162,7 +173,7 @@ print("\nPress CTRL + C to exit or just close the window.")
 while True:
     try:
         handle_input()
-        time.sleep(0.005)
+        time.sleep(0.04)
     except KeyboardInterrupt:
         cls()
         sys.exit()

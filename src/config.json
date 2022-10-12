@@ -4,6 +4,7 @@
         "SendInts": true,
         "ParametersInt":
         {
+                "ControllerType": ["/avatar/parameters/ControllerType", true],
                 "LeftThumb": ["/avatar/parameters/LeftThumb", true],
                 "RightThumb": ["/avatar/parameters/RightThumb", true]
         },

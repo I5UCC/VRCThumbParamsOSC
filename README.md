@@ -68,6 +68,10 @@ If you also need the Trigger pull values, you'll have to add two additional para
 
 The values range from 0.0 to 1.0 for both of these parameters, depending on how much you pull the trigger.
 
+Additionally, the int ***ControllerType*** gives what controller is currently being used. Currently it only has two values:
+- Index (1)
+- Quest/Any other controller (0)
+
 After that, you can use them just like other parameters in your Animation Controllers.
 
 # Command line Arguments

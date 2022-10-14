@@ -135,18 +135,19 @@ def handle_input():
 
     # debug output
     if args.debug:
-        move(11, 0)
-        print("DEBUG OUTPUT:")
+        move(8, 0)
+        
         if config["SendInts"]:
-            print("---------- Ints ------------")
+            print("------------------- Ints --------------------")
+            print("Controller:\t", controller, "\t\tEnabled:", config["ParametersInt"]["ControllerType"][1])
             print("LeftThumb:\t", _leftthumb, "\t\tEnabled:", config["ParametersInt"]["LeftThumb"][1])
             print("RightThumb:\t", _rightthumb, "\t\tEnabled:", config["ParametersInt"]["RightThumb"][1])
         if config["SendFloats"]:
-            print("--------- Floats -----------")
+            print("------------------ Floats -------------------")
             print("LeftTrigger:\t", f'{_lefttriggervalue:.6f}', "\tEnabled:", config["ParametersFloat"]["LeftTrigger"][1])
             print("RightTrigger:\t", f'{_righttriggervalue:.6f}', "\tEnabled:", config["ParametersFloat"]["RightTrigger"][1])
         if config["SendBools"]:
-            print("--------- Bools ------------")
+            print("------------------- Bools -------------------")
             print("LeftAButton:\t", bool(int(_strinputs[0])), " ", "\tEnabled:", config["ParametersBool"]["LeftAButton"][1])
             print("LeftBButton:\t", bool(int(_strinputs[1])), " ", "\tEnabled:", config["ParametersBool"]["LeftBButton"][1])
             print("LeftABButtons:\t", bool(int(_strinputs[0])) & bool(int(_strinputs[1])), " ", "\tEnabled:", config["ParametersBool"]["LeftABButtons"][1])
@@ -166,8 +167,6 @@ print("Port:\t\t", PORT)
 print("SendInts:\t", config["SendInts"])
 print("SendBools:\t", config["SendBools"])
 print("SendFloats:\t", config["SendFloats"])
-print("\nYou can minimize this window.")
-print("\nPress CTRL + C to exit or just close the window.")
 
 # Main Loop
 while True:

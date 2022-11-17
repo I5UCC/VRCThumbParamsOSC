@@ -94,6 +94,8 @@ def handle_input():
             match controller:
                 case 'knuckles':
                     oscClient.send_message(config["ParametersInt"]["ControllerType"][0], 1)
+                case 'oculus_touch':
+                    oscClient.send_message(config["ParametersInt"]["ControllerType"][0], 2)
                 case _:
                     oscClient.send_message(config["ParametersInt"]["ControllerType"][0], 0)
         if config["ParametersInt"]["LeftThumb"][1]:

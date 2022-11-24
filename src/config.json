@@ -2,6 +2,7 @@
         "IP": "127.0.0.1",
         "Port": 9000,
         "SendInts": true,
+        "PollingRate": 25,
         "ParametersInt":
         {
                 "ControllerType": ["/avatar/parameters/ControllerType", true],

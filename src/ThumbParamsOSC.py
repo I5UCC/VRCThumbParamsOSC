@@ -137,7 +137,7 @@ def handle_input():
 
     # debug output
     if args.debug:
-        move(8, 0)
+        move(9, 0)
         
         if config["SendInts"]:
             print("------------------- Ints --------------------")
@@ -161,7 +161,7 @@ def handle_input():
             print("RightTrackPad:\t", bool(int(_strinputs[6])), " ", "\tEnabled:", config["ParametersBool"]["RightTrackPad"][1])
             print("RightThumbStick:", bool(int(_strinputs[7])), " ", "\tEnabled:", config["ParametersBool"]["RightThumbStick"][1])
 
-
+pollingrate = 1 / float(config['PollingRate'])
 cls()
 print("ThumbParamsOSC running...\n")
 print("IP:\t\t", IP)
@@ -169,12 +169,13 @@ print("Port:\t\t", PORT)
 print("SendInts:\t", config["SendInts"])
 print("SendBools:\t", config["SendBools"])
 print("SendFloats:\t", config["SendFloats"])
+print(f"PollingRate:\t {pollingrate}s ({config['PollingRate']} Hz)")
 
 # Main Loop
 while True:
     try:
         handle_input()
-        time.sleep(0.04)
+        time.sleep(pollingrate)
     except KeyboardInterrupt:
         cls()
         sys.exit()

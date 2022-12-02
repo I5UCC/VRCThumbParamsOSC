@@ -103,6 +103,6 @@ Editing the ***config.json*** file:
 # Credit
 - ![benaclejames](https://github.com/benaclejames) and ![Greendayle](https://github.com/Greendayle) for the inspiration!
 
-# Great Projects making use of this:
+# Great Projects making use of ThumbparamsOSC:
 - [VRC-ASL_Gestures](https://github.com/I5UCC/VRC-ASL_Gestures) by me :)
 - [AutoImmobilizeOSC](https://github.com/SouljaVR/AutoImmobilizeOSC) by [SouljaVR](https://github.com/SouljaVR)

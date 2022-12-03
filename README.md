@@ -1,5 +1,5 @@
 # <img src="https://github.com/I5UCC/VRCThumbParamsOSC/blob/468e25fb16f03daac756d693656c784094518efb/src/icon.ico" width="32" height="32"> ThumbParamsOSC
-OSC program that makes SteamVR controller thumb positions and Trigger values accessible as Avatar Parameters.
+OSC program that makes SteamVR controller thumb positions (and more) values accessible as Avatar Parameters.
 
 Works for both VRChat and ChilloutVR but requires an OSC Mod when used in ChilloutVR.
 
@@ -67,9 +67,17 @@ If you also need the Trigger pull values, you'll have to add two additional para
 - LeftTrigger
 - RightTrigger
 
-The values range from 0.0 to 1.0 for both of these parameters, depending on how much you pull the trigger.
+The values range from 0.0 to 1.0 for both of these parameters, depending on how much you pull the trigger
 
-Additionally, the int ***ControllerType*** gives what controller is currently being used. Currently it only has two values:
+A few more bools to determine if the Left or Right stick was moved:
+- LeftStickMoved
+- RightStickMoved
+
+Two more bools to determine if the Right stick is moved all the way up or down(Generally not used in many games including VRChat)
+- RightStickUp
+- RightStickDown
+
+Additionally, the int ***ControllerType*** gives what controller is currently being used:
 - Meta/Oculus Touch (2)
 - Index (1)
 - Any other controller (0)

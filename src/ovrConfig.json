@@ -18,5 +18,10 @@
     {
         "lefttrigger": "/actions/thumbparams/in/lefttrigger",
         "righttrigger": "/actions/thumbparams/in/righttrigger"
+    },
+    "StickActions":
+    {
+        "leftstickxy": "/actions/thumbparams/in/leftstickxy",
+        "rightstickxy": "/actions/thumbparams/in/rightstickxy"
     }
 }

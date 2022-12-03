@@ -23,6 +23,10 @@
       "type": "boolean"
     },
     {
+      "name": "/actions/thumbparams/in/leftstickxy",
+      "type": "vector2"
+    },
+    {
       "name": "/actions/thumbparams/in/lefttrackpad",
       "type": "boolean"
     },
@@ -37,6 +41,10 @@
     {
       "name": "/actions/thumbparams/in/rightstick",
       "type": "boolean"
+    },
+    {
+      "name": "/actions/thumbparams/in/rightstickxy",
+      "type": "vector2"
     },
     {
       "name": "/actions/thumbparams/in/righttrackpad",

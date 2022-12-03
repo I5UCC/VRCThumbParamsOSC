@@ -10,7 +10,7 @@
 
 			"strings": {
 				"en_us": {
-					"name": "VRCThumbParamsOSC",
+					"name": "ThumbParamsOSC",
 					"description": "ThumbParams implementation to send touched face buttons over OSC"
 				}
 			}

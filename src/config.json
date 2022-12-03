@@ -1,8 +1,9 @@
 {
         "IP": "127.0.0.1",
         "Port": 9000,
-        "SendInts": true,
         "PollingRate": 25,
+        "StickMoveTolerance": 5,
+        "SendInts": true,
         "ParametersInt":
         {
                 "ControllerType": ["/avatar/parameters/ControllerType", true],
@@ -13,7 +14,11 @@
         "ParametersFloat":
         {
                 "LeftTrigger": ["/avatar/parameters/LeftTrigger", true],
-                "RightTrigger": ["/avatar/parameters/RightTrigger", true]
+                "RightTrigger": ["/avatar/parameters/RightTrigger", true],
+                "LeftStickX": ["/avatar/parameters/LeftStickX", true],
+                "LeftStickY": ["/avatar/parameters/LeftStickY", true],
+                "RightStickX": ["/avatar/parameters/RightStickX", true],
+                "RightStickY": ["/avatar/parameters/RightStickY", true]
         },
         "SendBools": true,
         "ParametersBool":
@@ -27,6 +32,10 @@
                 "RightTrackPad": ["/avatar/parameters/RightTrackPad", true],
                 "RightThumbStick": ["/avatar/parameters/RightThumbStick", true],
                 "LeftABButtons": ["/avatar/parameters/LeftABButtons", true],
-                "RightABButtons": ["/avatar/parameters/RightABButtons", true]
+                "RightABButtons": ["/avatar/parameters/RightABButtons", true],
+                "LeftStickMoved": ["/avatar/parameters/LeftStickMoved", true],
+                "RightStickMoved": ["/avatar/parameters/RightStickMoved", true],
+                "RightStickUp": ["/avatar/parameters/RightStickUp", true],
+                "RightStickDown": ["/avatar/parameters/RightStickDown", true]
         }
 }

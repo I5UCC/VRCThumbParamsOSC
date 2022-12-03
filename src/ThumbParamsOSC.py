@@ -15,6 +15,12 @@ parser.add_argument('-i', '--ip', required=False, type=str, help="set OSC ip. De
 parser.add_argument('-p', '--port', required=False, type=str, help="set OSC port. Default=9000")
 args = parser.parse_args()
 
+
+def move(y, x):
+    """Moves console cursor."""
+    print("\033[%d;%dH" % (y, x))
+
+
 # Set window name on Windows
 if os.name == 'nt':
     ctypes.windll.kernel32.SetConsoleTitleW("ThumbParamsOSC")
@@ -186,20 +192,20 @@ def handle_input():
 
     # debug output
     if args.debug:
-        cls()
+        move(0, 0)
         print(_debugoutput)
 
 
 cls()
-print("ThumbParamsOSC running...\n")
-print("You can minimize this window.\n")
-print(f"IP:\t\t{IP}")
-print(f"Port:\t\t{PORT}")
-print(f"SendInts:\t{config['SendInts']}")
-print(f"SendBools:\t{config['SendBools']}")
-print(f"SendFloats:\t{config['SendFloats']}")
-print(f"PollingRate:\t{pollingrate}s ({config['PollingRate']} Hz)")
-
+if not args.debug:
+    print("ThumbParamsOSC running...\n")
+    print("You can minimize this window.\n")
+    print(f"IP:\t\t{IP}")
+    print(f"Port:\t\t{PORT}")
+    print(f"SendInts:\t{config['SendInts']}")
+    print(f"SendBools:\t{config['SendBools']}")
+    print(f"SendFloats:\t{config['SendFloats']}")
+    print(f"PollingRate:\t{pollingrate}s ({config['PollingRate']} Hz)")
 
 # Main Loop
 while True:

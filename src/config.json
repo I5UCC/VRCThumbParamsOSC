@@ -14,11 +14,7 @@
         "ParametersFloat":
         {
                 "LeftTrigger": ["/avatar/parameters/LeftTrigger", true],
-                "RightTrigger": ["/avatar/parameters/RightTrigger", true],
-                "LeftStickX": ["/avatar/parameters/LeftStickX", true],
-                "LeftStickY": ["/avatar/parameters/LeftStickY", true],
-                "RightStickX": ["/avatar/parameters/RightStickX", true],
-                "RightStickY": ["/avatar/parameters/RightStickY", true]
+                "RightTrigger": ["/avatar/parameters/RightTrigger", true]
         },
         "SendBools": true,
         "ParametersBool":

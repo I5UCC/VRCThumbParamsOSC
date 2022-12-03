@@ -113,7 +113,7 @@ def handle_input():
             oscClient.send_message(config["ParametersInt"]["LeftThumb"][0], int(_leftthumb))
         if config["ParametersInt"]["RightThumb"][1]:
             _rightthumb = _strinputs[4:].rfind("1") + 1
-            _debugoutput += f"LeftThumb:\t\t{_rightthumb}\n"
+            _debugoutput += f"RightThumb:\t\t{_rightthumb}\n"
             oscClient.send_message(config["ParametersInt"]["RightThumb"][0], int(_rightthumb))
 
     if config["SendFloats"]:

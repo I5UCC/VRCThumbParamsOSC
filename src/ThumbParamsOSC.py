@@ -31,15 +31,15 @@ def cls():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
-def resource_path(relative_path):
+def get_absolute_path(relative_path):
     """Gets absolute path from relative path"""
     base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
     return os.path.join(base_path, relative_path)
 
 
 # load configs
-config = json.load(open(resource_path('config.json')))
-ovrConfig = json.load(open(resource_path('ovrConfig.json')))
+config = json.load(open(get_absolute_path('config.json')))
+ovrConfig = json.load(open(get_absolute_path('ovrConfig.json')))
 IP = args.ip if args.ip else config["IP"]
 PORT = args.port if args.port else config["Port"]
 pollingrate = 1 / float(config['PollingRate'])
@@ -50,8 +50,8 @@ oscClient = udp_client.SimpleUDPClient(IP, PORT)
 
 # Init OpenVR and Actionsets
 application = openvr.init(openvr.VRApplication_Utility)
-action_path = os.path.join(resource_path(ovrConfig["BindingsFolder"]), ovrConfig["ActionManifestFile"])
-appmanifest_path = resource_path(ovrConfig["AppManifestFile"])
+action_path = os.path.join(get_absolute_path(ovrConfig["BindingsFolder"]), ovrConfig["ActionManifestFile"])
+appmanifest_path = get_absolute_path(ovrConfig["AppManifestFile"])
 openvr.VRApplications().addApplicationManifest(appmanifest_path)
 openvr.VRInput().setActionManifestPath(action_path)
 actionSetHandle = openvr.VRInput().getActionSetHandle(ovrConfig["ActionSetHandle"])
@@ -72,17 +72,16 @@ def get_controllertype():
 
 
 # Set up OpenVR Action Handles
-leftTrigger = openvr.VRInput().getActionHandle(ovrConfig["TriggerActions"]["lefttrigger"])
-rightTrigger = openvr.VRInput().getActionHandle(ovrConfig["TriggerActions"]["righttrigger"])
 buttonActionHandles = []
 for k in ovrConfig["ButtonActions"]:
     buttonActionHandles.append(openvr.VRInput().getActionHandle(ovrConfig["ButtonActions"][k]))
+leftTriggerHandle = openvr.VRInput().getActionHandle(ovrConfig["TriggerActions"]["lefttrigger"])
+rightTriggerHandle = openvr.VRInput().getActionHandle(ovrConfig["TriggerActions"]["righttrigger"])
+leftStickHandle = openvr.VRInput().getActionHandle(ovrConfig["StickActions"]["leftstickxy"])
+rightStickHandle = openvr.VRInput().getActionHandle(ovrConfig["StickActions"]["rightstickxy"])
 
-leftxy = openvr.VRInput().getActionHandle(ovrConfig["StickActions"]["leftstickxy"])
-rightxy = openvr.VRInput().getActionHandle(ovrConfig["StickActions"]["rightstickxy"])
 
-
-def handle_input():
+def handleInput():
     """Handles all the OpenVR Input and sends it via OSC"""
     # Set up OpenVR events and Action sets
     event = openvr.VREvent_t()
@@ -119,11 +118,11 @@ def handle_input():
 
     if config["SendFloats"]:
         if config["ParametersFloat"]["LeftTrigger"][1]:
-            _lefttriggervalue = openvr.VRInput().getAnalogActionData(leftTrigger, openvr.k_ulInvalidInputValueHandle).x
+            _lefttriggervalue = openvr.VRInput().getAnalogActionData(leftTriggerHandle, openvr.k_ulInvalidInputValueHandle).x
             _debugoutput += f"LeftTrigger:\t\t{_lefttriggervalue:.4f}\n"
             oscClient.send_message(config["ParametersFloat"]["LeftTrigger"][0], float(_lefttriggervalue))
         if config["ParametersFloat"]["RightTrigger"][1]:
-            _righttriggervalue = openvr.VRInput().getAnalogActionData(rightTrigger, openvr.k_ulInvalidInputValueHandle).x
+            _righttriggervalue = openvr.VRInput().getAnalogActionData(rightTriggerHandle, openvr.k_ulInvalidInputValueHandle).x
             _debugoutput += f"RightTrigger:\t\t{_righttriggervalue:.4f}\n"
             oscClient.send_message(config["ParametersFloat"]["RightTrigger"][0], float(_righttriggervalue))
 
@@ -172,12 +171,12 @@ def handle_input():
             oscClient.send_message(config["ParametersBool"]["RightABButtons"][0], _tmp)
 
         if config["ParametersBool"]["LeftStickMoved"][1]:
-            _leftxyvalue = openvr.VRInput().getAnalogActionData(leftxy, openvr.k_ulInvalidInputValueHandle)
+            _leftxyvalue = openvr.VRInput().getAnalogActionData(leftStickHandle, openvr.k_ulInvalidInputValueHandle)
             _tmp = abs(_leftxyvalue.x) > sticktolerance or abs(_leftxyvalue.y) > sticktolerance
             _debugoutput += f"LeftStickMoved:\t\t{_tmp}\n"
             oscClient.send_message(config["ParametersBool"]["LeftStickMoved"][0], _tmp)
 
-        _rightxyvalue = openvr.VRInput().getAnalogActionData(rightxy, openvr.k_ulInvalidInputValueHandle)
+        _rightxyvalue = openvr.VRInput().getAnalogActionData(rightStickHandle, openvr.k_ulInvalidInputValueHandle)
         if config["ParametersBool"]["RightStickMoved"][1]:
             _tmp = abs(_rightxyvalue.x) > sticktolerance or abs(_rightxyvalue.y) > sticktolerance
             _debugoutput += f"RightStickMoved:\t{_tmp}\n"
@@ -211,7 +210,7 @@ if not args.debug:
 # Main Loop
 while True:
     try:
-        handle_input()
+        handleInput()
         time.sleep(pollingrate)
     except KeyboardInterrupt:
         cls()

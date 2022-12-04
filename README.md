@@ -97,16 +97,18 @@ You can run this by using ```ThumbParamsOSC.exe {Arguments}``` in command line.
 
 Editing the ***config.json*** file:
 
-| Option | Value |
-| ----- | ------------- |
-| IP | OSC IP |
-| Port | OSC Port |
-| SendInts | Whether to send Integers for the Thumb Positions or not <br>(***true*** by default) |
-| SendFloats | Whether to send Floats for the Thumb Positions or not <br>(***true*** by default) |
-| SendBools | Whether to send additional Bools for the Thumb Position or not <br>(***true*** by default) |
-| ParametersInt | All the Int Parameters being sent. true or false determines if the paremeter is being sent. <br>(All set to ***true*** by default) |
-| ParametersFloat | All the Float Parameters being sent. true or false determines if the paremeter is being sent. <br>(All set to ***true*** by default) |
-| ParametersBool | All the Bool Parameters being sent. true or false determines if the paremeter is being sent. <br>(All set to ***true*** by default) |
+| Option | Value | Default |
+| ----- | ------------- | ---- |
+| IP | OSC IP | "127.0.0.1" |
+| Port | OSC Port | 9000 |
+| PollingRate | Rate that information gets send in Hz | 25 |
+| StickMoveTolerance | How much the stick needs to be moved to trigger LeftStickMoved and RightStickMoved | 5 |
+| SendInts | Whether to send Integers for the Thumb Positions or not <br>(***true*** by default) | true |
+| SendFloats | Whether to send Floats for the Thumb Positions or not <br>(***true*** by default) | true |
+| SendBools | Whether to send additional Bools for the Thumb Position or not <br>(***true*** by default) | true |
+| ParametersInt | All the Int Parameters being sent. true or false determines if the paremeter is being sent. <br> | true (on all of them) |
+| ParametersFloat | All the Float Parameters being sent. true or false determines if the paremeter is being sent. | true (on all of them) |
+| ParametersBool | All the Bool Parameters being sent. true or false determines if the paremeter is being sent. | true (on all of them) |
 
 # Turning off/on specific Parameters
 You can turn off specific Parameters by setting the value to ***false*** from ***true*** and vice versa

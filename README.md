@@ -114,6 +114,11 @@ You can turn off specific Parameters by setting the value to ***false*** from **
  <br>Or you can turn off the entire sections for bools, int and float <br>
 ![image](https://user-images.githubusercontent.com/43730681/205451147-05681714-ad29-49e0-883a-213b5a4c95bc.png)
 
+# Automatic launch with SteamVR
+On first launch of the program, it registers as an Overlay app on SteamVR just like other well known programs like XSOverlay or OVRAdvancedSettings and can be launched on startup:
+![Screenshot 2022-12-04 184629](https://user-images.githubusercontent.com/43730681/205506892-0927ed45-69c6-480f-b4b3-bc02d89c151e.png) <br>
+![Screenshot 2022-12-04 184907](https://user-images.githubusercontent.com/43730681/205506956-7c397360-e14a-4783-a2c2-e5311749e2d4.png)
+
 
 # Credit
 - ![benaclejames](https://github.com/benaclejames) and ![Greendayle](https://github.com/Greendayle) for the inspiration!

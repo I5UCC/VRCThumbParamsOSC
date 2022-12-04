@@ -119,6 +119,7 @@ On first launch of the program, it registers as an Overlay app on SteamVR just l
 ![Screenshot 2022-12-04 184629](https://user-images.githubusercontent.com/43730681/205506892-0927ed45-69c6-480f-b4b3-bc02d89c151e.png) <br>
 ![Screenshot 2022-12-04 184907](https://user-images.githubusercontent.com/43730681/205506956-7c397360-e14a-4783-a2c2-e5311749e2d4.png)
 
+After setting the option to ON it will launch the program ***without the console*** on SteamVR startup.
 
 # Credit
 - ![benaclejames](https://github.com/benaclejames) and ![Greendayle](https://github.com/Greendayle) for the inspiration!

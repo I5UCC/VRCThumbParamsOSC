@@ -43,6 +43,7 @@ ovrConfig = json.load(open(resource_path('ovrConfig.json')))
 IP = args.ip if args.ip else config["IP"]
 PORT = args.port if args.port else config["Port"]
 pollingrate = 1 / float(config['PollingRate'])
+sticktolerance = int(config['StickMoveTolerance']) / 100
 
 # Set up UDP OSC client
 oscClient = udp_client.SimpleUDPClient(IP, PORT)
@@ -172,13 +173,13 @@ def handle_input():
 
         if config["ParametersBool"]["LeftStickMoved"][1]:
             _leftxyvalue = openvr.VRInput().getAnalogActionData(leftxy, openvr.k_ulInvalidInputValueHandle)
-            _tmp = abs(_leftxyvalue.x) > 0.05 or abs(_leftxyvalue.y) > 0.05
+            _tmp = abs(_leftxyvalue.x) > sticktolerance or abs(_leftxyvalue.y) > sticktolerance
             _debugoutput += f"LeftStickMoved:\t\t{_tmp}\n"
             oscClient.send_message(config["ParametersBool"]["LeftStickMoved"][0], _tmp)
 
         _rightxyvalue = openvr.VRInput().getAnalogActionData(rightxy, openvr.k_ulInvalidInputValueHandle)
         if config["ParametersBool"]["RightStickMoved"][1]:
-            _tmp = abs(_rightxyvalue.x) > 0.05 or abs(_rightxyvalue.y) > 0.05
+            _tmp = abs(_rightxyvalue.x) > sticktolerance or abs(_rightxyvalue.y) > sticktolerance
             _debugoutput += f"RightStickMoved:\t{_tmp}\n"
             oscClient.send_message(config["ParametersBool"]["RightStickMoved"][0], _tmp)
         if config["ParametersBool"]["RightStickUp"][1]:

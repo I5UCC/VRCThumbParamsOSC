@@ -73,7 +73,7 @@ A few more bools to determine if the Left or Right stick was moved:
 - LeftStickMoved
 - RightStickMoved
 
-Two more bools to determine if the Right stick is moved all the way up or down(Generally not used in many games including VRChat)
+Two more bools to determine if the Right stick is moved all the way up or down(Generally rarely used in many games)
 - RightStickUp
 - RightStickDown
 

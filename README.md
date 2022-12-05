@@ -108,7 +108,7 @@ Editing the ***config.json*** file:
 | ParametersFloat | All the Float Parameters being sent. true or false determines if the paremeter is being sent. | true (on all of them) |
 | ParametersBool | All the Bool Parameters being sent. true or false determines if the paremeter is being sent. | true (on all of them) |
 
-# Turning off/on specific Parameters
+# Turning specific Parameters off/on
 You can turn off specific Parameters by setting the value to ***false*** from ***true*** and vice versa
 ![image](https://user-images.githubusercontent.com/43730681/205451088-788e7845-ee1e-4047-9373-e36412394495.png)
  <br>Or you can turn off the entire sections for bools, int and float <br>

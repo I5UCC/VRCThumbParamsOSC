@@ -7,8 +7,6 @@ Supports every controller that exposes Touch states to SteamVR. Including ***Val
 
 # [Download here](https://github.com/I5UCC/VRCThumbParamsOSC/releases/download/v.0.3.2/ThumbParamsOSC_Windows_v0.3.2.zip)
 
-## If you're here with the intention to use this program for american sign language, ![read my guide on it here!](https://github.com/I5UCC/VRC-ASL_Gestures) and then continue reading here.
-
 ## How to use
 
 Activate OSC in VRChat: <br/><br/>

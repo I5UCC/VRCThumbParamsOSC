@@ -120,7 +120,8 @@ On first launch of the program, it registers as an Overlay app on SteamVR just l
 After setting the option to ON it will launch the program ***without the console*** on SteamVR startup.
 
 # Credit
-- ![benaclejames](https://github.com/benaclejames) and ![Greendayle](https://github.com/Greendayle) for the inspiration!
+- [pyopenvr](https://github.com/cmbruns/pyopenvr) thank you.
+- [benaclejames](https://github.com/benaclejames) and ![Greendayle](https://github.com/Greendayle) for the inspiration!
 
 # Great Projects making use of ThumbparamsOSC:
 - [VRC-ASL_Gestures](https://github.com/I5UCC/VRC-ASL_Gestures) by me :)

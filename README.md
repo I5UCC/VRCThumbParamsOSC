@@ -15,15 +15,11 @@ Activate OSC in VRChat: <br/><br/>
 In Action menu, got to Options>OSC>Enable <br/>
 
 Then just run the ```ThumbParamsOSC.exe``` and you are all set! <br/>
-### You might need to restart ThumbParamsOSC.exe or even SteamVR after first run
 
 ## Troubleshoot
 
 If you have problems with this program, try any of these to fix it then create an Issue in the repository:
 - Restart ThumbParamsOSC.exe and SteamVR
-- Turn OSC OFF and ON
-- Reset OSC Config
-- Reset Avatar
 - Delete the folder called `OSC` in `%APPDATA%\..\LocalLow\VRChat\VRChat` and restart VRChat.
 - ***(Advanced) [Add the params manually to the OSC config of your avatar, if they dont exist there already](https://docs.vrchat.com/docs/osc-avatar-parameters)***
 

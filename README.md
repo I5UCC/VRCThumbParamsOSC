@@ -18,7 +18,7 @@ Then just run the ```ThumbParamsOSC.exe``` and you are all set! <br/>
 
 ## OSC Troubleshoot
 
-If you have problems with this program, try any of these to fix it then create an Issue in the repository:
+If you have problems with this program, try this to fix it:
 - Close VRChat.
 - Open 'Run' in Windows (Windows Key + R)
 - Type in `%APPDATA%\..\LocalLow\VRChat\VRChat`

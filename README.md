@@ -23,7 +23,7 @@ If you have problems with this program, try any of these to fix it then create a
 - Delete the folder called `OSC` in `%APPDATA%\..\LocalLow\VRChat\VRChat` and restart VRChat.
 - ***(Advanced) [Add the params manually to the OSC config of your avatar, if they dont exist there already](https://docs.vrchat.com/docs/osc-avatar-parameters)***
 
-## Avatar Setup
+## Available Parameters
 
 The program reads all controller face buttons "touching" states and outputs them to two avatar parameters of "int" type.
 You'll need to add these **case-sensitive** parameters to your avatar's base parameters:
@@ -48,8 +48,6 @@ Additionally, bool versions of the thumb positions are available, They're mapped
 - \[Left/Right]TrackPad
 - \[Left/Right]ThumbStick
 
-(You can deactivate those in the config by setting "SendBools" to false.)
-
 Another bool is also available to detect if the thumb is on *either* the A or B buttons, or Touching both *at the same time*.
 
 - \[Left/Right]ABButtons
@@ -69,10 +67,10 @@ Two more bools to determine if the Right stick is moved all the way up or down(G
 - RightStickUp
 - RightStickDown
 
-Additionally, the int ***ControllerType*** gives what controller is currently being used:
+Finally, the int ***ControllerType*** gives what controller is currently being used:
 - Meta/Oculus Touch (2)
 - Index (1)
-- Any other controller (0)
+- Any other controller/No Controller (0)
 
 After that, you can use them just like other parameters in your Animation Controllers.
 

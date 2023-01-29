@@ -22,7 +22,7 @@ If you have problems with this program, try this to fix it:
 - Close VRChat.
 - Open 'Run' in Windows (Windows Key + R)
 - Type in `%APPDATA%\..\LocalLow\VRChat\VRChat`
-- Delete the OSC folder.
+- Delete the ***contents*** of the OSC folder. (***If you use [VOR](https://github.com/SutekhVRC/VOR) you probably dont want to delete the folder called 'VOR'***)
 - Startup VRChat again and it should work.
 
 ## Available Parameters

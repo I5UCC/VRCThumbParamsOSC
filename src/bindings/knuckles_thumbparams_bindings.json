@@ -7,6 +7,9 @@
          "sources" : [
             {
                "inputs" : {
+                  "position" : {
+                     "output" : "/actions/thumbparams/in/lefttrackpadxy"
+                  },
                   "touch" : {
                      "output" : "/actions/thumbparams/in/lefttrackpad"
                   }
@@ -16,6 +19,9 @@
             },
             {
                "inputs" : {
+                  "position" : {
+                     "output" : "/actions/thumbparams/in/righttrackpadxy"
+                  },
                   "touch" : {
                      "output" : "/actions/thumbparams/in/righttrackpad"
                   }

@@ -57,6 +57,14 @@
     {
       "name": "/actions/thumbparams/in/rightbbutton",
       "type": "boolean"
+    },
+    {
+      "name": "/actions/thumbparams/in/lefttrackpadxy",
+      "type": "vector2"
+    },
+    {
+      "name": "/actions/thumbparams/in/righttrackpadxy",
+      "type": "vector2"
     }
   ]
 }

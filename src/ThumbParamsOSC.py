@@ -16,11 +16,6 @@ parser.add_argument('-p', '--port', required=False, type=str, help="set OSC port
 args = parser.parse_args()
 
 
-def move(y, x):
-    """Moves console cursor."""
-    print("\033[%d;%dH" % (y, x))
-
-
 # Set window name on Windows
 if os.name == 'nt':
     ctypes.windll.kernel32.SetConsoleTitleW("ThumbParamsOSC")
@@ -79,6 +74,8 @@ leftTriggerHandle = openvr.VRInput().getActionHandle(ovrConfig["TriggerActions"]
 rightTriggerHandle = openvr.VRInput().getActionHandle(ovrConfig["TriggerActions"]["righttrigger"])
 leftStickHandle = openvr.VRInput().getActionHandle(ovrConfig["StickActions"]["leftstickxy"])
 rightStickHandle = openvr.VRInput().getActionHandle(ovrConfig["StickActions"]["rightstickxy"])
+lefttrackpadHandle = openvr.VRInput().getActionHandle(ovrConfig["TrackpadActions"]["lefttrackpadxy"])
+righttrackpadHandle = openvr.VRInput().getActionHandle(ovrConfig["TrackpadActions"]["righttrackpadxy"])
 
 
 def handleInput():
@@ -125,6 +122,22 @@ def handleInput():
             _righttriggervalue = openvr.VRInput().getAnalogActionData(rightTriggerHandle, openvr.k_ulInvalidInputValueHandle).x
             _debugoutput += f"RightTrigger:\t\t{_righttriggervalue:.4f}\n"
             oscClient.send_message(config["ParametersFloat"]["RightTrigger"][0], float(_righttriggervalue))
+        if config["ParametersFloat"]["LeftTrackPadX"][1] or config["ParametersFloat"]["LeftTrackPadY"][1]:
+            _lefttrackpadvalue = openvr.VRInput().getAnalogActionData(lefttrackpadHandle, openvr.k_ulInvalidInputValueHandle)
+            if config["ParametersFloat"]["LeftTrackPadX"][1]:
+                _debugoutput += f"LeftTrackPadX:\t\t{_lefttrackpadvalue.x:.4f}\n"
+                oscClient.send_message(config["ParametersFloat"]["LeftTrackPadX"][0], float(_lefttrackpadvalue.x))
+            if config["ParametersFloat"]["LeftTrackPadY"][1]:
+                _debugoutput += f"LeftTrackPadY:\t\t{_lefttrackpadvalue.y:.4f}\n"
+                oscClient.send_message(config["ParametersFloat"]["LeftTrackPadY"][0], float(_lefttrackpadvalue.y))
+        if config["ParametersFloat"]["RightTrackPadX"][1] or config["ParametersFloat"]["RightTrackPadY"][1]:
+            _righttrackpadvalue = openvr.VRInput().getAnalogActionData(righttrackpadHandle, openvr.k_ulInvalidInputValueHandle)
+            if config["ParametersFloat"]["RightTrackPadX"][1]:
+                _debugoutput += f"RightTrackPadX:\t\t{_righttrackpadvalue.x:.4f}\n"
+                oscClient.send_message(config["ParametersFloat"]["RightTrackPadX"][0], float(_righttrackpadvalue.x))
+            if config["ParametersFloat"]["RightTrackPadY"][1]:
+                _debugoutput += f"RightTrackPadY:\t\t{_righttrackpadvalue.y:.4f}\n"
+                oscClient.send_message(config["ParametersFloat"]["RightTrackPadY"][0], float(_righttrackpadvalue.y))
 
     if config["SendBools"]:
         if config["ParametersBool"]["LeftAButton"][1]:
@@ -192,7 +205,7 @@ def handleInput():
 
     # debug output
     if args.debug:
-        move(0, 0)
+        cls()
         print(_debugoutput)
 
 

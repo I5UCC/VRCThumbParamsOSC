@@ -23,5 +23,10 @@
     {
         "leftstickxy": "/actions/thumbparams/in/leftstickxy",
         "rightstickxy": "/actions/thumbparams/in/rightstickxy"
+    },
+    "TrackpadActions":
+    {
+        "lefttrackpadxy": "/actions/thumbparams/in/lefttrackpadxy",
+        "righttrackpadxy": "/actions/thumbparams/in/righttrackpadxy"
     }
 }

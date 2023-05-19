@@ -7,7 +7,7 @@ Supports every controller that exposes Touch states to SteamVR. Including ***Val
 
 ### [<img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6ca814282eca7172c6_icon_clyde_white_RGB.svg"  width="20" height="20"> Discord Support Server](https://discord.gg/rqcWHje3hn)
 
-# [Download Latest release here](https://github.com/I5UCC/VRCThumbParamsOSC/releases/latest)
+# [🢃 Download Latest release](https://github.com/I5UCC/VRCThumbParamsOSC/releases/latest)
 
 ## How to use
 

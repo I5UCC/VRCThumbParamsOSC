@@ -63,6 +63,14 @@ If you also need the Trigger pull values, you'll have to add two additional para
 
 The values range from 0.0 to 1.0 for both of these parameters, depending on how much you pull the trigger
 
+4 Float Parameters for the thumb position on the trackpad:
+- LeftTrackPadX
+- LeftTrackPadY
+- RightTrackPadX
+- RightTrackPadY
+
+The Trackpad Parameters range from -1.0 to 1.0. you can think of it like a coordinate system, with the middle of the Trackpad being the origin. These parameters are only available on Index Controllers.
+
 A few more bools to determine if the Left or Right stick was moved:
 - LeftStickMoved
 - RightStickMoved

@@ -6,7 +6,7 @@
 			"launch_type": "binary",
 			"binary_path_windows": "./ThumbParamsOSC_NoConsole.exe",
 			"is_dashboard_overlay": true,
-			"action_manifest_path": "./bindings/thumbparams_actions.json",
+			"action_manifest_path": "./thumbparams_actions.json",
 
 			"strings": {
 				"en_us": {

@@ -131,25 +131,25 @@
         "name": "/actions/thumbparams/in/leftstickxy",
         "type": "vector2",
         "osc_parameter": ["LeftThumbStickX", "LeftThumbStickY", "LeftStickMoved"],
-        "enabled": true
+        "enabled": [true, true, true]
       },
       {
         "name": "/actions/thumbparams/in/rightstickxy",
         "type": "vector2",
         "osc_parameter": ["RightThumbStickX", "RightThumbStickY", "RightStickMoved"],
-        "enabled": true
+        "enabled": [true, true, true]
       },
       {
         "name": "/actions/thumbparams/in/lefttrackpadxy",
         "type": "vector2",
         "osc_parameter": ["LeftTrackPadX", "LeftTrackPadY"],
-        "enabled": true
+        "enabled": [true, true]
       },
       {
         "name": "/actions/thumbparams/in/righttrackpadxy",
         "type": "vector2",
         "osc_parameter": ["RightTrackPadX", "RightTrackPadY"],
-        "enabled": true
+        "enabled": [true, true]
       }
     ]
   }

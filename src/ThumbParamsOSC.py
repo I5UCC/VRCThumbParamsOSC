@@ -49,7 +49,7 @@ def send_osc_message(parameter, value):
     oscClient.send_message(osc_prefix + parameter, value)
 
 
-def handleInput():
+def handle_input():
     _event = openvr.VREvent_t()
     _has_events = True
     while _has_events:
@@ -65,7 +65,6 @@ def handleInput():
         send_osc_message("ControllerType", _controller_type)
 
     button_actions = actions[:8]
-
     _strinputs = ""
     for action in button_actions:
         if not action["enabled"]:
@@ -100,14 +99,14 @@ def handleInput():
     
     position_actions = actions[18:]
     for action in position_actions:
-        if not action["enabled"]:
-            continue
         val = get_value(action)
-        print(action["osc_parameter"][0] + "   \t\t\t" + f"{val.x:.4f}")
-        print(action["osc_parameter"][1] + "   \t\t\t" + f"{val.y:.4f}")
-        send_osc_message(action["osc_parameter"][0], val.x)
-        send_osc_message(action["osc_parameter"][1], val.y)
-        if len(action["osc_parameter"]) > 2:
+        if action["enabled"][0]:
+            print(action["osc_parameter"][0] + "   \t\t\t" + f"{val.x:.4f}")
+            send_osc_message(action["osc_parameter"][0], val.x)
+        if action["enabled"][1]:
+            print(action["osc_parameter"][1] + "   \t\t\t" + f"{val.y:.4f}")
+            send_osc_message(action["osc_parameter"][1], val.y)
+        if len(action["osc_parameter"]) > 2 and action["enabled"][2]:
             tmp = (val.x > sticktolerance or val.y > sticktolerance)
             print(action["osc_parameter"][2] + "   \t\t\t" + str(tmp))
             send_osc_message(action["osc_parameter"][2], tmp)
@@ -135,7 +134,7 @@ right_thumb = osc_prefix + "RightThumb"
 while True:
     try:
         cls()
-        handleInput()
+        handle_input()
         time.sleep(pollingrate)
     except KeyboardInterrupt:
         cls()

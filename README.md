@@ -131,4 +131,5 @@ After setting the option to ON it will launch the program ***without the console
 
 # Great Projects making use of ThumbparamsOSC:
 - [VRC-ASL_Gestures](https://github.com/I5UCC/VRC-ASL_Gestures) by me :)
+- [VRCImmersiveImmobilize](https://github.com/I5UCC/VRCImmersiveImmobilize) by me :)
 - [AutoImmobilizeOSC](https://github.com/SouljaVR/AutoImmobilizeOSC) by [SouljaVR](https://github.com/SouljaVR)

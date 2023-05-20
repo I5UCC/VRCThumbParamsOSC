@@ -31,6 +31,9 @@
             },
             {
                "inputs" : {
+                  "click" : {
+                     "output" : "/actions/thumbparams/in/leftstickclick"
+                  },
                   "touch" : {
                      "output" : "/actions/thumbparams/in/leftstick"
                   }
@@ -40,6 +43,9 @@
             },
             {
                "inputs" : {
+                  "click" : {
+                     "output" : "/actions/thumbparams/in/leftbbuttonclick"
+                  },
                   "touch" : {
                      "output" : "/actions/thumbparams/in/leftbbutton"
                   }
@@ -49,6 +55,9 @@
             },
             {
                "inputs" : {
+                  "click" : {
+                     "output" : "/actions/thumbparams/in/leftabuttonclick"
+                  },
                   "touch" : {
                      "output" : "/actions/thumbparams/in/leftabutton"
                   }
@@ -58,6 +67,9 @@
             },
             {
                "inputs" : {
+                  "click" : {
+                     "output" : "/actions/thumbparams/in/rightstickclick"
+                  },
                   "touch" : {
                      "output" : "/actions/thumbparams/in/rightstick"
                   }
@@ -67,6 +79,9 @@
             },
             {
                "inputs" : {
+                  "click" : {
+                     "output" : "/actions/thumbparams/in/rightbbuttonclick"
+                  },
                   "touch" : {
                      "output" : "/actions/thumbparams/in/rightbbutton"
                   }
@@ -76,6 +91,9 @@
             },
             {
                "inputs" : {
+                  "click" : {
+                     "output" : "/actions/thumbparams/in/rightabuttonclick"
+                  },
                   "touch" : {
                      "output" : "/actions/thumbparams/in/rightabutton"
                   }
@@ -118,6 +136,24 @@
                },
                "mode" : "joystick",
                "path" : "/user/hand/right/input/thumbstick"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/thumbparams/in/lefttrackpadclick"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/trackpad"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/thumbparams/in/righttrackpadclick"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/trackpad"
             }
          ]
       }

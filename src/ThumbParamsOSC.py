@@ -1,29 +1,11 @@
 import json
-import traceback
 import openvr
 import sys
 import os
 import time
+import traceback
 import ctypes
-import argparse
 from pythonosc import udp_client
-
-# Argument Parser
-parser = argparse.ArgumentParser(description='ThumbParamsOSC: Takes button data from SteamVR and sends it to an OSC-Client')
-parser.add_argument('-d', '--debug', required=False, action='store_true', help='prints values for debugging')
-parser.add_argument('-i', '--ip', required=False, type=str, help="set OSC ip. Default=127.0.0.1")
-parser.add_argument('-p', '--port', required=False, type=str, help="set OSC port. Default=9000")
-args = parser.parse_args()
-
-
-# Set window name on Windows
-if os.name == 'nt':
-    ctypes.windll.kernel32.SetConsoleTitleW("ThumbParamsOSC")
-
-
-def cls():
-    """Clears Console"""
-    os.system('cls' if os.name == 'nt' else 'clear')
 
 
 def get_absolute_path(relative_path):
@@ -32,24 +14,21 @@ def get_absolute_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 
-# load configs
-config = json.load(open(get_absolute_path('config.json')))
-ovrConfig = json.load(open(get_absolute_path('ovrConfig.json')))
-IP = args.ip if args.ip else config["IP"]
-PORT = args.port if args.port else config["Port"]
-pollingrate = 1 / float(config['PollingRate'])
-sticktolerance = int(config['StickMoveTolerance']) / 100
+def cls():
+    """Clears Console"""
+    os.system('cls' if os.name == 'nt' else 'clear')
 
-# Set up UDP OSC client
-oscClient = udp_client.SimpleUDPClient(IP, PORT)
 
-# Init OpenVR and Actionsets
-application = openvr.init(openvr.VRApplication_Utility)
-action_path = os.path.join(get_absolute_path(ovrConfig["BindingsFolder"]), ovrConfig["ActionManifestFile"])
-appmanifest_path = get_absolute_path(ovrConfig["AppManifestFile"])
-openvr.VRApplications().addApplicationManifest(appmanifest_path)
-openvr.VRInput().setActionManifestPath(action_path)
-actionSetHandle = openvr.VRInput().getActionSetHandle(ovrConfig["ActionSetHandle"])
+def get_value(action):
+    match action['type']:
+        case "boolean":
+            return bool(openvr.VRInput().getDigitalActionData(action['handle'], openvr.k_ulInvalidInputValueHandle).bState)
+        case "vector1":
+            return float(openvr.VRInput().getAnalogActionData(action['handle'], openvr.k_ulInvalidInputValueHandle).x)
+        case "vector2":
+            return openvr.VRInput().getAnalogActionData(action['handle'], openvr.k_ulInvalidInputValueHandle)
+        case _:
+            raise TypeError("Unknown action type: " + action['type'])
 
 
 def get_controllertype():
@@ -66,163 +45,97 @@ def get_controllertype():
     return 0
 
 
-# Set up OpenVR Action Handles
-buttonActionHandles = []
-for k in ovrConfig["ButtonActions"]:
-    buttonActionHandles.append(openvr.VRInput().getActionHandle(ovrConfig["ButtonActions"][k]))
-leftTriggerHandle = openvr.VRInput().getActionHandle(ovrConfig["TriggerActions"]["lefttrigger"])
-rightTriggerHandle = openvr.VRInput().getActionHandle(ovrConfig["TriggerActions"]["righttrigger"])
-leftStickHandle = openvr.VRInput().getActionHandle(ovrConfig["StickActions"]["leftstickxy"])
-rightStickHandle = openvr.VRInput().getActionHandle(ovrConfig["StickActions"]["rightstickxy"])
-lefttrackpadHandle = openvr.VRInput().getActionHandle(ovrConfig["TrackpadActions"]["lefttrackpadxy"])
-righttrackpadHandle = openvr.VRInput().getActionHandle(ovrConfig["TrackpadActions"]["righttrackpadxy"])
+def send_osc_message(parameter, value):
+    oscClient.send_message(osc_prefix + parameter, value)
 
 
 def handleInput():
-    """Handles all the OpenVR Input and sends it via OSC"""
-    # Set up OpenVR events and Action sets
-    event = openvr.VREvent_t()
-    has_events = True
-    while has_events:
-        has_events = application.pollNextEvent(event)
+    _event = openvr.VREvent_t()
+    _has_events = True
+    while _has_events:
+        _has_events = application.pollNextEvent(_event)
     _actionsets = (openvr.VRActiveActionSet_t * 1)()
     _actionset = _actionsets[0]
-    _actionset.ulActionSet = actionSetHandle
+    _actionset.ulActionSet = action_set_handle
     openvr.VRInput().updateActionState(_actionsets)
 
-    # String for collecting debug output information
-    _debugoutput = ""
+    if config["SendControllerType"]:
+        _controller_type = get_controllertype()
+        print("ControllerType" + "\t\t\t\t" + str(_controller_type))
+        send_osc_message("ControllerType", _controller_type)
 
-    # Get data for all button actions
+    button_actions = actions[:8]
+
     _strinputs = ""
-    for i in buttonActionHandles:
-        _strinputs += str(openvr.VRInput().getDigitalActionData(i, openvr.k_ulInvalidInputValueHandle).bState)
+    for action in button_actions:
+        if not action["enabled"]:
+            continue
+        val = get_value(action)
+        print(action["osc_parameter"] + "\t\t\t\t" + str(val))
+        send_osc_message(action["osc_parameter"], val)
+        _strinputs += "1" if val else "0"
+    if config["SendTouchParamsInt"]:
+        _rightthumb = _strinputs[4:].rfind("1") + 1
+        _leftthumb = _strinputs[:4].rfind("1") + 1
+        print("LeftThumb" + "\t\t\t\t" + str(_leftthumb))
+        print("RightThumb" + "\t\t\t\t" + str(_rightthumb))
+        send_osc_message(left_thumb, _leftthumb)
+        send_osc_message(right_thumb, _rightthumb)
 
-    # Send data via OSC
-    if config["SendInts"]:
-        _controller = get_controllertype()
-        if config["ParametersInt"]["ControllerType"][1]:
-            _debugoutput += f"ControllerType:\t\t{_controller}\n"
-            oscClient.send_message(config["ParametersInt"]["ControllerType"][0], int(_controller))
-        if config["ParametersInt"]["LeftThumb"][1]:
-            _leftthumb = _strinputs[:4].rfind("1") + 1
-            _debugoutput += f"LeftThumb:\t\t{_leftthumb}\n"
-            oscClient.send_message(config["ParametersInt"]["LeftThumb"][0], int(_leftthumb))
-        if config["ParametersInt"]["RightThumb"][1]:
-            _rightthumb = _strinputs[4:].rfind("1") + 1
-            _debugoutput += f"RightThumb:\t\t{_rightthumb}\n"
-            oscClient.send_message(config["ParametersInt"]["RightThumb"][0], int(_rightthumb))
-
-    if config["SendFloats"]:
-        if config["ParametersFloat"]["LeftTrigger"][1]:
-            _lefttriggervalue = openvr.VRInput().getAnalogActionData(leftTriggerHandle, openvr.k_ulInvalidInputValueHandle).x
-            _debugoutput += f"LeftTrigger:\t\t{_lefttriggervalue:.4f}\n"
-            oscClient.send_message(config["ParametersFloat"]["LeftTrigger"][0], float(_lefttriggervalue))
-        if config["ParametersFloat"]["RightTrigger"][1]:
-            _righttriggervalue = openvr.VRInput().getAnalogActionData(rightTriggerHandle, openvr.k_ulInvalidInputValueHandle).x
-            _debugoutput += f"RightTrigger:\t\t{_righttriggervalue:.4f}\n"
-            oscClient.send_message(config["ParametersFloat"]["RightTrigger"][0], float(_righttriggervalue))
-        if config["ParametersFloat"]["LeftTrackPadX"][1] or config["ParametersFloat"]["LeftTrackPadY"][1]:
-            _lefttrackpadvalue = openvr.VRInput().getAnalogActionData(lefttrackpadHandle, openvr.k_ulInvalidInputValueHandle)
-            if config["ParametersFloat"]["LeftTrackPadX"][1]:
-                _debugoutput += f"LeftTrackPadX:\t\t{_lefttrackpadvalue.x:.4f}\n"
-                oscClient.send_message(config["ParametersFloat"]["LeftTrackPadX"][0], float(_lefttrackpadvalue.x))
-            if config["ParametersFloat"]["LeftTrackPadY"][1]:
-                _debugoutput += f"LeftTrackPadY:\t\t{_lefttrackpadvalue.y:.4f}\n"
-                oscClient.send_message(config["ParametersFloat"]["LeftTrackPadY"][0], float(_lefttrackpadvalue.y))
-        if config["ParametersFloat"]["RightTrackPadX"][1] or config["ParametersFloat"]["RightTrackPadY"][1]:
-            _righttrackpadvalue = openvr.VRInput().getAnalogActionData(righttrackpadHandle, openvr.k_ulInvalidInputValueHandle)
-            if config["ParametersFloat"]["RightTrackPadX"][1]:
-                _debugoutput += f"RightTrackPadX:\t\t{_righttrackpadvalue.x:.4f}\n"
-                oscClient.send_message(config["ParametersFloat"]["RightTrackPadX"][0], float(_righttrackpadvalue.x))
-            if config["ParametersFloat"]["RightTrackPadY"][1]:
-                _debugoutput += f"RightTrackPadY:\t\t{_righttrackpadvalue.y:.4f}\n"
-                oscClient.send_message(config["ParametersFloat"]["RightTrackPadY"][0], float(_righttrackpadvalue.y))
-
-    if config["SendBools"]:
-        if config["ParametersBool"]["LeftAButton"][1]:
-            _tmp = bool(int(_strinputs[0]))
-            _debugoutput += f"LeftAButton:\t\t{_tmp}\n"
-            oscClient.send_message(config["ParametersBool"]["LeftAButton"][0], _tmp)
-        if config["ParametersBool"]["LeftBButton"][1]:
-            _tmp = bool(int(_strinputs[1]))
-            _debugoutput += f"LeftBButton:\t\t{_tmp}\n"
-            oscClient.send_message(config["ParametersBool"]["LeftBButton"][0], _tmp)
-        if config["ParametersBool"]["LeftTrackPad"][1]:
-            _tmp = bool(int(_strinputs[2]))
-            _debugoutput += f"LeftTrackPad:\t\t{_tmp}\n"
-            oscClient.send_message(config["ParametersBool"]["LeftTrackPad"][0], _tmp)
-        if config["ParametersBool"]["LeftThumbStick"][1]:
-            _tmp = bool(int(_strinputs[3]))
-            _debugoutput += f"LeftThumbStick:\t\t{_tmp}\n"
-            oscClient.send_message(config["ParametersBool"]["LeftThumbStick"][0], _tmp)
-
-        if config["ParametersBool"]["RightAButton"][1]:
-            _tmp = bool(int(_strinputs[4]))
-            _debugoutput += f"RightAButton:\t\t{_tmp}\n"
-            oscClient.send_message(config["ParametersBool"]["RightAButton"][0], _tmp)
-        if config["ParametersBool"]["RightBButton"][1]:
-            _tmp = bool(int(_strinputs[5]))
-            _debugoutput += f"RightBButton:\t\t{_tmp}\n"
-            oscClient.send_message(config["ParametersBool"]["RightBButton"][0], _tmp)
-        if config["ParametersBool"]["RightTrackPad"][1]:
-            _tmp = bool(int(_strinputs[6]))
-            _debugoutput += f"RightTrackPad:\t\t{_tmp}\n"
-            oscClient.send_message(config["ParametersBool"]["RightTrackPad"][0], _tmp)
-        if config["ParametersBool"]["RightThumbStick"][1]:
-            _tmp = bool(int(_strinputs[7]))
-            _debugoutput += f"RightThumbStick:\t{_tmp}\n"
-            oscClient.send_message(config["ParametersBool"]["RightThumbStick"][0], _tmp)
-
-        if config["ParametersBool"]["LeftABButtons"][1]:
-            _tmp = bool(int(_strinputs[0])) & bool(int(_strinputs[1]))
-            _debugoutput += f"LeftABButtons:\t\t{_tmp}\n"
-            oscClient.send_message(config["ParametersBool"]["LeftABButtons"][0], _tmp)
-        if config["ParametersBool"]["RightABButtons"][1]:
-            _tmp = bool(int(_strinputs[4])) & bool(int(_strinputs[5]))
-            _debugoutput += f"RightABButtons:\t\t{_tmp}\n"
-            oscClient.send_message(config["ParametersBool"]["RightABButtons"][0], _tmp)
-
-        if config["ParametersBool"]["LeftStickMoved"][1]:
-            _leftxyvalue = openvr.VRInput().getAnalogActionData(leftStickHandle, openvr.k_ulInvalidInputValueHandle)
-            _tmp = abs(_leftxyvalue.x) > sticktolerance or abs(_leftxyvalue.y) > sticktolerance
-            _debugoutput += f"LeftStickMoved:\t\t{_tmp}\n"
-            oscClient.send_message(config["ParametersBool"]["LeftStickMoved"][0], _tmp)
-
-        _rightxyvalue = openvr.VRInput().getAnalogActionData(rightStickHandle, openvr.k_ulInvalidInputValueHandle)
-        if config["ParametersBool"]["RightStickMoved"][1]:
-            _tmp = abs(_rightxyvalue.x) > sticktolerance or abs(_rightxyvalue.y) > sticktolerance
-            _debugoutput += f"RightStickMoved:\t{_tmp}\n"
-            oscClient.send_message(config["ParametersBool"]["RightStickMoved"][0], _tmp)
-        if config["ParametersBool"]["RightStickUp"][1]:
-            _tmp = _rightxyvalue.y > 0.8
-            _debugoutput += f"RightStickUp:\t\t{_tmp}\n"
-            oscClient.send_message(config["ParametersBool"]["RightStickUp"][0], _tmp)
-        if config["ParametersBool"]["RightStickDown"][1]:
-            _tmp = _rightxyvalue.y < -0.8
-            _debugoutput += f"RightStickDown:\t\t{_tmp}\n"
-            oscClient.send_message(config["ParametersBool"]["RightStickDown"][0], _tmp)
-
-    # debug output
-    if args.debug:
-        cls()
-        print(_debugoutput)
+    click_actions = actions[8:16]
+    for action in click_actions:
+        if not action["enabled"]:
+            continue
+        val = get_value(action)
+        print(action["osc_parameter"] + "\t\t\t" + str(val))
+        send_osc_message(action["osc_parameter"], val)
+    
+    trigger_actions = actions[16:18]
+    for action in trigger_actions:
+        if not action["enabled"]:
+            continue
+        val = get_value(action)
+        print(action["osc_parameter"] + "\t\t\t\t" + f"{val:.4f}")
+        send_osc_message(action["osc_parameter"], val)
+    
+    position_actions = actions[18:]
+    for action in position_actions:
+        if not action["enabled"]:
+            continue
+        val = get_value(action)
+        print(action["osc_parameter"][0] + "   \t\t\t" + f"{val.x:.4f}")
+        print(action["osc_parameter"][1] + "   \t\t\t" + f"{val.y:.4f}")
+        send_osc_message(action["osc_parameter"][0], val.x)
+        send_osc_message(action["osc_parameter"][1], val.y)
+        if len(action["osc_parameter"]) > 2:
+            tmp = (val.x > sticktolerance or val.y > sticktolerance)
+            print(action["osc_parameter"][2] + "   \t\t\t" + str(tmp))
+            send_osc_message(action["osc_parameter"][2], tmp)
 
 
-cls()
-if not args.debug:
-    print("ThumbParamsOSC running...\n")
-    print("You can minimize this window.\n")
-    print(f"IP:\t\t{IP}")
-    print(f"Port:\t\t{PORT}")
-    print(f"SendInts:\t{config['SendInts']}")
-    print(f"SendBools:\t{config['SendBools']}")
-    print(f"SendFloats:\t{config['SendFloats']}")
-    print(f"PollingRate:\t{pollingrate}s ({config['PollingRate']} Hz)")
+if os.name == 'nt':
+    ctypes.windll.kernel32.SetConsoleTitleW("ThumbParamsOSC")
+
+config_path = get_absolute_path('config.json')
+config = json.load(open(config_path))
+application = openvr.init(openvr.VRApplication_Utility)
+openvr.VRInput().setActionManifestPath(config_path)
+action_set_handle = openvr.VRInput().getActionSetHandle("/actions/thumbparams")
+actions = config["actions"]
+for action in actions:
+    action["handle"] = openvr.VRInput().getActionHandle(action['name'])
+print(actions)
+oscClient = udp_client.SimpleUDPClient("127.0.0.1", 9000)
+osc_prefix = "/avatar/parameters/"
+pollingrate = 1 / float(config['PollingRate'])
+sticktolerance = int(config['StickMoveTolerance']) / 100
+left_thumb = osc_prefix + "LeftThumb"
+right_thumb = osc_prefix + "RightThumb"
 
 # Main Loop
 while True:
     try:
+        cls()
         handleInput()
         time.sleep(pollingrate)
     except KeyboardInterrupt:

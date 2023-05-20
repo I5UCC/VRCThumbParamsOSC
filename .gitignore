@@ -6,3 +6,4 @@ src/build/
 src/dist/
 .vscode/
 venv/
+obj/

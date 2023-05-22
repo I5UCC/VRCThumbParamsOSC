@@ -1,154 +1,181 @@
 {
-    "IP": "127.0.0.1",
-	"Port": 9000,
-	"PollingRate": 25,
-	"StickMoveTolerance": 5,
-	"ControllerType": true,
-	"LeftThumb": true,
-	"RightThumb": true,
-    "default_bindings": [
-      {
-        "controller_type": "knuckles",
-        "binding_url": "bindings/knuckles_thumbparams_bindings.json"
-      },
-      {
-        "controller_type": "oculus_touch",
-        "binding_url": "bindings/touch_thumbparams_bindings.json"
-      }
-    ],
-    "actions": [
-      {
-        "name": "/actions/thumbparams/in/leftabutton",
-        "type": "boolean",
-        "osc_parameter": "LeftAButton",
-        "enabled": true
-      },
-      {
-        "name": "/actions/thumbparams/in/leftbbutton",
-        "type": "boolean",
-        "osc_parameter": "LeftBButton",
-        "enabled": true
-      },
-      {
-        "name": "/actions/thumbparams/in/lefttrackpad",
-        "type": "boolean",
-        "osc_parameter": "LeftTrackPad",
-        "enabled": true
-      },
-      {
-        "name": "/actions/thumbparams/in/leftstick",
-        "type": "boolean",
-        "osc_parameter": "LeftThumbStick",
-        "enabled": true
-      },
-      {
-        "name": "/actions/thumbparams/in/rightabutton",
-        "type": "boolean",
-        "osc_parameter": "RightAButton",
-        "enabled": true
-      },
-      {
-        "name": "/actions/thumbparams/in/rightbbutton",
-        "type": "boolean",
-        "osc_parameter": "RightBButton",
-        "enabled": true
-      },
-      {
-        "name": "/actions/thumbparams/in/righttrackpad",
-        "type": "boolean",
-        "osc_parameter": "RightTrackPad",
-        "enabled": true
-      },
-      {
-        "name": "/actions/thumbparams/in/rightstick",
-        "type": "boolean",
-        "osc_parameter": "RightThumbStick",
-        "enabled": true
-      },
-      {
-        "name": "/actions/thumbparams/in/leftabuttonclick",
-        "type": "boolean",
-        "osc_parameter": "LeftAButtonClick",
-        "enabled": true
-      },
-      {
-        "name": "/actions/thumbparams/in/leftbbuttonclick",
-        "type": "boolean",
-        "osc_parameter": "LeftBButtonClick",
-        "enabled": true
-      },
-      {
-        "name": "/actions/thumbparams/in/lefttrackpadclick",
-        "type": "boolean",
-        "osc_parameter": "LeftTrackPadClick",
-        "enabled": true
-      },
-      {
-        "name": "/actions/thumbparams/in/leftstickclick",
-        "type": "boolean",
-        "osc_parameter": "LeftThumbStickClick",
-        "enabled": true
-      },
-      {
-        "name": "/actions/thumbparams/in/rightabuttonclick",
-        "type": "boolean",
-        "osc_parameter": "RightAButtonClick",
-        "enabled": true
-      },
-      {
-        "name": "/actions/thumbparams/in/rightbbuttonclick",
-        "type": "boolean",
-        "osc_parameter": "RightBButtonClick",
-        "enabled": true
-      },
-      {
-        "name": "/actions/thumbparams/in/righttrackpadclick",
-        "type": "boolean",
-        "osc_parameter": "RightTrackPadClick",
-        "enabled": true
-      },
-      {
-        "name": "/actions/thumbparams/in/rightstickclick",
-        "type": "boolean",
-        "osc_parameter": "RightThumbStickClick",
-        "enabled": true
-      },
-      {
-        "name": "/actions/thumbparams/in/lefttrigger",
-        "type": "vector1",
-        "osc_parameter": "LeftTrigger",
-        "enabled": true
-      },
-      {
-        "name": "/actions/thumbparams/in/righttrigger",
-        "type": "vector1",
-        "osc_parameter": "RightTrigger",
-        "enabled": true
-      },
-      {
-        "name": "/actions/thumbparams/in/leftstickxy",
-        "type": "vector2",
-        "osc_parameter": ["LeftThumbStickX", "LeftThumbStickY", "LeftStickMoved"],
-        "enabled": [true, true, true]
-      },
-      {
-        "name": "/actions/thumbparams/in/rightstickxy",
-        "type": "vector2",
-        "osc_parameter": ["RightThumbStickX", "RightThumbStickY", "RightStickMoved"],
-        "enabled": [true, true, true]
-      },
-      {
-        "name": "/actions/thumbparams/in/lefttrackpadxy",
-        "type": "vector2",
-        "osc_parameter": ["LeftTrackPadX", "LeftTrackPadY"],
-        "enabled": [true, true]
-      },
-      {
-        "name": "/actions/thumbparams/in/righttrackpadxy",
-        "type": "vector2",
-        "osc_parameter": ["RightTrackPadX", "RightTrackPadY"],
-        "enabled": [true, true]
-      }
-    ]
-  }
-  
+  "IP": "127.0.0.1",
+  "Port": 9000,
+  "PollingRate": 25,
+  "StickMoveTolerance": 5,
+  "ControllerType": true,
+  "LeftThumb": true,
+  "RightThumb": true,
+  "default_bindings": [
+    {
+      "controller_type": "knuckles",
+      "binding_url": "bindings/knuckles_thumbparams_bindings.json"
+    },
+    {
+      "controller_type": "oculus_touch",
+      "binding_url": "bindings/touch_thumbparams_bindings.json"
+    }
+  ],
+  "actions": [
+    {
+      "name": "/actions/thumbparams/in/leftabutton",
+      "type": "boolean",
+      "osc_parameter": "LeftAButton",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/leftbbutton",
+      "type": "boolean",
+      "osc_parameter": "LeftBButton",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/lefttrackpad",
+      "type": "boolean",
+      "osc_parameter": "LeftTrackPad",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/leftstick",
+      "type": "boolean",
+      "osc_parameter": "LeftThumbStick",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/rightabutton",
+      "type": "boolean",
+      "osc_parameter": "RightAButton",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/rightbbutton",
+      "type": "boolean",
+      "osc_parameter": "RightBButton",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/righttrackpad",
+      "type": "boolean",
+      "osc_parameter": "RightTrackPad",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/rightstick",
+      "type": "boolean",
+      "osc_parameter": "RightThumbStick",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/leftabuttonclick",
+      "type": "boolean",
+      "osc_parameter": "LeftAButtonClick",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/leftbbuttonclick",
+      "type": "boolean",
+      "osc_parameter": "LeftBButtonClick",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/lefttrackpadclick",
+      "type": "boolean",
+      "osc_parameter": "LeftTrackPadClick",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/leftstickclick",
+      "type": "boolean",
+      "osc_parameter": "LeftThumbStickClick",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/rightabuttonclick",
+      "type": "boolean",
+      "osc_parameter": "RightAButtonClick",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/rightbbuttonclick",
+      "type": "boolean",
+      "osc_parameter": "RightBButtonClick",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/righttrackpadclick",
+      "type": "boolean",
+      "osc_parameter": "RightTrackPadClick",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/rightstickclick",
+      "type": "boolean",
+      "osc_parameter": "RightThumbStickClick",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/lefttrigger",
+      "type": "vector1",
+      "osc_parameter": "LeftTrigger",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/righttrigger",
+      "type": "vector1",
+      "osc_parameter": "RightTrigger",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/leftstickxy",
+      "type": "vector2",
+      "osc_parameter": [
+        "LeftThumbStickX",
+        "LeftThumbStickY",
+        "LeftStickMoved"
+      ],
+      "enabled": [
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "name": "/actions/thumbparams/in/rightstickxy",
+      "type": "vector2",
+      "osc_parameter": [
+        "RightThumbStickX",
+        "RightThumbStickY",
+        "RightStickMoved"
+      ],
+      "enabled": [
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "name": "/actions/thumbparams/in/lefttrackpadxy",
+      "type": "vector2",
+      "osc_parameter": [
+        "LeftTrackPadX",
+        "LeftTrackPadY"
+      ],
+      "enabled": [
+        true,
+        true
+      ]
+    },
+    {
+      "name": "/actions/thumbparams/in/righttrackpadxy",
+      "type": "vector2",
+      "osc_parameter": [
+        "RightTrackPadX",
+        "RightTrackPadY"
+      ],
+      "enabled": [
+        true,
+        true
+      ]
+    }
+  ]
+}

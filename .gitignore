@@ -7,3 +7,5 @@ src/dist/
 .vscode/
 venv/
 obj/
+bin/
+.vs/

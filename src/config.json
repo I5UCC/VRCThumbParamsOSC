@@ -1,11 +1,11 @@
 {
     "IP": "127.0.0.1",
-    "Port": 9000,
-    "PollingRate": 25,
-    "StickMoveTolerance": 5,
-    "SendControllerType": true,
-    "SendTouchParamsIntLeft": true,
-    "SendTouchParamsIntRight": true,
+	"Port": 9000,
+	"PollingRate": 25,
+	"StickMoveTolerance": 5,
+	"ControllerType": true,
+	"LeftThumb": true,
+	"RightThumb": true,
     "default_bindings": [
       {
         "controller_type": "knuckles",

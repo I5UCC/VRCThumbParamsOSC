@@ -26,7 +26,8 @@ def get_value(action):
         case "vector1":
             return float(openvr.VRInput().getAnalogActionData(action['handle'], openvr.k_ulInvalidInputValueHandle).x)
         case "vector2":
-            return openvr.VRInput().getAnalogActionData(action['handle'], openvr.k_ulInvalidInputValueHandle)
+            tmp = openvr.VRInput().getAnalogActionData(action['handle'], openvr.k_ulInvalidInputValueHandle)
+            return tmp.x, tmp.y
         case _:
             raise TypeError("Unknown action type: " + action['type'])
 
@@ -59,7 +60,7 @@ def handle_input():
     _actionset.ulActionSet = action_set_handle
     openvr.VRInput().updateActionState(_actionsets)
 
-    if config["SendControllerType"]:
+    if config["ControllerType"]:
         _controller_type = get_controllertype()
         print("ControllerType" + "\t\t\t\t" + str(_controller_type))
         send_osc_message("ControllerType", _controller_type)
@@ -73,12 +74,13 @@ def handle_input():
         print(action["osc_parameter"] + "\t\t\t\t" + str(val))
         send_osc_message(action["osc_parameter"], val)
         _strinputs += "1" if val else "0"
-    if config["SendTouchParamsInt"]:
-        _rightthumb = _strinputs[4:].rfind("1") + 1
+    if config["LeftThumb"]:
         _leftthumb = _strinputs[:4].rfind("1") + 1
         print("LeftThumb" + "\t\t\t\t" + str(_leftthumb))
-        print("RightThumb" + "\t\t\t\t" + str(_rightthumb))
         send_osc_message(left_thumb, _leftthumb)
+    if config["RightThumb"]:
+        _rightthumb = _strinputs[4:].rfind("1") + 1
+        print("RightThumb" + "\t\t\t\t" + str(_rightthumb))
         send_osc_message(right_thumb, _rightthumb)
 
     click_actions = actions[8:16]
@@ -99,15 +101,15 @@ def handle_input():
     
     position_actions = actions[18:]
     for action in position_actions:
-        val = get_value(action)
+        val_x, val_y = get_value(action)
         if action["enabled"][0]:
-            print(action["osc_parameter"][0] + "   \t\t\t" + f"{val.x:.4f}")
-            send_osc_message(action["osc_parameter"][0], val.x)
+            print(action["osc_parameter"][0] + "   \t\t\t" + f"{val_x:.4f}")
+            send_osc_message(action["osc_parameter"][0], val_x)
         if action["enabled"][1]:
-            print(action["osc_parameter"][1] + "   \t\t\t" + f"{val.y:.4f}")
-            send_osc_message(action["osc_parameter"][1], val.y)
+            print(action["osc_parameter"][1] + "   \t\t\t" + f"{val_y:.4f}")
+            send_osc_message(action["osc_parameter"][1], val_y)
         if len(action["osc_parameter"]) > 2 and action["enabled"][2]:
-            tmp = (val.x > sticktolerance or val.y > sticktolerance)
+            tmp = (val_x > sticktolerance or val_y > sticktolerance)
             print(action["osc_parameter"][2] + "   \t\t\t" + str(tmp))
             send_osc_message(action["osc_parameter"][2], tmp)
 

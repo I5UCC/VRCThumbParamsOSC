@@ -6,8 +6,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Windows.Controls;
 using System.Text.RegularExpressions;
-using System.Windows.Media.Animation;
-using System.Xml.Linq;
 
 namespace Configurator
 {

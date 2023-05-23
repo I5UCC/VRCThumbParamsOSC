@@ -47,7 +47,7 @@ namespace Configurator
                     bool[] tmp2 = ((JArray)a.enabled).ToObject<bool[]>();
                     for (int i = 0; i < tmp.Length; i++)
                     {
-                        ParameterList.Add(new BoolStringClass(tmp[i], tmp2[i], "Float"));
+                        ParameterList.Add(new BoolStringClass(tmp[i], tmp2[i], i > 1 ? "Boolean" : "Float"));
                     }
                 }
             }

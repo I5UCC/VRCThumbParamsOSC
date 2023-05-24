@@ -89,7 +89,7 @@ Finally, the int ***ControllerType*** gives what controller is currently being u
 - Index (1)
 - Any other controller/No Controller (0)
 
-After that, you can use them just like other parameters in your Animation Controllers.
+After adding any of those Parameter, you can use them just like other parameters in your Animation Controllers.
 
 # Command line Arguments
 You can run this by using ```ThumbParamsOSC.exe {Arguments}``` in command line.
@@ -117,7 +117,7 @@ After setting the option to ON it will launch the program ***without the console
 
 # Credit
 - [pyopenvr](https://github.com/cmbruns/pyopenvr) thank you.
-- [benaclejames](https://github.com/benaclejames) and ![Greendayle](https://github.com/Greendayle) for the inspiration!
+- [benaclejames](https://github.com/benaclejames) and [Greendayle](https://github.com/Greendayle) for the inspiration!
 
 # Great Projects making use of ThumbparamsOSC:
 - [VRC-ASL_Gestures](https://github.com/I5UCC/VRC-ASL_Gestures) by me :)

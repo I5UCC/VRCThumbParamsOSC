@@ -202,6 +202,8 @@ namespace Configurator
             config.ControllerType = true;
             config.LeftThumb = true;
             config.RightThumb = true;
+            config.LeftABButtons = true;
+            config.RightABButtons = true;
 
             foreach (Action a in config.actions)
             {

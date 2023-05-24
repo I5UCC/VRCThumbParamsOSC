@@ -71,12 +71,10 @@ If you also need the Trigger pull values, you'll have to add two additional para
 The values range from 0.0 to 1.0 for both of these parameters, depending on how much you pull the trigger
 
 4 Float Parameters for the thumb position on the trackpad:
-- LeftTrackPadX
-- LeftTrackPadY
-- RightTrackPadX
-- RightTrackPadY
+- LeftTrackPad\[X/Y]
+- RightTrackPad\[X/Y]
 
-2 Float Parameters for the Thumbstick position:
+4 Float Parameters for the Thumbstick position:
 - LeftThumbStick\[X/Y]
 - RightThumbStick\[X/Y]
 

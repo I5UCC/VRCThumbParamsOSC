@@ -57,7 +57,7 @@ def add_to_debugoutput(parameter, value):
     if isinstance(value, float):
         value = f"{value:.4f}"
 
-    _debugoutput += f"{parameter.ljust(23, ' ')}\t\t{value}\n"
+    _debugoutput += f"{parameter.ljust(23, ' ')}\t{value}\n"
 
 
 def handle_input():
@@ -174,29 +174,7 @@ if not args.debug:
     print(f"Port:\t\t\t{PORT}")
     print(f"PollingRate:\t\t{pollingrate}s ({config['PollingRate']} Hz)")
     print(f"StickMoveTolerance:\t{sticktolerance} ({config['StickMoveTolerance']}%)")
-    print("\nSending Parameters:")
-    print("-----------------------")
-    params = ""
-    if config["ControllerType"]:
-        params += "ControllerType, "
-    if config["LeftThumb"]:
-        params += "LeftThumb, "
-    if config["RightThumb"]:
-        params += "RightThumb, "
-    if config["LeftABButtons"]:
-        params += "LeftABButtons, "
-    if config["RightABButtons"]:
-        params += "RightABButtons, "
-    for action in actions:
-        if not action["enabled"]:
-            continue
-        if action["type"] == "vector2":
-            for param in action["osc_parameter"]:
-                params += param + ", "
-        else:
-            params += action["osc_parameter"] + ", "
-    print(params[:-2])
-    print("\nOpen Configurator.exe to change settings.")
+    print("\nOpen Configurator.exe to change sent Parameters and other Settings.")
 
 # Main Loop
 while True:

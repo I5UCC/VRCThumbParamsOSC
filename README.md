@@ -56,6 +56,13 @@ Another bool is also available to detect if the thumb is on *either* the A or B 
 
 - \[Left/Right]ABButtons
 
+All button clicks are available as bool parameters, They're mapped the following:
+
+- \[Left/Right]AButtonClick
+- \[Left/Right]BButtonClick
+- \[Left/Right]TrackPadClick
+- \[Left/Right]ThumbStickClick
+
 If you also need the Trigger pull values, you'll have to add two additional parameters of "float" type.
 
 - LeftTrigger
@@ -69,15 +76,15 @@ The values range from 0.0 to 1.0 for both of these parameters, depending on how 
 - RightTrackPadX
 - RightTrackPadY
 
+2 Float Parameters for the Thumbstick position:
+- LeftThumbStick\[X/Y]
+- RightThumbStick\[X/Y]
+
 The Trackpad Parameters range from -1.0 to 1.0. you can think of it like a coordinate system, with the middle of the Trackpad being the origin. These parameters are only available on Index Controllers.
 
 A few more bools to determine if the Left or Right stick was moved:
 - LeftStickMoved
 - RightStickMoved
-
-Two more bools to determine if the Right stick is moved all the way up or down(Generally rarely used in many games)
-- RightStickUp
-- RightStickDown
 
 Finally, the int ***ControllerType*** gives what controller is currently being used:
 - Meta/Oculus Touch (2)
@@ -95,28 +102,13 @@ You can run this by using ```ThumbParamsOSC.exe {Arguments}``` in command line.
 | -i IP, --ip IP    | set OSC IP. Default=127.0.0.1  |
 | -p PORT, --port PORT    | set OSC port. Default=9000      |
 
-# Configuration File
+# Configuration
 
-Editing the ***config.json*** file:
+Running `Configurator.exe` lets you customize the Parameters that you want to have sent to VRChat, and some more things:
 
-| Option | Value | Default |
-| ----- | ------------- | ---- |
-| IP | OSC IP | "127.0.0.1" |
-| Port | OSC Port | 9000 |
-| PollingRate | Rate that information gets send in Hz. | 25 |
-| StickMoveTolerance | How much the stick needs to be moved to trigger LeftStickMoved and RightStickMoved in Percent. | 5 |
-| SendInts | Whether to send Integers for the Thumb Positions or not. | true |
-| SendFloats | Whether to send Floats for the Thumb Positions or not. | true |
-| SendBools | Whether to send additional Bools for the Thumb Position or not. | true |
-| ParametersInt | All the Int Parameters being sent. true or false determines if the paremeter is being sent. | true (on all of them) |
-| ParametersFloat | All the Float Parameters being sent. true or false determines if the paremeter is being sent. | true (on all of them) |
-| ParametersBool | All the Bool Parameters being sent. true or false determines if the paremeter is being sent. | true (on all of them) |
 
-# Turning specific Parameters off/on
-You can turn off specific Parameters by setting the value to ***false*** from ***true*** and vice versa
-![image](https://user-images.githubusercontent.com/43730681/205451088-788e7845-ee1e-4047-9373-e36412394495.png)
- <br>Or you can turn off the entire sections for bools, int and float <br>
-![image](https://user-images.githubusercontent.com/43730681/205451147-05681714-ad29-49e0-883a-213b5a4c95bc.png)
+
+Unchecking or checking any of the parameters and the hitting `save` will save the current settings.
 
 # Automatic launch with SteamVR
 On first launch of the program, it registers as an Overlay app on SteamVR just like other well known programs like XSOverlay or OVRAdvancedSettings and can be launched on startup:

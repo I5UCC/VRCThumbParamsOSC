@@ -57,7 +57,7 @@ def add_to_debugoutput(parameter, value):
     if isinstance(value, float):
         value = f"{value:.4f}"
 
-    _debugoutput += f"{parameter.ljust(23, ' ')}\t\t{value}\n"
+    _debugoutput += f"{parameter.ljust(23, ' ')}\t{value}\n"
 
 
 def handle_input():
@@ -90,19 +90,19 @@ def handle_input():
     if config["LeftThumb"]:
         _leftthumb = _strinputs[:4].rfind("1") + 1
         add_to_debugoutput("LeftThumb", _leftthumb)
-        send_osc_message(osc_prefix + "LeftThumb", _leftthumb)
+        send_osc_message("LeftThumb", _leftthumb)
     if config["RightThumb"]:
         _rightthumb = _strinputs[4:].rfind("1") + 1
         add_to_debugoutput("RightThumb", _rightthumb)
-        send_osc_message(osc_prefix + "RightThumb", _rightthumb)
+        send_osc_message("RightThumb", _rightthumb)
     if config["LeftABButtons"]:
         _leftab = _strinputs[0] == "1" and _strinputs[1] == "1"
         add_to_debugoutput("LeftABButtons", _leftab)
-        send_osc_message(osc_prefix + "LeftABButtons", _leftab)
+        send_osc_message("LeftABButtons", _leftab)
     if config["RightABButtons"]:
         _rightab = _strinputs[4] == "1" and _strinputs[5] == "1"
         add_to_debugoutput("RightABButtons", _rightab)
-        send_osc_message(osc_prefix + "RightABButtons", _rightab)
+        send_osc_message("RightABButtons", _rightab)
 
     click_actions = actions[8:16]
     for action in click_actions:
@@ -174,29 +174,7 @@ if not args.debug:
     print(f"Port:\t\t\t{PORT}")
     print(f"PollingRate:\t\t{pollingrate}s ({config['PollingRate']} Hz)")
     print(f"StickMoveTolerance:\t{sticktolerance} ({config['StickMoveTolerance']}%)")
-    print("\nSending Parameters:")
-    print("-----------------------")
-    params = ""
-    if config["ControllerType"]:
-        params += "ControllerType, "
-    if config["LeftThumb"]:
-        params += "LeftThumb, "
-    if config["RightThumb"]:
-        params += "RightThumb, "
-    if config["LeftABButtons"]:
-        params += "LeftABButtons, "
-    if config["RightABButtons"]:
-        params += "RightABButtons, "
-    for action in actions:
-        if not action["enabled"]:
-            continue
-        if action["type"] == "vector2":
-            for param in action["osc_parameter"]:
-                params += param + ", "
-        else:
-            params += action["osc_parameter"] + ", "
-    print(params[:-2])
-    print("\nOpen Configurator.exe to change settings.")
+    print("\nOpen Configurator.exe to change sent Parameters and other Settings.")
 
 # Main Loop
 while True:

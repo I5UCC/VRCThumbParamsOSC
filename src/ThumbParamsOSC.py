@@ -48,7 +48,7 @@ def get_controllertype():
 
 
 def send_osc_message(parameter, value):
-    oscClient.send_message(osc_prefix + parameter, value)
+    oscClient.send_message("/avatar/parameters/" + parameter, value)
 
 
 def add_to_debugoutput(parameter, value):
@@ -150,18 +150,20 @@ if os.name == 'nt':
     ctypes.windll.kernel32.SetConsoleTitleW("ThumbParamsOSC - Debug" if args.debug else "ThumbParamsOSC")
 
 config_path = get_absolute_path('config.json')
-config = json.load(open(config_path))
+manifest_path = get_absolute_path("app.vrmanifest")
+
 application = openvr.init(openvr.VRApplication_Utility)
 openvr.VRInput().setActionManifestPath(config_path)
-openvr.VRApplications().addApplicationManifest(get_absolute_path("app.vrmanifest"))
+openvr.VRApplications().addApplicationManifest(manifest_path)
 action_set_handle = openvr.VRInput().getActionSetHandle("/actions/thumbparams")
+
+config = json.load(open(config_path))
 actions = config["actions"]
 for action in actions:
     action["handle"] = openvr.VRInput().getActionHandle(action['name'])
 IP = args.ip if args.ip else config["IP"]
 PORT = args.port if args.port else config["Port"]
 oscClient = udp_client.SimpleUDPClient(IP, PORT)
-osc_prefix = "/avatar/parameters/"
 pollingrate = 1 / float(config['PollingRate'])
 sticktolerance = int(config['StickMoveTolerance']) / 100
 

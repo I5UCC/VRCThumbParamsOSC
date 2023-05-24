@@ -51,7 +51,18 @@ def send_osc_message(parameter, value):
     oscClient.send_message(osc_prefix + parameter, value)
 
 
+def add_to_debugoutput(parameter, value):
+    global _debugoutput
+
+    if isinstance(value, float):
+        value = f"{value:.4f}"
+
+    _debugoutput += f"{parameter.ljust(23, ' ')}\t\t{value}\n"
+
+
 def handle_input():
+    global _debugoutput
+    
     _debugoutput = ""
     _event = openvr.VREvent_t()
     _has_events = True
@@ -64,7 +75,7 @@ def handle_input():
 
     if config["ControllerType"]:
         _controller_type = get_controllertype()
-        _debugoutput += "ControllerType" + "\t\t\t\t" + str(_controller_type) + "\n"
+        add_to_debugoutput("ControllerType", _controller_type)
         send_osc_message("ControllerType", _controller_type)
 
     button_actions = actions[:8]
@@ -73,24 +84,24 @@ def handle_input():
         if not action["enabled"]:
             continue
         val = get_value(action)
-        _debugoutput += action["osc_parameter"] + "\t\t\t\t" + str(val) + "\n"
+        add_to_debugoutput(action["osc_parameter"], val)
         send_osc_message(action["osc_parameter"], val)
         _strinputs += "1" if val else "0"
     if config["LeftThumb"]:
         _leftthumb = _strinputs[:4].rfind("1") + 1
-        _debugoutput += "LeftThumb" + "\t\t\t\t" + str(_leftthumb) + "\n"
+        add_to_debugoutput("LeftThumb", _leftthumb)
         send_osc_message(osc_prefix + "LeftThumb", _leftthumb)
     if config["RightThumb"]:
         _rightthumb = _strinputs[4:].rfind("1") + 1
-        _debugoutput += "RightThumb" + "\t\t\t\t" + str(_rightthumb) + "\n"
+        add_to_debugoutput("RightThumb", _rightthumb)
         send_osc_message(osc_prefix + "RightThumb", _rightthumb)
     if config["LeftABButtons"]:
         _leftab = _strinputs[0] == "1" and _strinputs[1] == "1"
-        _debugoutput += "LeftABButtons" + "\t\t\t" + str(_leftab) + "\n"
+        add_to_debugoutput("LeftABButtons", _leftab)
         send_osc_message(osc_prefix + "LeftABButtons", _leftab)
     if config["RightABButtons"]:
         _rightab = _strinputs[4] == "1" and _strinputs[5] == "1"
-        _debugoutput += "RightABButtons" + "\t\t\t" + str(_rightab) + "\n"
+        add_to_debugoutput("RightABButtons", _rightab)
         send_osc_message(osc_prefix + "RightABButtons", _rightab)
 
     click_actions = actions[8:16]
@@ -98,7 +109,7 @@ def handle_input():
         if not action["enabled"]:
             continue
         val = get_value(action)
-        _debugoutput += action["osc_parameter"] + "\t\t\t" + str(val) + "\n"
+        add_to_debugoutput(action["osc_parameter"], val)
         send_osc_message(action["osc_parameter"], val)
     
     trigger_actions = actions[16:18]
@@ -106,21 +117,21 @@ def handle_input():
         if not action["enabled"]:
             continue
         val = get_value(action)
-        _debugoutput += action["osc_parameter"] + "\t\t\t\t" + f"{val:.4f}" + "\n"
+        add_to_debugoutput(action["osc_parameter"], val)
         send_osc_message(action["osc_parameter"], val)
     
     position_actions = actions[18:]
     for action in position_actions:
         val_x, val_y = get_value(action)
         if action["enabled"][0]:
-            _debugoutput += action["osc_parameter"][0] + "   \t\t\t" + f"{val_x:.4f}" + "\n"
+            add_to_debugoutput(action["osc_parameter"][0], val_x)
             send_osc_message(action["osc_parameter"][0], val_x)
         if action["enabled"][1]:
-            _debugoutput += action["osc_parameter"][1] + "   \t\t\t" + f"{val_y:.4f}" + "\n"
+            add_to_debugoutput(action["osc_parameter"][1], val_y)
             send_osc_message(action["osc_parameter"][1], val_y)
         if len(action["osc_parameter"]) > 2 and action["enabled"][2]:
             tmp = (val_x > sticktolerance or val_y > sticktolerance)
-            _debugoutput += action["osc_parameter"][2] + "   \t\t\t" + str(tmp) + "\n"
+            add_to_debugoutput(action["osc_parameter"][2], tmp)
             send_osc_message(action["osc_parameter"][2], tmp)
     
     if args.debug:

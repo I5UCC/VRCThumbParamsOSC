@@ -106,7 +106,7 @@ You can run this by using ```ThumbParamsOSC.exe {Arguments}``` in command line.
 
 Running `Configurator.exe` lets you customize the Parameters that you want to have sent to VRChat, and some more things:
 
-
+![image](https://github.com/I5UCC/VRCThumbParamsOSC/assets/43730681/6ae9f1cd-d696-4db7-8908-a2488fe57778)
 
 Unchecking or checking any of the parameters and the hitting `save` will save the current settings.
 

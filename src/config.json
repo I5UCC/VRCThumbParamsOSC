@@ -6,6 +6,8 @@
   "ControllerType": true,
   "LeftThumb": true,
   "RightThumb": true,
+  "LeftABButtons": true,
+  "RightABButtons": true,
   "default_bindings": [
     {
       "controller_type": "knuckles",

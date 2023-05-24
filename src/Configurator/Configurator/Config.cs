@@ -25,6 +25,8 @@ namespace Configurator
         public bool ControllerType { get; set; }
         public bool LeftThumb { get; set; }
         public bool RightThumb { get; set; }
+        public bool LeftABButtons { get; set; }
+        public bool RightABButtons { get; set; }
         public List<DefaultBinding> default_bindings { get; set; }
         public List<Action> actions { get; set; }
     }

@@ -79,11 +79,19 @@ def handle_input():
     if config["LeftThumb"]:
         _leftthumb = _strinputs[:4].rfind("1") + 1
         _debugoutput += "LeftThumb" + "\t\t\t\t" + str(_leftthumb) + "\n"
-        send_osc_message(left_thumb, _leftthumb)
+        send_osc_message(osc_prefix + "LeftThumb", _leftthumb)
     if config["RightThumb"]:
         _rightthumb = _strinputs[4:].rfind("1") + 1
         _debugoutput += "RightThumb" + "\t\t\t\t" + str(_rightthumb) + "\n"
-        send_osc_message(right_thumb, _rightthumb)
+        send_osc_message(osc_prefix + "RightThumb", _rightthumb)
+    if config["LeftABButtons"]:
+        _leftab = _strinputs[0] == "1" and _strinputs[1] == "1"
+        _debugoutput += "LeftABButtons" + "\t\t\t" + str(_leftab) + "\n"
+        send_osc_message(osc_prefix + "LeftABButtons", _leftab)
+    if config["RightABButtons"]:
+        _rightab = _strinputs[4] == "1" and _strinputs[5] == "1"
+        _debugoutput += "RightABButtons" + "\t\t\t" + str(_rightab) + "\n"
+        send_osc_message(osc_prefix + "RightABButtons", _rightab)
 
     click_actions = actions[8:16]
     for action in click_actions:
@@ -145,8 +153,6 @@ oscClient = udp_client.SimpleUDPClient(IP, PORT)
 osc_prefix = "/avatar/parameters/"
 pollingrate = 1 / float(config['PollingRate'])
 sticktolerance = int(config['StickMoveTolerance']) / 100
-left_thumb = osc_prefix + "LeftThumb"
-right_thumb = osc_prefix + "RightThumb"
 
 cls()
 if not args.debug:
@@ -166,6 +172,10 @@ if not args.debug:
         params += "LeftThumb, "
     if config["RightThumb"]:
         params += "RightThumb, "
+    if config["LeftABButtons"]:
+        params += "LeftABButtons, "
+    if config["RightABButtons"]:
+        params += "RightABButtons, "
     for action in actions:
         if not action["enabled"]:
             continue

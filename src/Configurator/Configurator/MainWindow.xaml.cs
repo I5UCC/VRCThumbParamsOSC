@@ -34,6 +34,8 @@ namespace Configurator
             ParameterList.Add(new BoolStringClass("ControllerType", config.ControllerType, "Integer"));
             ParameterList.Add(new BoolStringClass("LeftThumb", config.LeftThumb, "Integer"));
             ParameterList.Add(new BoolStringClass("RightThumb", config.RightThumb, "Integer"));
+            ParameterList.Add(new BoolStringClass("LeftABButtons", config.RightThumb, "Boolean"));
+            ParameterList.Add(new BoolStringClass("RightABButtons", config.RightThumb, "Boolean"));
 
             foreach (Action a in config.actions) {
                 if (a.type != "vector2")
@@ -104,6 +106,12 @@ namespace Configurator
                 case "RightThumb":
                     config.RightThumb = check;
                     return;
+                case "LeftABButtons":
+                    config.LeftABButtons = check;
+                    return;
+                case "RightABButtons":
+                    config.RightABButtons = check;
+                    return;
             }
 
             foreach (Action a in config.actions)
@@ -163,6 +171,8 @@ namespace Configurator
             config.ControllerType = false;
             config.LeftThumb = false;
             config.RightThumb = false;
+            config.LeftABButtons = false;
+            config.RightABButtons = false;
 
             foreach (Action a in config.actions)
             {
@@ -213,7 +223,7 @@ namespace Configurator
 
         private void Untick_Click_Click(object sender, RoutedEventArgs e)
         {
-            for (int i = 8; i < 16 ; i++)
+            for (int i = 10; i < 18 ; i++)
             {
                 (Lbx_Params.Items[i + 3] as BoolStringClass).IsSelected = false;
                 config.actions[i].enabled = false;
@@ -223,7 +233,7 @@ namespace Configurator
 
         private void Untick_Touch_Click(object sender, RoutedEventArgs e)
         {
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 10; i++)
             {
                 (Lbx_Params.Items[i + 3] as BoolStringClass).IsSelected = false;
                 config.actions[i].enabled = false;

@@ -175,6 +175,7 @@ if not args.debug:
         else:
             params += action["osc_parameter"] + ", "
     print(params[:-2])
+    print("\nOpen Configurator.exe to change settings.")
 
 # Main Loop
 while True:

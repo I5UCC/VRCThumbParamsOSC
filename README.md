@@ -16,7 +16,9 @@ Activate OSC in VRChat: <br/><br/>
 
 In Action menu, got to Options>OSC>Enable <br/>
 
-Then just run the ```ThumbParamsOSC.exe``` and you are all set! <br/>
+Run `Configurator.exe` to configure the program.
+  
+Then just run the `ThumbParamsOSC.exe` and you are all set! <br/>
 
 ## OSC Troubleshoot
 

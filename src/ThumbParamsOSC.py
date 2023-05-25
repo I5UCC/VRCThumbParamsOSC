@@ -129,7 +129,7 @@ def handle_input():
             add_to_debugoutput(action["osc_parameter"][1], val_y)
             send_osc_message(action["osc_parameter"][1], val_y)
         if len(action["osc_parameter"]) > 2 and action["enabled"][2]:
-            tmp = (val_x > sticktolerance or val_y > sticktolerance)
+            tmp = (val_x > sticktolerance or val_y > sticktolerance) or (val_x < -sticktolerance or val_y < -sticktolerance)
             add_to_debugoutput(action["osc_parameter"][2], tmp)
             send_osc_message(action["osc_parameter"][2], tmp)
     

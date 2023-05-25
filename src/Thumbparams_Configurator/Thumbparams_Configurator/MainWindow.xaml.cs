@@ -34,8 +34,8 @@ namespace Configurator
             ParameterList.Add(new BoolStringClass("ControllerType", config.ControllerType, "Integer"));
             ParameterList.Add(new BoolStringClass("LeftThumb", config.LeftThumb, "Integer"));
             ParameterList.Add(new BoolStringClass("RightThumb", config.RightThumb, "Integer"));
-            ParameterList.Add(new BoolStringClass("LeftABButtons", config.RightThumb, "Boolean"));
-            ParameterList.Add(new BoolStringClass("RightABButtons", config.RightThumb, "Boolean"));
+            ParameterList.Add(new BoolStringClass("LeftABButtons", config.LeftABButtons, "Boolean"));
+            ParameterList.Add(new BoolStringClass("RightABButtons", config.RightABButtons, "Boolean"));
 
             foreach (Action a in config.actions) {
                 if (a.type != "vector2")

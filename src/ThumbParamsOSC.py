@@ -81,12 +81,11 @@ def handle_input():
     button_actions = actions[:8]
     _strinputs = ""
     for action in button_actions:
-        if not action["enabled"]:
-            continue
         val = get_value(action)
-        add_to_debugoutput(action["osc_parameter"], val)
-        send_osc_message(action["osc_parameter"], val)
         _strinputs += "1" if val else "0"
+        if action["enabled"]:
+            add_to_debugoutput(action["osc_parameter"], val)
+            send_osc_message(action["osc_parameter"], val)
     if config["LeftThumb"]:
         _leftthumb = _strinputs[:4].rfind("1") + 1
         add_to_debugoutput("LeftThumb", _leftthumb)

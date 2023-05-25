@@ -23,11 +23,16 @@ Then just run the `ThumbParamsOSC.exe` and you are all set! <br/>
 ## OSC Troubleshoot
 
 If you have problems with this program, try this to fix it:
-- Close VRChat.
-- Open 'Run' in Windows (Windows Key + R)
-- Type in `%APPDATA%\..\LocalLow\VRChat\VRChat\OSC`
-- Delete the folders that start with 'usr_*'.
-- Startup VRChat again and it should work.
+- Automatic way:
+  - Close VRChat.
+  - Run `Configurator.exe` and click on the Button "Reset OSC Config"
+  - Startup VRChat again and it should work.
+- Manual way:
+  - Close VRChat.
+  - Open 'Run' in Windows (Windows Key + R)
+  - Type in `%APPDATA%\..\LocalLow\VRChat\VRChat\OSC`
+  - Delete the folders that start with 'usr_*'.
+  - Startup VRChat again and it should work.
 
 ## Available Parameters
 
@@ -106,7 +111,7 @@ You can run this by using ```ThumbParamsOSC.exe {Arguments}``` in command line.
 
 Running `Configurator.exe` lets you customize the Parameters that you want to have sent to VRChat, and some more things:
 
-![image](https://github.com/I5UCC/VRCThumbParamsOSC/assets/43730681/6ae9f1cd-d696-4db7-8908-a2488fe57778)
+![image](https://github.com/I5UCC/VRCThumbParamsOSC/assets/43730681/e95adf7f-d034-4045-93e3-129ca427516a)
 
 Unchecking or checking any of the parameters and the hitting `save` will save the current settings.
 

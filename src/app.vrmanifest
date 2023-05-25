@@ -2,7 +2,7 @@
 	"source": "builtin",
 	"applications": [
 		{
-			"app_key": "i5ucc.ThumbParamsOSC",
+			"app_key": "i5ucc.thumbparamsosc",
 			"launch_type": "binary",
 			"binary_path_windows": "./ThumbParamsOSC_NoConsole.exe",
 			"is_dashboard_overlay": true,

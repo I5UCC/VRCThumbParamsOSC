@@ -149,12 +149,15 @@ args = parser.parse_args()
 if os.name == 'nt':
     ctypes.windll.kernel32.SetConsoleTitleW("ThumbParamsOSC v1.0.1" + (" (Debug)" if args.debug else ""))
 
+first_launch_file = get_absolute_path("bindings/first_launch")
 config_path = get_absolute_path('config.json')
 manifest_path = get_absolute_path("app.vrmanifest")
-
 application = openvr.init(openvr.VRApplication_Utility)
 openvr.VRInput().setActionManifestPath(config_path)
 openvr.VRApplications().addApplicationManifest(manifest_path)
+if os.path.isfile(first_launch_file):
+    openvr.VRApplications().setApplicationAutoLaunch("i5ucc.thumbparamsosc", True)
+    os.remove(first_launch_file)
 action_set_handle = openvr.VRInput().getActionSetHandle("/actions/thumbparams")
 
 config = json.load(open(config_path))

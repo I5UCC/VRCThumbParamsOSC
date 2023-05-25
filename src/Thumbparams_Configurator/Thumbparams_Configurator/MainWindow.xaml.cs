@@ -272,5 +272,20 @@ namespace Configurator
             }
             Lbx_Params.Items.Refresh();
         }
+
+        private void Reset_OSC_Clicked(object sender, RoutedEventArgs e)
+        {
+            string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string[] folders = Directory.GetDirectories(appdata + "\\..\\LocalLow\\VRChat\\VRChat\\OSC");
+            foreach (string folder in folders)
+            {
+                string foldername = folder.Substring(folder.LastIndexOf("\\") + 1);
+                if (foldername.Contains("usr_"))
+                {
+                    DirectoryInfo dir = new DirectoryInfo(folder);
+                    dir.Delete(true);
+                }
+            }
+        }
     }
 }

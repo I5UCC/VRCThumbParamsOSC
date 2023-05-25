@@ -126,12 +126,12 @@ namespace Configurator
                 }
                 else
                 {
-                    String[] tmp = ((JArray)a.osc_parameter).ToObject<string[]>();
-                    bool[] tmp2 = ((JArray)a.enabled).ToObject<bool[]>();
+                    JArray tmp = ((JArray)a.osc_parameter);
+                    JArray tmp2 = ((JArray)a.enabled);
 
-                    for (int i = 0; i < tmp.Length; i++)
+                    for (int i = 0; i < tmp.Count; i++)
                     {
-                        if (tmp[i] == name)
+                        if (tmp[i].ToString() == name)
                         {
                             tmp2[i] = check;
                             a.enabled = tmp2;

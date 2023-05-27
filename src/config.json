@@ -116,6 +116,18 @@
       "enabled": true
     },
     {
+      "name": "/actions/thumbparams/in/leftgrab",
+      "type": "boolean",
+      "osc_parameter": "LeftGrab",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/rightgrab",
+      "type": "boolean",
+      "osc_parameter": "RightGrab",
+      "enabled": true
+    },
+    {
       "name": "/actions/thumbparams/in/lefttrigger",
       "type": "vector1",
       "osc_parameter": "LeftTrigger",
@@ -125,6 +137,18 @@
       "name": "/actions/thumbparams/in/righttrigger",
       "type": "vector1",
       "osc_parameter": "RightTrigger",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/leftgrabforce",
+      "type": "vector1",
+      "osc_parameter": "LeftGrabForce",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/rightgrabforce",
+      "type": "vector1",
+      "osc_parameter": "RightGrabForce",
       "enabled": true
     },
     {

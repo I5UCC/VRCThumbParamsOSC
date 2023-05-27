@@ -73,7 +73,7 @@ namespace Configurator
 
             public string DisplayString
             {
-                get { return String.Format("{0,-23}", Text) + "\t" + Type; }
+                get { return String.Format("{0,-25}", Text) + "\t" + Type; }
             }
 
         }

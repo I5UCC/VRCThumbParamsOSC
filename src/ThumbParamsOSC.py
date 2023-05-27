@@ -62,7 +62,7 @@ def add_to_debugoutput(parameter, value):
 
 def handle_input():
     global _debugoutput
-    
+
     _debugoutput = ""
     _event = openvr.VREvent_t()
     _has_events = True
@@ -78,9 +78,8 @@ def handle_input():
         add_to_debugoutput("ControllerType", _controller_type)
         send_osc_message("ControllerType", _controller_type)
 
-    button_actions = actions[:8]
     _strinputs = ""
-    for action in button_actions:
+    for action in bool_actions[:8]: # Touch Actions
         val = get_value(action)
         _strinputs += "1" if val else "0"
         if action["enabled"]:
@@ -103,24 +102,21 @@ def handle_input():
         add_to_debugoutput("RightABButtons", _rightab)
         send_osc_message("RightABButtons", _rightab)
 
-    click_actions = actions[8:16]
-    for action in click_actions:
+    for action in bool_actions[8:]:
         if not action["enabled"]:
             continue
         val = get_value(action)
         add_to_debugoutput(action["osc_parameter"], val)
         send_osc_message(action["osc_parameter"], val)
-    
-    trigger_actions = actions[16:18]
-    for action in trigger_actions:
+
+    for action in vector1_actions:
         if not action["enabled"]:
             continue
         val = get_value(action)
         add_to_debugoutput(action["osc_parameter"], val)
         send_osc_message(action["osc_parameter"], val)
-    
-    position_actions = actions[18:]
-    for action in position_actions:
+
+    for action in vector2_actions[-4:]:
         val_x, val_y = get_value(action)
         if action["enabled"][0]:
             add_to_debugoutput(action["osc_parameter"][0], val_x)
@@ -132,7 +128,7 @@ def handle_input():
             tmp = (val_x > sticktolerance or val_y > sticktolerance) or (val_x < -sticktolerance or val_y < -sticktolerance)
             add_to_debugoutput(action["osc_parameter"][2], tmp)
             send_osc_message(action["osc_parameter"][2], tmp)
-    
+
     if args.debug:
         cls()
         print(_debugoutput.strip())
@@ -163,6 +159,10 @@ config = json.load(open(config_path))
 actions = config["actions"]
 for action in actions:
     action["handle"] = openvr.VRInput().getActionHandle(action['name'])
+bool_actions = [action for action in actions if action["type"] == "boolean"]
+vector1_actions = [action for action in actions if action["type"] == "vector1"]
+vector2_actions = [action for action in actions if action["type"] == "vector2"]
+
 IP = args.ip if args.ip else config["IP"]
 PORT = args.port if args.port else config["Port"]
 oscClient = udp_client.SimpleUDPClient(IP, PORT)

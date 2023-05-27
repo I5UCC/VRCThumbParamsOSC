@@ -1,8 +1,6 @@
 # <img src="https://github.com/I5UCC/VRCThumbParamsOSC/blob/468e25fb16f03daac756d693656c784094518efb/src/icon.ico" width="32" height="32"> ThumbParamsOSC [![Github All Releases](https://img.shields.io/github/downloads/i5ucc/VRCThumbParamsOSC/total.svg)](https://github.com/I5UCC/VRCThumbParamsOSC/releases/latest) <a href='https://ko-fi.com/i5ucc' target='_blank'><img height='35' style='border:0px;height:25px;' src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' />
 OSC program that makes SteamVR controller actions accessible as Avatar Parameters.
 
-Works for both VRChat and ChilloutVR but requires an OSC Mod when used in ChilloutVR.
-
 Supports every controller that exposes Touch states to SteamVR. Including ***Valve-Index*** and ***Oculus(Meta)-Touch*** Controllers.
 
 ### [<img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6ca814282eca7172c6_icon_clyde_white_RGB.svg"  width="20" height="20"> Discord Support Server](https://discord.gg/rqcWHje3hn)
@@ -90,6 +88,12 @@ The Trackpad Parameters range from -1.0 to 1.0. you can think of it like a coord
 A few more bools to determine if the Left or Right stick was moved:
 - LeftStickMoved
 - RightStickMoved
+
+Two bools and two Floats to determine if the controller is gripped and how strongly its gripped:
+- LeftGrab
+- RightGrab
+- LeftGrabForce
+- RightGrabForce
 
 Finally, the int ***ControllerType*** gives what controller is currently being used:
 - Meta/Oculus Touch (2)

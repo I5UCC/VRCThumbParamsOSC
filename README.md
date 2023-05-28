@@ -1,7 +1,7 @@
 # <img src="https://github.com/I5UCC/VRCThumbParamsOSC/blob/468e25fb16f03daac756d693656c784094518efb/src/icon.ico" width="32" height="32"> ThumbParamsOSC [![Github All Releases](https://img.shields.io/github/downloads/i5ucc/VRCThumbParamsOSC/total.svg)](https://github.com/I5UCC/VRCThumbParamsOSC/releases/latest) <a href='https://ko-fi.com/i5ucc' target='_blank'><img height='35' style='border:0px;height:25px;' src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' />
 OSC program that makes SteamVR controller actions accessible as Avatar Parameters.
 
-Supports every controller that exposes Touch states to SteamVR. Including ***Valve-Index*** and ***Oculus(Meta)-Touch*** Controllers.
+Currently supports ***Valve-Index*** and ***Oculus(Meta)-Touch*** Controllers.
 
 ### [<img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6ca814282eca7172c6_icon_clyde_white_RGB.svg"  width="20" height="20"> Discord Support Server](https://discord.gg/rqcWHje3hn)
 
@@ -34,13 +34,14 @@ If you have problems with this program, try this to fix it:
 
 ## Available Parameters
 
-The program reads all controller face buttons "touching" states and outputs them to two avatar parameters of "int" type.
-You'll need to add these **case-sensitive** parameters to your avatar's base parameters:
+All parameters are **case-sensitive**.
+
+Two int parameters for the Thumb position on each controller:
 
 - ***RightThumb***
 - ***LeftThumb***
 
-The program will set these parameters with an integer from 0-4 representing the position of each thumb.
+The Integer represents the position of each thumb with the numbers from 0 to 4:
 
 | Value | Real Position |
 | ----- | ------------- |
@@ -73,7 +74,7 @@ If you also need the Trigger pull values, you'll have to add two additional para
 - LeftTrigger
 - RightTrigger
 
-The values range from 0.0 to 1.0 for both of these parameters, depending on how much you pull the trigger
+The values range from 0.0 to 1.0 for both of these parameters, depending on how much you pull the trigger.
 
 4 Float Parameters for the thumb position on the trackpad:
 - LeftTrackPad\[X/Y]

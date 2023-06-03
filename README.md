@@ -91,10 +91,8 @@ A few more bools to determine if the Left or Right stick was moved:
 - RightStickMoved
 
 Two bools and two Floats to determine if the controller is gripped and how strongly its gripped:
-- LeftGrab
-- RightGrab
-- LeftGrabForce
-- RightGrabForce
+- \[Left/Right]Grab
+- \[Left/Right]GrabForce
 
 Finally, the int ***ControllerType*** gives what controller is currently being used:
 - Meta/Oculus Touch (2)

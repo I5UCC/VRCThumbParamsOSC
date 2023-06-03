@@ -71,24 +71,20 @@ All button clicks are available as bool parameters, They're mapped the following
 
 If you also need the Trigger pull values, you'll have to add two additional parameters of "float" type.
 
-- LeftTrigger
-- RightTrigger
+- \[Left/Right]Trigger
 
 The values range from 0.0 to 1.0 for both of these parameters, depending on how much you pull the trigger.
 
 4 Float Parameters for the thumb position on the trackpad:
-- LeftTrackPad\[X/Y]
-- RightTrackPad\[X/Y]
+- \[Left/Right]TrackPad\[X/Y]
 
 4 Float Parameters for the Thumbstick position:
-- LeftThumbStick\[X/Y]
-- RightThumbStick\[X/Y]
+- \[Left/Right]ThumbStick\[X/Y]
 
 The Trackpad Parameters range from -1.0 to 1.0. you can think of it like a coordinate system, with the middle of the Trackpad being the origin. These parameters are only available on Index Controllers.
 
 A few more bools to determine if the Left or Right stick was moved:
-- LeftStickMoved
-- RightStickMoved
+- \[Left/Right]StickMoved
 
 Two bools and two Floats to determine if the controller is gripped and how strongly its gripped:
 - \[Left/Right]Grab

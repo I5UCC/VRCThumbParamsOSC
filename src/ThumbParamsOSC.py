@@ -48,6 +48,7 @@ def get_controllertype():
 
 
 def send_osc_message(parameter, value):
+    add_to_debugoutput(parameter, value)
     oscClient.send_message("/avatar/parameters/" + parameter, value)
 
 
@@ -75,7 +76,6 @@ def handle_input():
 
     if config["ControllerType"]:
         _controller_type = get_controllertype()
-        add_to_debugoutput("ControllerType", _controller_type)
         send_osc_message("ControllerType", _controller_type)
 
     _strinputs = ""
@@ -83,50 +83,40 @@ def handle_input():
         val = get_value(action)
         _strinputs += "1" if val else "0"
         if action["enabled"]:
-            add_to_debugoutput(action["osc_parameter"], val)
             send_osc_message(action["osc_parameter"], val)
     if config["LeftThumb"]:
         _leftthumb = _strinputs[:4].rfind("1") + 1
-        add_to_debugoutput("LeftThumb", _leftthumb)
         send_osc_message("LeftThumb", _leftthumb)
     if config["RightThumb"]:
         _rightthumb = _strinputs[4:].rfind("1") + 1
-        add_to_debugoutput("RightThumb", _rightthumb)
         send_osc_message("RightThumb", _rightthumb)
     if config["LeftABButtons"]:
         _leftab = _strinputs[0] == "1" and _strinputs[1] == "1"
-        add_to_debugoutput("LeftABButtons", _leftab)
         send_osc_message("LeftABButtons", _leftab)
     if config["RightABButtons"]:
         _rightab = _strinputs[4] == "1" and _strinputs[5] == "1"
-        add_to_debugoutput("RightABButtons", _rightab)
         send_osc_message("RightABButtons", _rightab)
 
     for action in bool_actions[8:]:
         if not action["enabled"]:
             continue
         val = get_value(action)
-        add_to_debugoutput(action["osc_parameter"], val)
         send_osc_message(action["osc_parameter"], val)
 
     for action in vector1_actions:
         if not action["enabled"]:
             continue
         val = get_value(action)
-        add_to_debugoutput(action["osc_parameter"], val)
         send_osc_message(action["osc_parameter"], val)
 
     for action in vector2_actions[-4:]:
         val_x, val_y = get_value(action)
         if action["enabled"][0]:
-            add_to_debugoutput(action["osc_parameter"][0], val_x)
             send_osc_message(action["osc_parameter"][0], val_x)
         if action["enabled"][1]:
-            add_to_debugoutput(action["osc_parameter"][1], val_y)
             send_osc_message(action["osc_parameter"][1], val_y)
         if len(action["osc_parameter"]) > 2 and action["enabled"][2]:
             tmp = (val_x > sticktolerance or val_y > sticktolerance) or (val_x < -sticktolerance or val_y < -sticktolerance)
-            add_to_debugoutput(action["osc_parameter"][2], tmp)
             send_osc_message(action["osc_parameter"][2], tmp)
 
     if args.debug:

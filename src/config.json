@@ -152,6 +152,18 @@
       "enabled": true
     },
     {
+      "name": "/actions/thumbparams/in/righttrackpadforce",
+      "type": "vector1",
+      "osc_parameter": "RightTrackpadForce",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/lefttrackpadforce",
+      "type": "vector1",
+      "osc_parameter": "LeftTrackpadForce",
+      "enabled": true
+    },
+    {
       "name": "/actions/thumbparams/in/leftstickxy",
       "type": "vector2",
       "osc_parameter": [

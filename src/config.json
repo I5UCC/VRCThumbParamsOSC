@@ -55,193 +55,289 @@
       "name": "/actions/thumbparams/in/leftfoottracker",
       "type": "boolean",
       "osc_parameter": "LeftFootTracker",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": false
     },
     {
       "name": "/actions/thumbparams/in/rightfoottracker",
       "type": "boolean",
       "osc_parameter": "RightFootTracker",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": false
     },
     {
       "name": "/actions/thumbparams/in/waisttracker",
       "type": "boolean",
       "osc_parameter": "WaistTracker",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": false
     },
     {
       "name": "/actions/thumbparams/in/chesttracker",
       "type": "boolean",
       "osc_parameter": "ChestTracker",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": false
     },
     {
       "name": "/actions/thumbparams/in/leftelbowtracker",
       "type": "boolean",
       "osc_parameter": "LeftElbowTracker",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": false
     },
     {
       "name": "/actions/thumbparams/in/rightelbowtracker",
       "type": "boolean",
       "osc_parameter": "RightElbowTracker",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": false
     },
     {
       "name": "/actions/thumbparams/in/leftkneetracker",
       "type": "boolean",
       "osc_parameter": "LeftKneeTracker",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": false
     },
     {
       "name": "/actions/thumbparams/in/rightkneetracker",
       "type": "boolean",
       "osc_parameter": "RightKneeTracker",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": false
     },
     {
       "name": "/actions/thumbparams/in/leftabutton",
       "type": "boolean",
       "osc_parameter": "LeftAButton",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": false
     },
     {
       "name": "/actions/thumbparams/in/leftbbutton",
       "type": "boolean",
       "osc_parameter": "LeftBButton",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": false
     },
     {
       "name": "/actions/thumbparams/in/lefttrackpad",
       "type": "boolean",
       "osc_parameter": "LeftTrackPad",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": false
     },
     {
       "name": "/actions/thumbparams/in/leftstick",
       "type": "boolean",
       "osc_parameter": "LeftThumbStick",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": false
     },
     {
       "name": "/actions/thumbparams/in/rightabutton",
       "type": "boolean",
       "osc_parameter": "RightAButton",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": false
     },
     {
       "name": "/actions/thumbparams/in/rightbbutton",
       "type": "boolean",
       "osc_parameter": "RightBButton",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": false
     },
     {
       "name": "/actions/thumbparams/in/righttrackpad",
       "type": "boolean",
       "osc_parameter": "RightTrackPad",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": false
     },
     {
       "name": "/actions/thumbparams/in/rightstick",
       "type": "boolean",
       "osc_parameter": "RightThumbStick",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": false
     },
     {
       "name": "/actions/thumbparams/in/leftabuttonclick",
       "type": "boolean",
       "osc_parameter": "LeftAButtonClick",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": false
     },
     {
       "name": "/actions/thumbparams/in/leftbbuttonclick",
       "type": "boolean",
       "osc_parameter": "LeftBButtonClick",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": false
     },
     {
       "name": "/actions/thumbparams/in/lefttrackpadclick",
       "type": "boolean",
       "osc_parameter": "LeftTrackPadClick",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": false
     },
     {
       "name": "/actions/thumbparams/in/leftstickclick",
       "type": "boolean",
       "osc_parameter": "LeftThumbStickClick",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": false
     },
     {
       "name": "/actions/thumbparams/in/rightabuttonclick",
       "type": "boolean",
       "osc_parameter": "RightAButtonClick",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": false
     },
     {
       "name": "/actions/thumbparams/in/rightbbuttonclick",
       "type": "boolean",
       "osc_parameter": "RightBButtonClick",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": false
     },
     {
       "name": "/actions/thumbparams/in/righttrackpadclick",
       "type": "boolean",
       "osc_parameter": "RightTrackPadClick",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": false
     },
     {
       "name": "/actions/thumbparams/in/rightstickclick",
       "type": "boolean",
       "osc_parameter": "RightThumbStickClick",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": false
     },
     {
       "name": "/actions/thumbparams/in/leftgrab",
       "type": "boolean",
       "osc_parameter": "LeftGrab",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": false
     },
     {
       "name": "/actions/thumbparams/in/rightgrab",
       "type": "boolean",
       "osc_parameter": "RightGrab",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": false
     },
     {
       "name": "/actions/thumbparams/in/lefttrigger",
       "type": "vector1",
       "osc_parameter": "LeftTrigger",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": 0.0
     },
     {
       "name": "/actions/thumbparams/in/righttrigger",
       "type": "vector1",
       "osc_parameter": "RightTrigger",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": 0.0
     },
     {
       "name": "/actions/thumbparams/in/leftgrabforce",
       "type": "vector1",
       "osc_parameter": "LeftGrabForce",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": 0.0
     },
     {
       "name": "/actions/thumbparams/in/rightgrabforce",
       "type": "vector1",
       "osc_parameter": "RightGrabForce",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": 0.0
     },
     {
       "name": "/actions/thumbparams/in/righttrackpadforce",
       "type": "vector1",
       "osc_parameter": "RightTrackpadForce",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": 0.0
     },
     {
       "name": "/actions/thumbparams/in/lefttrackpadforce",
       "type": "vector1",
       "osc_parameter": "LeftTrackpadForce",
-      "enabled": true
+      "enabled": true,
+      "floating": 3.0,
+      "timestamp": 0,
+      "last_value": 0.0
     },
     {
       "name": "/actions/thumbparams/in/leftstickxy",
@@ -255,6 +351,17 @@
         true,
         true,
         true
+      ],
+      "floating": 3.0,
+      "timestamp": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "last_value": [
+        0.0,
+        0.0,
+        0.0
       ]
     },
     {
@@ -269,6 +376,17 @@
         true,
         true,
         true
+      ],
+      "floating": 3.0,
+      "timestamp": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "last_value": [
+        0.0,
+        0.0,
+        0.0
       ]
     },
     {
@@ -281,6 +399,15 @@
       "enabled": [
         true,
         true
+      ],
+      "floating": 3.0,
+      "timestamp": [
+        0.0,
+        0.0
+      ],
+      "last_value": [
+        0.0,
+        0.0
       ]
     },
     {
@@ -293,6 +420,15 @@
       "enabled": [
         true,
         true
+      ],
+      "floating": 3.0,
+      "timestamp": [
+        0.0,
+        0.0
+      ],
+      "last_value": [
+        0.0,
+        0.0
       ]
     }
   ]

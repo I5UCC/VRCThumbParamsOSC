@@ -1,0 +1,27 @@
+{
+   "action_manifest_version" : 0,
+   "alias_info" : {},
+   "app_key" : "i5ucc.thumbparamsosc",
+   "bindings" : {
+      "/actions/thumbparams" : {
+         "sources" : [
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/thumbparams/in/rightelbowtracker"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/elbow/right/input/power"
+            }
+         ]
+      }
+   },
+   "category" : "steamvr_input",
+   "controller_type" : "vive_tracker_right_elbow",
+   "description" : "",
+   "interaction_profile" : "",
+   "name" : "Default configuration for ThumbParamsOSC Vive Tracker on Left Elbow.",
+   "options" : {},
+   "simulated_actions" : []
+}

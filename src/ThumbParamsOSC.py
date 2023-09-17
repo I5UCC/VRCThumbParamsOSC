@@ -78,8 +78,13 @@ def handle_input():
         _controller_type = get_controllertype()
         send_osc_message("ControllerType", _controller_type)
 
+    tracker_actions = bool_actions[:8]
+    for action in tracker_actions:
+        val = get_value(action)
+        send_osc_message(action["osc_parameter"], val)
+
     _strinputs = ""
-    for action in bool_actions[:8]: # Touch Actions
+    for action in bool_actions[8:16]: # Touch Actions
         val = get_value(action)
         _strinputs += "1" if val else "0"
         if action["enabled"]:
@@ -97,7 +102,7 @@ def handle_input():
         _rightab = _strinputs[4] == "1" and _strinputs[5] == "1"
         send_osc_message("RightABButtons", _rightab)
 
-    for action in bool_actions[8:]:
+    for action in bool_actions[16:]:
         if not action["enabled"]:
             continue
         val = get_value(action)

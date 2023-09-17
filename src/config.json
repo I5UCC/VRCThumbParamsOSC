@@ -16,9 +16,89 @@
     {
       "controller_type": "oculus_touch",
       "binding_url": "bindings/touch_thumbparams_bindings.json"
+    },
+    {
+      "controller_type": "vive_tracker_left_foot",
+      "binding_url": "bindings/left_foot_thumbparams_bindings.json"
+    },
+    {
+      "controller_type": "vive_tracker_right_foot",
+      "binding_url": "bindings/right_foot_thumbparams_bindings.json"
+    },
+    {
+      "controller_type": "vive_tracker_waist",
+      "binding_url": "bindings/waist_thumbparams_bindings.json"
+    },
+    {
+      "controller_type": "vive_tracker_chest",
+      "binding_url": "bindings/chest_thumbparams_bindings.json"
+    },
+    {
+      "controller_type": "vive_tracker_left_elbow",
+      "binding_url": "bindings/left_elbow_thumbparams_bindings.json"
+    },
+    {
+      "controller_type": "vive_tracker_left_knee",
+      "binding_url": "bindings/left_knee_thumbparams_bindings.json"
+    },
+    {
+      "controller_type": "vive_tracker_right_elbow",
+      "binding_url": "bindings/right_elbow_thumbparams_bindings.json"
+    },
+    {
+      "controller_type": "vive_tracker_right_knee",
+      "binding_url": "bindings/right_knee_thumbparams_bindings.json"
     }
   ],
   "actions": [
+    {
+      "name": "/actions/thumbparams/in/leftfoottracker",
+      "type": "boolean",
+      "osc_parameter": "LeftFootTracker",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/rightfoottracker",
+      "type": "boolean",
+      "osc_parameter": "RightFootTracker",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/waisttracker",
+      "type": "boolean",
+      "osc_parameter": "WaistTracker",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/chesttracker",
+      "type": "boolean",
+      "osc_parameter": "ChestTracker",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/leftelbowtracker",
+      "type": "boolean",
+      "osc_parameter": "LeftElbowTracker",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/rightelbowtracker",
+      "type": "boolean",
+      "osc_parameter": "RightElbowTracker",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/leftkneetracker",
+      "type": "boolean",
+      "osc_parameter": "LeftKneeTracker",
+      "enabled": true
+    },
+    {
+      "name": "/actions/thumbparams/in/rightkneetracker",
+      "type": "boolean",
+      "osc_parameter": "RightKneeTracker",
+      "enabled": true
+    },
     {
       "name": "/actions/thumbparams/in/leftabutton",
       "type": "boolean",

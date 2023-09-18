@@ -175,7 +175,6 @@ def handle_input():
             case _:
                 raise TypeError("Unknown action type: " + action['type'])
 
-    args.debug = True
     if args.debug:
         cls()
         print(debugoutput.strip())

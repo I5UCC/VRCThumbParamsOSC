@@ -21,7 +21,7 @@ def cls():
 
 
 def add_to_debugoutput(parameter, value, floating=""):
-    global _debugoutput
+    global debugoutput
 
     if isinstance(value, float):
         value = f"{value:.4f}"
@@ -29,26 +29,7 @@ def add_to_debugoutput(parameter, value, floating=""):
     tmp = ""
     if floating != "" and float(floating) > 0:
         tmp = f"Floating: {floating}s"
-    _debugoutput += f"{parameter.ljust(23, ' ')}\t{str(value).ljust(10, ' ')}\t{tmp}\n"
-
-
-def print_debug_output():
-    global _debugoutput
-
-    _debugoutput = ""
-
-    for action in actions:
-        parameter = action["osc_parameter"]
-        value = action["last_value"]
-        floating = action["floating"]
-        if action["type"] != "vector2":
-            add_to_debugoutput(parameter, value, floating)
-        else:
-            for i in range(len(parameter)):
-                add_to_debugoutput(parameter[i], value[i], floating[i])
-    
-    cls()
-    print(_debugoutput)
+    debugoutput += f"{parameter.ljust(23, ' ')}\t{str(value).ljust(10, ' ')}\t{tmp}\n"
 
 
 def get_value(action):
@@ -78,104 +59,94 @@ def get_controllertype():
     return 0
 
 
-def send_osc_message(parameter, value):
-    oscClient.send_message("/avatar/parameters/" + parameter, value)
+def send_data(action, value):
+    global curr_time
+
+    if isinstance(action, str):
+        oscClient.send_message(AVATAR_PARAMETERS_PREFIX + action, value)
+        add_to_debugoutput(action, value)
+        return
+
+    if not isinstance(value, tuple):
+        if not action["enabled"]:
+            return
+
+        if value:
+            action["timestamp"] = curr_time
+        elif not value and curr_time - action["timestamp"] <= action["floating"]: 
+            value = action["last_value"]
+        action["last_value"] = value
+
+        oscClient.send_message(AVATAR_PARAMETERS_PREFIX + action["osc_parameter"], value)
+        add_to_debugoutput(action["osc_parameter"], value, action["floating"])
+        return
+    
+    val_x, val_y = value
+    tmp = False
+    if val_x:
+        action["timestamp"][0] = curr_time
+    elif not val_x and curr_time - action["timestamp"][0] <= action["floating"][0]: 
+        val_x = action["last_value"][0]
+    if val_y:
+        action["timestamp"][1] = curr_time
+    elif not val_y and curr_time - action["timestamp"][1] <= action["floating"][1]:
+        val_y = action["last_value"][1]
+
+    if action["enabled"][0]:
+        oscClient.send_message(AVATAR_PARAMETERS_PREFIX + action["osc_parameter"][0], val_x)
+        add_to_debugoutput(action["osc_parameter"][0], val_x, action["floating"][0])
+    if action["enabled"][1]:
+        oscClient.send_message(AVATAR_PARAMETERS_PREFIX + action["osc_parameter"][1], val_y)
+        add_to_debugoutput(action["osc_parameter"][1], val_y, action["floating"][1])
+    if len(action["osc_parameter"]) > 2 and action["enabled"][2]:
+        tmp = (val_x > STICKTOLERANCE or val_y > STICKTOLERANCE) or (val_x < -STICKTOLERANCE or val_y < -STICKTOLERANCE)
+        oscClient.send_message(AVATAR_PARAMETERS_PREFIX + action["osc_parameter"][2], tmp)
+        add_to_debugoutput(action["osc_parameter"][2], tmp)
+    action["last_value"] = [val_x, val_y, tmp]
 
 
 def handle_input():
+    global curr_time, debugoutput
+
     _event = openvr.VREvent_t()
     _has_events = True
     while _has_events:
         _has_events = application.pollNextEvent(_event)
     openvr.VRInput().updateActionState(actionsets)
 
+    debugoutput = ""
     curr_time = time.time()
 
     if config["ControllerType"]:
         _controller_type = get_controllertype()
-        send_osc_message("ControllerType", _controller_type)
-
-    tracker_actions = bool_actions[:8]
-    for action in tracker_actions:
-        if not action["enabled"]:
-            continue
-        val = get_value(action)
-        if val:
-            action["timestamp"] = curr_time
-        elif not val and curr_time - action["timestamp"] <= action["floating"]: 
-            val = action["last_value"]
-        action["last_value"] = val
-        send_osc_message(action["osc_parameter"], val)
+        send_data("ControllerType", _controller_type)
 
     _strinputs = ""
-    for action in bool_actions[8:16]: # Touch Actions
+    for action in actions[:8]: # Touch Actions
         val = get_value(action)
-        if val:
-            action["timestamp"] = curr_time
-        elif not val and curr_time - action["timestamp"] <= action["floating"]: 
-            val = action["last_value"]
-        action["last_value"] = val
         _strinputs += "1" if val else "0"
         if action["enabled"]:
-            send_osc_message(action["osc_parameter"], val)
+            send_data(action, val)
     if config["LeftThumb"]:
         _leftthumb = _strinputs[:4].rfind("1") + 1
-        send_osc_message("LeftThumb", _leftthumb)
+        send_data("LeftThumb", _leftthumb)
     if config["RightThumb"]:
         _rightthumb = _strinputs[4:].rfind("1") + 1
-        send_osc_message("RightThumb", _rightthumb)
+        send_data("RightThumb", _rightthumb)
     if config["LeftABButtons"]:
         _leftab = _strinputs[0] == "1" and _strinputs[1] == "1"
-        send_osc_message("LeftABButtons", _leftab)
+        send_data("LeftABButtons", _leftab)
     if config["RightABButtons"]:
         _rightab = _strinputs[4] == "1" and _strinputs[5] == "1"
-        send_osc_message("RightABButtons", _rightab)
+        send_data("RightABButtons", _rightab)
 
-    for action in bool_actions[16:]:
-        if not action["enabled"]:
-            continue
+    for action in actions[8:]:
         val = get_value(action)
-        if val:
-            action["timestamp"] = curr_time
-        elif not val and curr_time - action["timestamp"] <= action["floating"]: 
-            val = action["last_value"]
-        action["last_value"] = val
-        send_osc_message(action["osc_parameter"], val)
+        send_data(action, val)
 
-    for action in vector1_actions:
-        if not action["enabled"]:
-            continue
-        val = get_value(action)
-        if val > action["last_value"]:
-            action["timestamp"] = curr_time
-        elif val < action["last_value"] and curr_time - action["timestamp"] <= action["floating"]: 
-            val = action["last_value"]
-        action["last_value"] = val
-        send_osc_message(action["osc_parameter"], val)
-
-    for action in vector2_actions[-4:]:
-        tmp = False
-        val_x, val_y = get_value(action)
-        if val_x:
-            action["timestamp"][0] = curr_time
-        elif not val_x and curr_time - action["timestamp"][0] <= action["floating"][0]: 
-            val_x = action["last_value"][0]
-        if val_y:
-            action["timestamp"][1] = curr_time
-        elif not val_y and curr_time - action["timestamp"][1] <= action["floating"][1]:
-            val_y = action["last_value"][1]
-        if action["enabled"][0]:
-            send_osc_message(action["osc_parameter"][0], val_x)
-        if action["enabled"][1]:
-            send_osc_message(action["osc_parameter"][1], val_y)
-        if len(action["osc_parameter"]) > 2 and action["enabled"][2]:
-            tmp = (val_x > sticktolerance or val_y > sticktolerance) or (val_x < -sticktolerance or val_y < -sticktolerance)
-            send_osc_message(action["osc_parameter"][2], tmp)
-        action["last_value"] = [val_x, val_y, tmp]
-
-    args.debug = True
-    if args.debug:
-        print_debug_output()
+    if args.debug or True:
+        cls()
+        print(debugoutput)
 
 
 # Argument Parser
@@ -206,15 +177,13 @@ config = json.load(open(config_path))
 actions = config["actions"]
 for action in actions:
     action["handle"] = openvr.VRInput().getActionHandle(action['name'])
-bool_actions = [action for action in actions if action["type"] == "boolean"]
-vector1_actions = [action for action in actions if action["type"] == "vector1"]
-vector2_actions = [action for action in actions if action["type"] == "vector2"]
 
 IP = args.ip if args.ip else config["IP"]
 PORT = args.port if args.port else config["Port"]
 oscClient = udp_client.SimpleUDPClient(IP, PORT)
-pollingrate = 1 / float(config['PollingRate'])
-sticktolerance = int(config['StickMoveTolerance']) / 100
+POLLINGRATE = 1 / float(config['PollingRate'])
+STICKTOLERANCE = int(config['StickMoveTolerance']) / 100
+AVATAR_PARAMETERS_PREFIX = "/avatar/parameters/"
 
 cls()
 if not args.debug:
@@ -223,15 +192,15 @@ if not args.debug:
     print("Press CTRL+C to exit.\n")
     print(f"IP:\t\t\t{IP}")
     print(f"Port:\t\t\t{PORT}")
-    print(f"PollingRate:\t\t{pollingrate}s ({config['PollingRate']} Hz)")
-    print(f"StickMoveTolerance:\t{sticktolerance} ({config['StickMoveTolerance']}%)")
+    print(f"PollingRate:\t\t{POLLINGRATE}s ({config['PollingRate']} Hz)")
+    print(f"StickMoveTolerance:\t{STICKTOLERANCE} ({config['StickMoveTolerance']}%)")
     print("\nOpen Configurator.exe to change sent Parameters and other Settings.")
 
 # Main Loop
 while True:
     try:
         handle_input()
-        time.sleep(pollingrate)
+        time.sleep(POLLINGRATE)
     except KeyboardInterrupt:
         cls()
         sys.exit()

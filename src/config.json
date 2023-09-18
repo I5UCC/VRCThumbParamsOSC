@@ -52,78 +52,6 @@
   ],
   "actions": [
     {
-      "name": "/actions/thumbparams/in/leftfoottracker",
-      "type": "boolean",
-      "osc_parameter": "LeftFootTracker",
-      "enabled": true,
-      "floating": 0.0,
-      "timestamp": 0,
-      "last_value": false
-    },
-    {
-      "name": "/actions/thumbparams/in/rightfoottracker",
-      "type": "boolean",
-      "osc_parameter": "RightFootTracker",
-      "enabled": true,
-      "floating": 0.0,
-      "timestamp": 0,
-      "last_value": false
-    },
-    {
-      "name": "/actions/thumbparams/in/waisttracker",
-      "type": "boolean",
-      "osc_parameter": "WaistTracker",
-      "enabled": true,
-      "floating": 0.0,
-      "timestamp": 0,
-      "last_value": false
-    },
-    {
-      "name": "/actions/thumbparams/in/chesttracker",
-      "type": "boolean",
-      "osc_parameter": "ChestTracker",
-      "enabled": true,
-      "floating": 0.0,
-      "timestamp": 0,
-      "last_value": false
-    },
-    {
-      "name": "/actions/thumbparams/in/leftelbowtracker",
-      "type": "boolean",
-      "osc_parameter": "LeftElbowTracker",
-      "enabled": true,
-      "floating": 0.0,
-      "timestamp": 0,
-      "last_value": false
-    },
-    {
-      "name": "/actions/thumbparams/in/rightelbowtracker",
-      "type": "boolean",
-      "osc_parameter": "RightElbowTracker",
-      "enabled": true,
-      "floating": 0.0,
-      "timestamp": 0,
-      "last_value": false
-    },
-    {
-      "name": "/actions/thumbparams/in/leftkneetracker",
-      "type": "boolean",
-      "osc_parameter": "LeftKneeTracker",
-      "enabled": true,
-      "floating": 0.0,
-      "timestamp": 0,
-      "last_value": false
-    },
-    {
-      "name": "/actions/thumbparams/in/rightkneetracker",
-      "type": "boolean",
-      "osc_parameter": "RightKneeTracker",
-      "enabled": true,
-      "floating": 0.0,
-      "timestamp": 0,
-      "last_value": false
-    },
-    {
       "name": "/actions/thumbparams/in/leftabutton",
       "type": "boolean",
       "osc_parameter": "LeftAButton",
@@ -280,6 +208,78 @@
       "name": "/actions/thumbparams/in/rightgrab",
       "type": "boolean",
       "osc_parameter": "RightGrab",
+      "enabled": true,
+      "floating": 0.0,
+      "timestamp": 0,
+      "last_value": false
+    },
+    {
+      "name": "/actions/thumbparams/in/leftfoottracker",
+      "type": "boolean",
+      "osc_parameter": "LeftFootTracker",
+      "enabled": true,
+      "floating": 0.0,
+      "timestamp": 0,
+      "last_value": false
+    },
+    {
+      "name": "/actions/thumbparams/in/rightfoottracker",
+      "type": "boolean",
+      "osc_parameter": "RightFootTracker",
+      "enabled": true,
+      "floating": 0.0,
+      "timestamp": 0,
+      "last_value": false
+    },
+    {
+      "name": "/actions/thumbparams/in/waisttracker",
+      "type": "boolean",
+      "osc_parameter": "WaistTracker",
+      "enabled": true,
+      "floating": 0.0,
+      "timestamp": 0,
+      "last_value": false
+    },
+    {
+      "name": "/actions/thumbparams/in/chesttracker",
+      "type": "boolean",
+      "osc_parameter": "ChestTracker",
+      "enabled": true,
+      "floating": 0.0,
+      "timestamp": 0,
+      "last_value": false
+    },
+    {
+      "name": "/actions/thumbparams/in/leftelbowtracker",
+      "type": "boolean",
+      "osc_parameter": "LeftElbowTracker",
+      "enabled": true,
+      "floating": 0.0,
+      "timestamp": 0,
+      "last_value": false
+    },
+    {
+      "name": "/actions/thumbparams/in/rightelbowtracker",
+      "type": "boolean",
+      "osc_parameter": "RightElbowTracker",
+      "enabled": true,
+      "floating": 0.0,
+      "timestamp": 0,
+      "last_value": false
+    },
+    {
+      "name": "/actions/thumbparams/in/leftkneetracker",
+      "type": "boolean",
+      "osc_parameter": "LeftKneeTracker",
+      "enabled": true,
+      "floating": 0.0,
+      "timestamp": 0,
+      "last_value": false
+    },
+    {
+      "name": "/actions/thumbparams/in/rightkneetracker",
+      "type": "boolean",
+      "osc_parameter": "RightKneeTracker",
       "enabled": true,
       "floating": 0.0,
       "timestamp": 0,

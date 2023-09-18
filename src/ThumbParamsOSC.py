@@ -20,6 +20,37 @@ def cls():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
+def add_to_debugoutput(parameter, value, floating=""):
+    global _debugoutput
+
+    if isinstance(value, float):
+        value = f"{value:.4f}"
+
+    tmp = ""
+    if floating != "" and float(floating) > 0:
+        tmp = f"Floating: {floating}s"
+    _debugoutput += f"{parameter.ljust(23, ' ')}\t{str(value).ljust(10, ' ')}\t{tmp}\n"
+
+
+def print_debug_output():
+    global _debugoutput
+
+    _debugoutput = ""
+
+    for action in actions:
+        parameter = action["osc_parameter"]
+        value = action["last_value"]
+        floating = action["floating"]
+        if action["type"] != "vector2":
+            add_to_debugoutput(parameter, value, floating)
+        else:
+            for i in range(len(parameter)):
+                add_to_debugoutput(parameter[i], value[i], floating[i])
+    
+    cls()
+    print(_debugoutput)
+
+
 def get_value(action):
     match action['type']:
         case "boolean":
@@ -51,34 +82,18 @@ def send_osc_message(parameter, value):
     oscClient.send_message("/avatar/parameters/" + parameter, value)
 
 
-def add_to_debugoutput(parameter, value, floating=""):
-    global _debugoutput
-
-    if isinstance(value, float):
-        value = f"{value:.4f}"
-
-    tmp = ""
-    if floating != "" and float(floating) > 0:
-        tmp = f"Floating: {floating}s"
-    _debugoutput += f"{parameter.ljust(23, ' ')}\t{str(value).ljust(10, ' ')}\t{tmp}\n"
-
-
 def handle_input():
-    global _debugoutput
-
     _event = openvr.VREvent_t()
     _has_events = True
     while _has_events:
         _has_events = application.pollNextEvent(_event)
     openvr.VRInput().updateActionState(actionsets)
 
-    _debugoutput = ""
     curr_time = time.time()
 
     if config["ControllerType"]:
         _controller_type = get_controllertype()
         send_osc_message("ControllerType", _controller_type)
-        add_to_debugoutput("ControllerType", _controller_type)
 
     tracker_actions = bool_actions[:8]
     for action in tracker_actions:
@@ -91,7 +106,6 @@ def handle_input():
             val = action["last_value"]
         action["last_value"] = val
         send_osc_message(action["osc_parameter"], val)
-        add_to_debugoutput(action["osc_parameter"], val, action["floating"])
 
     _strinputs = ""
     for action in bool_actions[8:16]: # Touch Actions
@@ -104,23 +118,18 @@ def handle_input():
         _strinputs += "1" if val else "0"
         if action["enabled"]:
             send_osc_message(action["osc_parameter"], val)
-            add_to_debugoutput(action["osc_parameter"], val, action["floating"])
     if config["LeftThumb"]:
         _leftthumb = _strinputs[:4].rfind("1") + 1
         send_osc_message("LeftThumb", _leftthumb)
-        add_to_debugoutput("LeftThumb", _leftthumb, action["floating"])
     if config["RightThumb"]:
         _rightthumb = _strinputs[4:].rfind("1") + 1
         send_osc_message("RightThumb", _rightthumb)
-        add_to_debugoutput("RightThumb", _rightthumb, action["floating"])
     if config["LeftABButtons"]:
         _leftab = _strinputs[0] == "1" and _strinputs[1] == "1"
         send_osc_message("LeftABButtons", _leftab)
-        add_to_debugoutput("LeftABButtons", _leftab, action["floating"])
     if config["RightABButtons"]:
         _rightab = _strinputs[4] == "1" and _strinputs[5] == "1"
         send_osc_message("RightABButtons", _rightab)
-        add_to_debugoutput("RightABButtons", _rightab, action["floating"])
 
     for action in bool_actions[16:]:
         if not action["enabled"]:
@@ -132,7 +141,6 @@ def handle_input():
             val = action["last_value"]
         action["last_value"] = val
         send_osc_message(action["osc_parameter"], val)
-        add_to_debugoutput(action["osc_parameter"], val, action["floating"])
 
     for action in vector1_actions:
         if not action["enabled"]:
@@ -144,9 +152,9 @@ def handle_input():
             val = action["last_value"]
         action["last_value"] = val
         send_osc_message(action["osc_parameter"], val)
-        add_to_debugoutput(action["osc_parameter"], val, action["floating"])
 
     for action in vector2_actions[-4:]:
+        tmp = False
         val_x, val_y = get_value(action)
         if val_x:
             action["timestamp"][0] = curr_time
@@ -156,21 +164,18 @@ def handle_input():
             action["timestamp"][1] = curr_time
         elif not val_y and curr_time - action["timestamp"][1] <= action["floating"][1]:
             val_y = action["last_value"][1]
-        action["last_value"] = [val_x, val_y]
         if action["enabled"][0]:
             send_osc_message(action["osc_parameter"][0], val_x)
-            add_to_debugoutput(action["osc_parameter"][0], val_x, action["floating"][0])
         if action["enabled"][1]:
             send_osc_message(action["osc_parameter"][1], val_y)
-            add_to_debugoutput(action["osc_parameter"][1], val_y, action["floating"][1])
         if len(action["osc_parameter"]) > 2 and action["enabled"][2]:
             tmp = (val_x > sticktolerance or val_y > sticktolerance) or (val_x < -sticktolerance or val_y < -sticktolerance)
             send_osc_message(action["osc_parameter"][2], tmp)
-            add_to_debugoutput(action["osc_parameter"][2], tmp)
+        action["last_value"] = [val_x, val_y, tmp]
 
+    args.debug = True
     if args.debug:
-        cls()
-        print(_debugoutput.strip())
+        print_debug_output()
 
 
 # Argument Parser

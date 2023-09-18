@@ -72,6 +72,14 @@ def send_boolean(action: dict, value: bool):
 
     if not action["enabled"]:
         return
+
+    if action["floating"] == -1:
+        if value:
+            action["last_value"] = not action["last_value"]
+            time.sleep(0.1)
+        oscClient.send_message(AVATAR_PARAMETERS_PREFIX + action["osc_parameter"], action["last_value"])
+        add_to_debugoutput(action["osc_parameter"], action["last_value"], action["floating"])
+        return
     
     if value:
         action["timestamp"] = curr_time

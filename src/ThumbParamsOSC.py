@@ -62,36 +62,48 @@ def get_controllertype():
     return 0
 
 
-def send_data(action, value):
+def send_special(action: str, value):
+    oscClient.send_message(AVATAR_PARAMETERS_PREFIX + action, value)
+    add_to_debugoutput(action, value)
+
+
+def send_boolean(action: dict, value: bool):
     global curr_time
 
-    if isinstance(action, str): # Special Parameters
-        oscClient.send_message(AVATAR_PARAMETERS_PREFIX + action, value)
-        add_to_debugoutput(action, value)
-        return
-
-    if not isinstance(value, tuple):
-        if not action["enabled"]:
-            return
-        
-        if action["type"] == "vector1": # Vector1
-            if value > action["last_value"]:
-                action["timestamp"] = curr_time
-            elif value < action["last_value"] and curr_time - action["timestamp"] <= action["floating"]: 
-                value = action["last_value"]
-        else: # Boolean
-            if value:
-                action["timestamp"] = curr_time
-            elif not value and curr_time - action["timestamp"] <= action["floating"]: 
-                value = action["last_value"]
-        action["last_value"] = value
-
-        oscClient.send_message(AVATAR_PARAMETERS_PREFIX + action["osc_parameter"], value)
-        add_to_debugoutput(action["osc_parameter"], value, action["floating"])
+    if not action["enabled"]:
         return
     
-    # Vector2
+    if value:
+        action["timestamp"] = curr_time
+    elif not value and curr_time - action["timestamp"] <= action["floating"]: 
+        value = action["last_value"]
+
+    action["last_value"] = value
+
+    oscClient.send_message(AVATAR_PARAMETERS_PREFIX + action["osc_parameter"], value)
+    add_to_debugoutput(action["osc_parameter"], value, action["floating"])
+
+
+def send_vector1(action: dict, value: float):
+    global curr_time
+
+    if not action["enabled"]:
+        return
     
+    if value > action["last_value"]:
+        action["timestamp"] = curr_time
+    elif value < action["last_value"] and curr_time - action["timestamp"] <= action["floating"]: 
+        value = action["last_value"]
+    
+    action["last_value"] = value
+
+    oscClient.send_message(AVATAR_PARAMETERS_PREFIX + action["osc_parameter"], value)
+    add_to_debugoutput(action["osc_parameter"], value, action["floating"])
+
+
+def send_vector2(action: dict, value: tuple):
+    global curr_time
+
     val_x, val_y = value
     tmp = False
     if val_x:
@@ -130,31 +142,40 @@ def handle_input():
 
     if config["ControllerType"]:
         _controller_type = get_controllertype()
-        send_data("ControllerType", _controller_type)
+        send_special("ControllerType", _controller_type)
 
     _strinputs = ""
     for action in actions[:8]: # Touch Actions
         val = get_value(action)
         _strinputs += "1" if val else "0"
         if action["enabled"]:
-            send_data(action, val)
+            send_boolean(action, val)
     if config["LeftThumb"]:
         _leftthumb = _strinputs[:4].rfind("1") + 1
-        send_data("LeftThumb", _leftthumb)
+        send_special("LeftThumb", _leftthumb)
     if config["RightThumb"]:
         _rightthumb = _strinputs[4:].rfind("1") + 1
-        send_data("RightThumb", _rightthumb)
+        send_special("RightThumb", _rightthumb)
     if config["LeftABButtons"]:
         _leftab = _strinputs[0] == "1" and _strinputs[1] == "1"
-        send_data("LeftABButtons", _leftab)
+        send_special("LeftABButtons", _leftab)
     if config["RightABButtons"]:
         _rightab = _strinputs[4] == "1" and _strinputs[5] == "1"
-        send_data("RightABButtons", _rightab)
+        send_special("RightABButtons", _rightab)
 
     for action in actions[8:]:
         val = get_value(action)
-        send_data(action, val)
+        match action['type']:
+            case "boolean":
+                send_boolean(action, val)
+            case "vector1":
+                send_vector1(action, val)
+            case "vector2":
+                send_vector2(action, val)
+            case _:
+                raise TypeError("Unknown action type: " + action['type'])
 
+    args.debug = True
     if args.debug:
         cls()
         print(debugoutput.strip())

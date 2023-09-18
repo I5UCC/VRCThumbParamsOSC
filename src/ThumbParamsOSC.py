@@ -144,7 +144,7 @@ def handle_input():
         val = get_value(action)
         send_data(action, val)
 
-    if args.debug or True:
+    if args.debug:
         cls()
         print(debugoutput)
 

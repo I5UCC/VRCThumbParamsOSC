@@ -23,6 +23,9 @@ def cls():
 def add_to_debugoutput(parameter, value, floating=""):
     global debugoutput
 
+    if not args.debug:
+        return
+
     if isinstance(value, float):
         value = f"{value:.4f}"
 
@@ -154,7 +157,7 @@ def handle_input():
 
     if args.debug:
         cls()
-        print(debugoutput)
+        print(debugoutput.strip())
 
 
 # Argument Parser

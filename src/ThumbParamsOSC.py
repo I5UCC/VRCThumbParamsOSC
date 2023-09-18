@@ -62,7 +62,7 @@ def get_controllertype():
 def send_data(action, value):
     global curr_time
 
-    if isinstance(action, str):
+    if isinstance(action, str): # Special Parameters
         oscClient.send_message(AVATAR_PARAMETERS_PREFIX + action, value)
         add_to_debugoutput(action, value)
         return
@@ -70,16 +70,24 @@ def send_data(action, value):
     if not isinstance(value, tuple):
         if not action["enabled"]:
             return
-
-        if value:
-            action["timestamp"] = curr_time
-        elif not value and curr_time - action["timestamp"] <= action["floating"]: 
-            value = action["last_value"]
+        
+        if action["type"] == "vector1": # Vector1
+            if value > action["last_value"]:
+                action["timestamp"] = curr_time
+            elif value < action["last_value"] and curr_time - action["timestamp"] <= action["floating"]: 
+                value = action["last_value"]
+        else: # Boolean
+            if value:
+                action["timestamp"] = curr_time
+            elif not value and curr_time - action["timestamp"] <= action["floating"]: 
+                value = action["last_value"]
         action["last_value"] = value
 
         oscClient.send_message(AVATAR_PARAMETERS_PREFIX + action["osc_parameter"], value)
         add_to_debugoutput(action["osc_parameter"], value, action["floating"])
         return
+    
+    # Vector2
     
     val_x, val_y = value
     tmp = False

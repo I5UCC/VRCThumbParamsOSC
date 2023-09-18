@@ -75,6 +75,7 @@ def handle_input():
     _actionset = _actionsets[0]
     _actionset.ulActionSet = action_set_handle
     openvr.VRInput().updateActionState(_actionsets)
+    curr_time = time.time()
 
     if config["ControllerType"]:
         _controller_type = get_controllertype()
@@ -87,8 +88,8 @@ def handle_input():
             continue
         val = get_value(action)
         if val:
-            action["timestamp"] = time.time()
-        elif not val and time.time() - action["timestamp"] <= action["floating"]: 
+            action["timestamp"] = curr_time
+        elif not val and curr_time - action["timestamp"] <= action["floating"]: 
             val = action["last_value"]
         action["last_value"] = val
         send_osc_message(action["osc_parameter"], val)
@@ -98,8 +99,8 @@ def handle_input():
     for action in bool_actions[8:16]: # Touch Actions
         val = get_value(action)
         if val:
-            action["timestamp"] = time.time()
-        elif not val and time.time() - action["timestamp"] <= action["floating"]: 
+            action["timestamp"] = curr_time
+        elif not val and curr_time - action["timestamp"] <= action["floating"]: 
             val = action["last_value"]
         action["last_value"] = val
         _strinputs += "1" if val else "0"
@@ -128,8 +129,8 @@ def handle_input():
             continue
         val = get_value(action)
         if val:
-            action["timestamp"] = time.time()
-        elif not val and time.time() - action["timestamp"] <= action["floating"]: 
+            action["timestamp"] = curr_time
+        elif not val and curr_time - action["timestamp"] <= action["floating"]: 
             val = action["last_value"]
         action["last_value"] = val
         send_osc_message(action["osc_parameter"], val)
@@ -140,8 +141,8 @@ def handle_input():
             continue
         val = get_value(action)
         if val > action["last_value"]:
-            action["timestamp"] = time.time()
-        elif val < action["last_value"] and time.time() - action["timestamp"] <= action["floating"]: 
+            action["timestamp"] = curr_time
+        elif val < action["last_value"] and curr_time - action["timestamp"] <= action["floating"]: 
             val = action["last_value"]
         action["last_value"] = val
         send_osc_message(action["osc_parameter"], val)
@@ -150,12 +151,12 @@ def handle_input():
     for action in vector2_actions[-4:]:
         val_x, val_y = get_value(action)
         if val_x:
-            action["timestamp"][0] = time.time()
-        elif not val_x and time.time() - action["timestamp"][0] <= action["floating"][0]: 
+            action["timestamp"][0] = curr_time
+        elif not val_x and curr_time - action["timestamp"][0] <= action["floating"][0]: 
             val_x = action["last_value"][0]
         if val_y:
-            action["timestamp"][1] = time.time()
-        elif not val_y and time.time() - action["timestamp"][1] <= action["floating"][1]:
+            action["timestamp"][1] = curr_time
+        elif not val_y and curr_time - action["timestamp"][1] <= action["floating"][1]:
             val_y = action["last_value"][1]
         action["last_value"] = [val_x, val_y]
         if action["enabled"][0]:

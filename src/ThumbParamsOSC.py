@@ -66,15 +66,13 @@ def add_to_debugoutput(parameter, value, floating=""):
 def handle_input():
     global _debugoutput
 
-    _debugoutput = ""
     _event = openvr.VREvent_t()
     _has_events = True
     while _has_events:
         _has_events = application.pollNextEvent(_event)
-    _actionsets = (openvr.VRActiveActionSet_t * 1)()
-    _actionset = _actionsets[0]
-    _actionset.ulActionSet = action_set_handle
-    openvr.VRInput().updateActionState(_actionsets)
+    openvr.VRInput().updateActionState(actionsets)
+
+    _debugoutput = ""
     curr_time = time.time()
 
     if config["ControllerType"]:
@@ -195,6 +193,9 @@ if os.path.isfile(first_launch_file):
     openvr.VRApplications().setApplicationAutoLaunch("i5ucc.thumbparamsosc", True)
     os.remove(first_launch_file)
 action_set_handle = openvr.VRInput().getActionSetHandle("/actions/thumbparams")
+actionsets = (openvr.VRActiveActionSet_t * 1)()
+actionset = actionsets[0]
+actionset.ulActionSet = action_set_handle
 
 config = json.load(open(config_path))
 actions = config["actions"]

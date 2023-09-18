@@ -11,11 +11,11 @@ namespace Configurator
 {
     public partial class MainWindow : Window
     {
-
         public ObservableCollection<BoolStringClass> ParameterList { get; set; }
         private Config config;
         private string ConfigPath;
         private bool Startup;
+        private string[] disabled_inputs = { "ControllerType", "LeftThumb", "RightThumb", "LeftABButtons", "RightABButtons" };
 
         public MainWindow()
         {
@@ -31,23 +31,25 @@ namespace Configurator
             Tbx_PollingRate.Text = config.PollingRate.ToString();
             Tbx_StickMoveTolerance.Text = config.StickMoveTolerance.ToString();
 
-            ParameterList.Add(new BoolStringClass("ControllerType", config.ControllerType, "Integer"));
-            ParameterList.Add(new BoolStringClass("LeftThumb", config.LeftThumb, "Integer"));
-            ParameterList.Add(new BoolStringClass("RightThumb", config.RightThumb, "Integer"));
-            ParameterList.Add(new BoolStringClass("LeftABButtons", config.LeftABButtons, "Boolean"));
-            ParameterList.Add(new BoolStringClass("RightABButtons", config.RightABButtons, "Boolean"));
+            ParameterList.Add(new BoolStringClass("ControllerType", config.ControllerType, "Integer", ""));
+            ParameterList.Add(new BoolStringClass("LeftThumb", config.LeftThumb, "Integer", ""));
+            ParameterList.Add(new BoolStringClass("RightThumb", config.RightThumb, "Integer", ""));
+
+            ParameterList.Add(new BoolStringClass("LeftABButtons", config.LeftABButtons, "Boolean", ""));
+            ParameterList.Add(new BoolStringClass("RightABButtons", config.RightABButtons, "Boolean", ""));
 
             foreach (Action a in config.actions) {
                 if (a.type != "vector2")
                 {
-                    ParameterList.Add(new BoolStringClass((string)a.osc_parameter, (bool)a.enabled, a.type == "boolean" ? "Boolean" : "Float"));
+                    ParameterList.Add(new BoolStringClass((string)a.osc_parameter, (bool)a.enabled, a.type == "boolean" ? "Boolean" : "Float", a.floating.ToString()));
                 }
                 else {
                     String[] tmp = ((JArray)a.osc_parameter).ToObject<String[]>();
                     bool[] tmp2 = ((JArray)a.enabled).ToObject<bool[]>();
+                    float[] tmp3 = ((JArray)a.floating).ToObject<float[]>();
                     for (int i = 0; i < tmp.Length; i++)
                     {
-                        ParameterList.Add(new BoolStringClass(tmp[i], tmp2[i], i > 1 ? "Boolean" : "Float"));
+                        ParameterList.Add(new BoolStringClass(tmp[i], tmp2[i], i > 1 ? "Boolean" : "Float", tmp3[i].ToString()));
                     }
                 }
             }
@@ -58,11 +60,12 @@ namespace Configurator
 
         public class BoolStringClass
         {
-            public BoolStringClass(string Text, bool IsSelected, string Type)
+            public BoolStringClass(string Text, bool IsSelected, string Type, string Floating = "0.0")
             {
                 this.Text = Text;
                 this.IsSelected = IsSelected;
                 this.Type = Type;
+                this.Floating = Floating;
             }
 
             public string Text { get; set; }
@@ -71,9 +74,11 @@ namespace Configurator
 
             public string Type { get; set; }
 
+            public string Floating { get; set; }
+
             public string DisplayString
             {
-                get { return String.Format("{0,-25}", Text) + "\t" + Type; }
+                get { return String.Format("{0,-25}\t{1}\t", Text, Type); }
             }
 
         }
@@ -286,6 +291,55 @@ namespace Configurator
                     dir.Delete(true);
                 }
             }
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string text = ((TextBox)sender).Text;
+            if (text == string.Empty) { return; }
+            for (int i = 0; i < config.actions.Count; i++)
+            {
+                Action a = config.actions[i];
+                if (a.osc_parameter is string)
+                {
+                    if (a.osc_parameter.ToString() == ((TextBox)sender).ToolTip.ToString())
+                    {
+                        a.floating = float.Parse(text.Replace(".", ","));
+                        return;
+                    }
+                }
+                else
+                {
+                    string[] temp = ((JArray)a.osc_parameter).ToObject<string[]>();
+                    float[] floats = null;
+                    
+                    if (a.floating is Single[])
+                        floats = (Single[])a.floating;
+                    else
+                        floats = ((JArray)a.floating).ToObject<float[]>();
+
+                    for (int j = 0; j < temp.Length; j++)
+                    {
+                        if (temp[j].ToString() == ((TextBox)sender).ToolTip.ToString())
+                        {
+                            floats[j] = float.Parse(text.Replace(".", ","));
+                            config.actions[i].floating = floats;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        private void TextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            if (Array.IndexOf(disabled_inputs, ((TextBox)sender).ToolTip.ToString()) >= 0)
+            {
+                e.Handled = true;
+                return;
+            }
+            Regex regex = new Regex("[0-9,.]+");
+            e.Handled = !regex.IsMatch(e.Text);
         }
     }
 }

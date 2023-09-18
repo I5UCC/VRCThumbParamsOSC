@@ -11,7 +11,18 @@
         <ListBox ItemsSource="{Binding ParameterList}" x:Name="Lbx_Params" Margin="10,163,10,147">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <CheckBox IsChecked="{Binding IsSelected}" Content="{Binding DisplayString}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="2*" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+                        <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}" Content="{Binding DisplayString}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
+                        <TextBox Width="100" Grid.Column="1" PreviewTextInput="TextBox_PreviewTextInput" TextChanged="TextBox_TextChanged" ToolTip="{Binding Text}" Text="{Binding Floating}" Margin="30, 0, 0, 0" />
+                    </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
@@ -32,5 +43,6 @@
         <Button Content="Untick Touch Actions" Margin="136,0,0,87" Click="Untick_Touch_Click" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="134"/>
         <Button Content="Untick Position Actions" Margin="275,0,10,87" Click="Untick_Position_Click" Height="25" VerticalAlignment="Bottom"/>
         <Button Content="Save" Margin="10,0,10,13" Click="Save_Clicked" Height="32" VerticalAlignment="Bottom"/>
+        <Label Content="Floating Time" HorizontalAlignment="Left" Margin="254,133,0,0" VerticalAlignment="Top" Width="160" HorizontalContentAlignment="Left" FontWeight="Bold"/>
     </Grid>
 </Window>

@@ -5,7 +5,7 @@ Currently supports ***Valve-Index*** and ***Oculus(Meta)-Touch*** Controllers.
 
 ### [<img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6ca814282eca7172c6_icon_clyde_white_RGB.svg"  width="20" height="20"> Discord Support Server](https://discord.gg/rqcWHje3hn)
 
-# [🢃 Download Latest release](https://github.com/I5UCC/VRCThumbParamsOSC/releases/latest)
+### [🢃 Download Latest release](https://github.com/I5UCC/VRCThumbParamsOSC/releases/latest)
 
 ## How to use
 
@@ -90,6 +90,18 @@ Two bools and two Floats to determine if the controller is gripped and how stron
 - \[Left/Right]Grab
 - \[Left/Right]GrabForce
 
+Bools for every available Tracker Power button is available aswell. This does require Tracker roles to be set up in SteamVR: <br>
+Go to `SteamVR-Settings > Manage Trackers` and set up tracking roles for each tracker respectively:
+![268513445-16f47092-6f8b-4de6-9d5d-118fc9135c29](https://github.com/I5UCC/VRCThumbParamsOSC/assets/43730681/d2f771d8-dec4-46a0-9a55-6f02ce449eb1)
+- LeftFootTracker
+- RightFootTracker
+- WaistTracker
+- ChestTracker
+- LeftElbowTracker
+- RightElbowTracker
+- LeftKneeTracker
+- RightKneeTracker
+
 Finally, the int ***ControllerType*** gives what controller is currently being used:
 - Meta/Oculus Touch (2)
 - Index (1)
@@ -110,9 +122,10 @@ You can run this by using ```ThumbParamsOSC.exe {Arguments}``` in command line.
 
 Running `Configurator.exe` lets you customize the Parameters that you want to have sent to VRChat, and some more things:
 
-![image](https://github.com/I5UCC/VRCThumbParamsOSC/assets/43730681/e95adf7f-d034-4045-93e3-129ca427516a)
+![image](https://github.com/I5UCC/VRCThumbParamsOSC/assets/43730681/5a535be7-94aa-4b29-a56f-b25ae7dd3687)
 
 Unchecking or checking any of the parameters and the hitting `save` will save the current settings.
+`Floating Time` allows values "float" on the last value registered, it is measured in seconds.
 
 # Automatic launch with SteamVR
 On first launch of the program, it registers as an Overlay app on SteamVR just like other well known programs like XSOverlay or OVRAdvancedSettings and can be launched on startup:

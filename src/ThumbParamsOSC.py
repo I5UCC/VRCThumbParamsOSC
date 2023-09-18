@@ -109,19 +109,19 @@ def handle_input():
     if config["LeftThumb"]:
         _leftthumb = _strinputs[:4].rfind("1") + 1
         send_osc_message("LeftThumb", _leftthumb)
-        add_to_debugoutput(action["osc_parameter"], _leftthumb, action["floating"])
+        add_to_debugoutput("LeftThumb", _leftthumb, action["floating"])
     if config["RightThumb"]:
         _rightthumb = _strinputs[4:].rfind("1") + 1
         send_osc_message("RightThumb", _rightthumb)
-        add_to_debugoutput(action["osc_parameter"], _rightthumb, action["floating"])
+        add_to_debugoutput("RightThumb", _rightthumb, action["floating"])
     if config["LeftABButtons"]:
         _leftab = _strinputs[0] == "1" and _strinputs[1] == "1"
         send_osc_message("LeftABButtons", _leftab)
-        add_to_debugoutput(action["osc_parameter"], _leftab, action["floating"])
+        add_to_debugoutput("LeftABButtons", _leftab, action["floating"])
     if config["RightABButtons"]:
         _rightab = _strinputs[4] == "1" and _strinputs[5] == "1"
         send_osc_message("RightABButtons", _rightab)
-        add_to_debugoutput(action["osc_parameter"], _rightab, action["floating"])
+        add_to_debugoutput("RightABButtons", _rightab, action["floating"])
 
     for action in bool_actions[16:]:
         if not action["enabled"]:

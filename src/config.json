@@ -56,7 +56,7 @@
       "type": "boolean",
       "osc_parameter": "LeftFootTracker",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": false
     },
@@ -65,7 +65,7 @@
       "type": "boolean",
       "osc_parameter": "RightFootTracker",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": false
     },
@@ -74,7 +74,7 @@
       "type": "boolean",
       "osc_parameter": "WaistTracker",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": false
     },
@@ -83,7 +83,7 @@
       "type": "boolean",
       "osc_parameter": "ChestTracker",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": false
     },
@@ -92,7 +92,7 @@
       "type": "boolean",
       "osc_parameter": "LeftElbowTracker",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": false
     },
@@ -101,7 +101,7 @@
       "type": "boolean",
       "osc_parameter": "RightElbowTracker",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": false
     },
@@ -110,7 +110,7 @@
       "type": "boolean",
       "osc_parameter": "LeftKneeTracker",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": false
     },
@@ -119,7 +119,7 @@
       "type": "boolean",
       "osc_parameter": "RightKneeTracker",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": false
     },
@@ -128,7 +128,7 @@
       "type": "boolean",
       "osc_parameter": "LeftAButton",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": false
     },
@@ -137,7 +137,7 @@
       "type": "boolean",
       "osc_parameter": "LeftBButton",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": false
     },
@@ -146,7 +146,7 @@
       "type": "boolean",
       "osc_parameter": "LeftTrackPad",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": false
     },
@@ -155,7 +155,7 @@
       "type": "boolean",
       "osc_parameter": "LeftThumbStick",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": false
     },
@@ -164,7 +164,7 @@
       "type": "boolean",
       "osc_parameter": "RightAButton",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": false
     },
@@ -173,7 +173,7 @@
       "type": "boolean",
       "osc_parameter": "RightBButton",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": false
     },
@@ -182,7 +182,7 @@
       "type": "boolean",
       "osc_parameter": "RightTrackPad",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": false
     },
@@ -191,7 +191,7 @@
       "type": "boolean",
       "osc_parameter": "RightThumbStick",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": false
     },
@@ -200,7 +200,7 @@
       "type": "boolean",
       "osc_parameter": "LeftAButtonClick",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": false
     },
@@ -209,7 +209,7 @@
       "type": "boolean",
       "osc_parameter": "LeftBButtonClick",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": false
     },
@@ -218,7 +218,7 @@
       "type": "boolean",
       "osc_parameter": "LeftTrackPadClick",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": false
     },
@@ -227,7 +227,7 @@
       "type": "boolean",
       "osc_parameter": "LeftThumbStickClick",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": false
     },
@@ -236,7 +236,7 @@
       "type": "boolean",
       "osc_parameter": "RightAButtonClick",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": false
     },
@@ -245,7 +245,7 @@
       "type": "boolean",
       "osc_parameter": "RightBButtonClick",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": false
     },
@@ -254,7 +254,7 @@
       "type": "boolean",
       "osc_parameter": "RightTrackPadClick",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": false
     },
@@ -263,7 +263,7 @@
       "type": "boolean",
       "osc_parameter": "RightThumbStickClick",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": false
     },
@@ -272,7 +272,7 @@
       "type": "boolean",
       "osc_parameter": "LeftGrab",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": false
     },
@@ -281,7 +281,7 @@
       "type": "boolean",
       "osc_parameter": "RightGrab",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": false
     },
@@ -290,7 +290,7 @@
       "type": "vector1",
       "osc_parameter": "LeftTrigger",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": 0.0
     },
@@ -299,7 +299,7 @@
       "type": "vector1",
       "osc_parameter": "RightTrigger",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": 0.0
     },
@@ -308,7 +308,7 @@
       "type": "vector1",
       "osc_parameter": "LeftGrabForce",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": 0.0
     },
@@ -317,7 +317,7 @@
       "type": "vector1",
       "osc_parameter": "RightGrabForce",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": 0.0
     },
@@ -326,7 +326,7 @@
       "type": "vector1",
       "osc_parameter": "RightTrackpadForce",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": 0.0
     },
@@ -335,7 +335,7 @@
       "type": "vector1",
       "osc_parameter": "LeftTrackpadForce",
       "enabled": true,
-      "floating": 3.0,
+      "floating": 0.0,
       "timestamp": 0,
       "last_value": 0.0
     },
@@ -352,7 +352,11 @@
         true,
         true
       ],
-      "floating": 3.0,
+      "floating": [
+        0.0,
+        0.0,
+        -1
+      ],
       "timestamp": [
         0.0,
         0.0,
@@ -377,7 +381,11 @@
         true,
         true
       ],
-      "floating": 3.0,
+      "floating": [
+        0.0,
+        0.0,
+        -1
+      ],
       "timestamp": [
         0.0,
         0.0,
@@ -400,7 +408,10 @@
         true,
         true
       ],
-      "floating": 3.0,
+      "floating": [
+        0.0,
+        0.0
+      ],
       "timestamp": [
         0.0,
         0.0
@@ -421,7 +432,10 @@
         true,
         true
       ],
-      "floating": 3.0,
+      "floating": [
+        0.0,
+        0.0
+      ],
       "timestamp": [
         0.0,
         0.0

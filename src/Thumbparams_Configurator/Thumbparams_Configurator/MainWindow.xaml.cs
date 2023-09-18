@@ -15,7 +15,7 @@ namespace Configurator
         private Config config;
         private string ConfigPath;
         private bool Startup;
-        private string[] disabled_inputs = { "ControllerType", "LeftThumb", "RightThumb", "LeftABButtons", "RightABButtons" };
+        private string[] disabled_inputs = { "ControllerType", "LeftThumb", "RightThumb", "LeftABButtons", "RightABButtons", "LeftStickMoved", "RightStickMoved" };
 
         public MainWindow()
         {
@@ -31,12 +31,12 @@ namespace Configurator
             Tbx_PollingRate.Text = config.PollingRate.ToString();
             Tbx_StickMoveTolerance.Text = config.StickMoveTolerance.ToString();
 
-            ParameterList.Add(new BoolStringClass("ControllerType", config.ControllerType, "Integer", ""));
-            ParameterList.Add(new BoolStringClass("LeftThumb", config.LeftThumb, "Integer", ""));
-            ParameterList.Add(new BoolStringClass("RightThumb", config.RightThumb, "Integer", ""));
+            ParameterList.Add(new BoolStringClass("ControllerType", config.ControllerType, "Integer", "Unavailable"));
+            ParameterList.Add(new BoolStringClass("LeftThumb", config.LeftThumb, "Integer", "Influenced by bools"));
+            ParameterList.Add(new BoolStringClass("RightThumb", config.RightThumb, "Integer", "Influenced by bools"));
 
-            ParameterList.Add(new BoolStringClass("LeftABButtons", config.LeftABButtons, "Boolean", ""));
-            ParameterList.Add(new BoolStringClass("RightABButtons", config.RightABButtons, "Boolean", ""));
+            ParameterList.Add(new BoolStringClass("LeftABButtons", config.LeftABButtons, "Boolean", "Influenced by A,B"));
+            ParameterList.Add(new BoolStringClass("RightABButtons", config.RightABButtons, "Boolean", "Influenced by A,B"));
 
             foreach (Action a in config.actions) {
                 if (a.type != "vector2")
@@ -49,7 +49,7 @@ namespace Configurator
                     float[] tmp3 = ((JArray)a.floating).ToObject<float[]>();
                     for (int i = 0; i < tmp.Length; i++)
                     {
-                        ParameterList.Add(new BoolStringClass(tmp[i], tmp2[i], i > 1 ? "Boolean" : "Float", tmp3[i].ToString()));
+                        ParameterList.Add(new BoolStringClass(tmp[i], tmp2[i], i > 1 ? "Boolean" : "Float", tmp3[i] == -1 ? "Influenced by X,Y" : tmp3[i].ToString()));
                     }
                 }
             }

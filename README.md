@@ -124,8 +124,9 @@ Running `Configurator.exe` lets you customize the Parameters that you want to ha
 
 ![image](https://github.com/I5UCC/VRCThumbParamsOSC/assets/43730681/5a535be7-94aa-4b29-a56f-b25ae7dd3687)
 
-Unchecking or checking any of the parameters and the hitting `save` will save the current settings.
-`Floating Time` allows values "float" on the last value registered, it is measured in seconds.
+Unchecking or checking any of the parameters and the hitting `save` will save the current settings. <br>
+`Floating Time` allows values "float" on the last value registered, it is measured in seconds. <br>
+If `Floating Time` is set to -1 for boolean values, they will act like a toggle instead of always updating to the current state.
 
 # Automatic launch with SteamVR
 On first launch of the program, it registers as an Overlay app on SteamVR just like other well known programs like XSOverlay or OVRAdvancedSettings and can be launched on startup:

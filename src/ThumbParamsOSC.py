@@ -48,17 +48,19 @@ def get_controllertype():
 
 
 def send_osc_message(parameter, value):
-    add_to_debugoutput(parameter, value)
     oscClient.send_message("/avatar/parameters/" + parameter, value)
 
 
-def add_to_debugoutput(parameter, value):
+def add_to_debugoutput(parameter, value, floating=""):
     global _debugoutput
 
     if isinstance(value, float):
         value = f"{value:.4f}"
 
-    _debugoutput += f"{parameter.ljust(23, ' ')}\t{value}\n"
+    tmp = ""
+    if floating != "" and float(floating) > 0:
+        tmp = f"Floating: {floating}s"
+    _debugoutput += f"{parameter.ljust(23, ' ')}\t{str(value).ljust(10, ' ')}\t{tmp}\n"
 
 
 def handle_input():
@@ -77,6 +79,7 @@ def handle_input():
     if config["ControllerType"]:
         _controller_type = get_controllertype()
         send_osc_message("ControllerType", _controller_type)
+        add_to_debugoutput("ControllerType", _controller_type)
 
     tracker_actions = bool_actions[:8]
     for action in tracker_actions:
@@ -89,6 +92,7 @@ def handle_input():
             val = action["last_value"]
         action["last_value"] = val
         send_osc_message(action["osc_parameter"], val)
+        add_to_debugoutput(action["osc_parameter"], val, action["floating"])
 
     _strinputs = ""
     for action in bool_actions[8:16]: # Touch Actions
@@ -101,18 +105,23 @@ def handle_input():
         _strinputs += "1" if val else "0"
         if action["enabled"]:
             send_osc_message(action["osc_parameter"], val)
+            add_to_debugoutput(action["osc_parameter"], val, action["floating"])
     if config["LeftThumb"]:
         _leftthumb = _strinputs[:4].rfind("1") + 1
         send_osc_message("LeftThumb", _leftthumb)
+        add_to_debugoutput(action["osc_parameter"], _leftthumb, action["floating"])
     if config["RightThumb"]:
         _rightthumb = _strinputs[4:].rfind("1") + 1
         send_osc_message("RightThumb", _rightthumb)
+        add_to_debugoutput(action["osc_parameter"], _rightthumb, action["floating"])
     if config["LeftABButtons"]:
         _leftab = _strinputs[0] == "1" and _strinputs[1] == "1"
         send_osc_message("LeftABButtons", _leftab)
+        add_to_debugoutput(action["osc_parameter"], _leftab, action["floating"])
     if config["RightABButtons"]:
         _rightab = _strinputs[4] == "1" and _strinputs[5] == "1"
         send_osc_message("RightABButtons", _rightab)
+        add_to_debugoutput(action["osc_parameter"], _rightab, action["floating"])
 
     for action in bool_actions[16:]:
         if not action["enabled"]:
@@ -124,6 +133,7 @@ def handle_input():
             val = action["last_value"]
         action["last_value"] = val
         send_osc_message(action["osc_parameter"], val)
+        add_to_debugoutput(action["osc_parameter"], val, action["floating"])
 
     for action in vector1_actions:
         if not action["enabled"]:
@@ -135,6 +145,7 @@ def handle_input():
             val = action["last_value"]
         action["last_value"] = val
         send_osc_message(action["osc_parameter"], val)
+        add_to_debugoutput(action["osc_parameter"], val, action["floating"])
 
     for action in vector2_actions[-4:]:
         val_x, val_y = get_value(action)
@@ -149,11 +160,14 @@ def handle_input():
         action["last_value"] = [val_x, val_y]
         if action["enabled"][0]:
             send_osc_message(action["osc_parameter"][0], val_x)
+            add_to_debugoutput(action["osc_parameter"][0], val_x, action["floating"][0])
         if action["enabled"][1]:
             send_osc_message(action["osc_parameter"][1], val_y)
+            add_to_debugoutput(action["osc_parameter"][1], val_y, action["floating"][1])
         if len(action["osc_parameter"]) > 2 and action["enabled"][2]:
             tmp = (val_x > sticktolerance or val_y > sticktolerance) or (val_x < -sticktolerance or val_y < -sticktolerance)
             send_osc_message(action["osc_parameter"][2], tmp)
+            add_to_debugoutput(action["osc_parameter"][2], tmp)
 
     if args.debug:
         cls()

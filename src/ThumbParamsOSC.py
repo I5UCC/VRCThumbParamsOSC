@@ -157,7 +157,7 @@ parser.add_argument('-p', '--port', required=False, type=str, help="set OSC port
 args = parser.parse_args()
 
 if os.name == 'nt':
-    ctypes.windll.kernel32.SetConsoleTitleW("ThumbParamsOSC v1.0.4" + (" (Debug)" if args.debug else ""))
+    ctypes.windll.kernel32.SetConsoleTitleW("ThumbParamsOSC v1.3.1" + (" (Debug)" if args.debug else ""))
 
 first_launch_file = get_absolute_path("bindings/first_launch")
 config_path = get_absolute_path('config.json')

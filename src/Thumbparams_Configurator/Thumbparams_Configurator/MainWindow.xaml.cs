@@ -49,7 +49,7 @@ namespace Configurator
                     float[] tmp3 = ((JArray)a.floating).ToObject<float[]>();
                     for (int i = 0; i < tmp.Length; i++)
                     {
-                        ParameterList.Add(new BoolStringClass(tmp[i], tmp2[i], i > 1 ? "Boolean" : "Float", tmp3[i] == -1 ? "Influenced by X,Y" : tmp3[i].ToString()));
+                        ParameterList.Add(new BoolStringClass(tmp[i], tmp2[i], i > 1 ? "Boolean" : "Float", tmp3[i] == -100 ? "Influenced by X,Y" : tmp3[i].ToString()));
                     }
                 }
             }
@@ -296,7 +296,7 @@ namespace Configurator
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             string text = ((TextBox)sender).Text;
-            if (text == string.Empty) { return; }
+            if (text == string.Empty || text == "-") { return; }
             for (int i = 0; i < config.actions.Count; i++)
             {
                 Action a = config.actions[i];
@@ -338,7 +338,7 @@ namespace Configurator
                 e.Handled = true;
                 return;
             }
-            Regex regex = new Regex("[0-9,.]+");
+            Regex regex = new Regex("[0-9,\\.-]+");
             e.Handled = !regex.IsMatch(e.Text);
         }
     }

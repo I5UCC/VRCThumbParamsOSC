@@ -72,6 +72,14 @@ def send_boolean(action: dict, value: bool):
 
     if not action["enabled"]:
         return
+
+    if action["floating"] == -1:
+        if value:
+            action["last_value"] = not action["last_value"]
+            time.sleep(0.1)
+        oscClient.send_message(AVATAR_PARAMETERS_PREFIX + action["osc_parameter"], action["last_value"])
+        add_to_debugoutput(action["osc_parameter"], action["last_value"], action["floating"])
+        return
     
     if value:
         action["timestamp"] = curr_time
@@ -125,6 +133,7 @@ def send_vector2(action: dict, value: tuple):
         tmp = (val_x > STICKTOLERANCE or val_y > STICKTOLERANCE) or (val_x < -STICKTOLERANCE or val_y < -STICKTOLERANCE)
         oscClient.send_message(AVATAR_PARAMETERS_PREFIX + action["osc_parameter"][2], tmp)
         add_to_debugoutput(action["osc_parameter"][2], tmp)
+
     action["last_value"] = [val_x, val_y, tmp]
 
 

@@ -213,9 +213,15 @@ def handle_input() -> None:
     debugoutput = ""
     curr_time = time.time()
 
-    if config["ControllerType"]:
-        _controller_type = get_controllertype()
+    if config["ControllerType"]["enabled"]:
+        if curr_time - config["ControllerType"]["timestamp"] <= 10.0:
+            _controller_type = config["ControllerType"]["last_value"]
+        else:
+            _controller_type = get_controllertype()
+            config["ControllerType"]["timestamp"] = curr_time
+            config["ControllerType"]["last_value"] = _controller_type
         send_special("ControllerType", _controller_type)
+        
 
     _strinputs = ""
     for action in actions[:8]: # Touch Actions

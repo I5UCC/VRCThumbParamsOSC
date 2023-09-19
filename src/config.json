@@ -3,7 +3,11 @@
   "Port": 9000,
   "PollingRate": 25,
   "StickMoveTolerance": 5,
-  "ControllerType": true,
+  "ControllerType": {
+    "enabled": true,
+    "last_value": 0,
+    "timestamp": 0
+  },
   "LeftThumb": true,
   "RightThumb": true,
   "LeftABButtons": true,

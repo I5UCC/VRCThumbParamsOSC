@@ -102,6 +102,25 @@ def send_special(parameter: str, value) -> None:
     add_to_debugoutput(parameter, value)
 
 
+def send_boolean_toggle(action: dict, value: bool) -> None:
+    """
+    Sends a boolean action as a toggle to VRChat via OSC.
+    Parameters:
+        action (dict): Action
+        value (bool): Value of the parameter
+    Returns:
+        None
+    """
+    if not action["enabled"]:
+        return
+    
+    if value:
+        action["last_value"] = not action["last_value"]
+        time.sleep(0.1)
+    oscClient.send_message(AVATAR_PARAMETERS_PREFIX + action["osc_parameter"], action["last_value"])
+    add_to_debugoutput(action["osc_parameter"], action["last_value"], action["floating"])
+
+
 def send_boolean(action: dict, value: bool) -> None:
     """
     Sends a boolean action to VRChat via OSC.
@@ -116,14 +135,6 @@ def send_boolean(action: dict, value: bool) -> None:
     if not action["enabled"]:
         return
 
-    if action["floating"] == -1:
-        if value:
-            action["last_value"] = not action["last_value"]
-            time.sleep(0.1)
-        oscClient.send_message(AVATAR_PARAMETERS_PREFIX + action["osc_parameter"], action["last_value"])
-        add_to_debugoutput(action["osc_parameter"], action["last_value"], action["floating"])
-        return
-    
     if value:
         action["timestamp"] = curr_time
     elif not value and curr_time - action["timestamp"] <= action["floating"]: 
@@ -246,7 +257,10 @@ def handle_input() -> None:
         val = get_value(action)
         match action['type']:
             case "boolean":
-                send_boolean(action, val)
+                if action["floating"] == -1:
+                    send_boolean_toggle(action, val)
+                else:
+                    send_boolean(action, val)
             case "vector1":
                 send_vector1(action, val)
             case "vector2":

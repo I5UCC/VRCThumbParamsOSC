@@ -31,7 +31,7 @@ namespace Configurator
             Tbx_PollingRate.Text = config.PollingRate.ToString();
             Tbx_StickMoveTolerance.Text = config.StickMoveTolerance.ToString();
 
-            ParameterList.Add(new BoolStringClass("ControllerType", config.ControllerType, "Integer", "Unavailable"));
+            ParameterList.Add(new BoolStringClass("ControllerType", config.ControllerType.enabled, "Integer", "Unavailable"));
             ParameterList.Add(new BoolStringClass("LeftThumb", config.LeftThumb, "Integer", "Influenced by bools"));
             ParameterList.Add(new BoolStringClass("RightThumb", config.RightThumb, "Integer", "Influenced by bools"));
 
@@ -103,7 +103,7 @@ namespace Configurator
             switch (name)
             {
                 case "ControllerType":
-                    config.ControllerType = check;
+                    config.ControllerType.enabled = check;
                     return;
                 case "LeftThumb":
                     config.LeftThumb = check;
@@ -173,7 +173,7 @@ namespace Configurator
                 item.IsSelected = false;
             }
 
-            config.ControllerType = false;
+            config.ControllerType.enabled = false;
             config.LeftThumb = false;
             config.RightThumb = false;
             config.LeftABButtons = false;
@@ -204,7 +204,7 @@ namespace Configurator
                 item.IsSelected = true;
             }
 
-            config.ControllerType = true;
+            config.ControllerType.enabled = true;
             config.LeftThumb = true;
             config.RightThumb = true;
             config.LeftABButtons = true;

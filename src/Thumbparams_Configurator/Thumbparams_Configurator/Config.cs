@@ -13,6 +13,13 @@ namespace Configurator
         public object last_value { get; set; }
     }
 
+    public class ControllerType
+    {
+        public bool enabled { get; set; }
+        public int last_value { get; set; }
+        public int timestamp { get; set; }
+    }
+
     public class DefaultBinding
     {
         public string controller_type { get; set; }
@@ -25,7 +32,7 @@ namespace Configurator
         public int Port { get; set; }
         public int PollingRate { get; set; }
         public int StickMoveTolerance { get; set; }
-        public bool ControllerType { get; set; }
+        public ControllerType ControllerType { get; set; }
         public bool LeftThumb { get; set; }
         public bool RightThumb { get; set; }
         public bool LeftABButtons { get; set; }

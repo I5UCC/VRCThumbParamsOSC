@@ -22,7 +22,11 @@ def get_absolute_path(relative_path) -> str:
 
 
 def cls() -> None:
-    """Clears Console"""
+    """
+    Clears Console.
+    Returns:
+        None
+    """
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
@@ -89,17 +93,18 @@ def get_controllertype() -> int:
     return 0
 
 
-def send_special(parameter: str, value) -> None:
+def send_parameter(parameter: str, value, floating="") -> None:
     """
-    Sends a 'special' action to VRChat via OSC.
+    Sends a parameter to VRChat via OSC.
     Parameters:
         parameter (str): Name of the parameter
         value (any): Value of the parameter
+        floating (str): Floating value of the parameter, just for for debug output
     Returns:
         None
     """
     oscClient.send_message(AVATAR_PARAMETERS_PREFIX + parameter, value)
-    add_to_debugoutput(parameter, value)
+    add_to_debugoutput(parameter, value, floating)
 
 
 def send_boolean_toggle(action: dict, value: bool) -> None:
@@ -117,8 +122,8 @@ def send_boolean_toggle(action: dict, value: bool) -> None:
     if value:
         action["last_value"] = not action["last_value"]
         time.sleep(0.1)
-    oscClient.send_message(AVATAR_PARAMETERS_PREFIX + action["osc_parameter"], action["last_value"])
-    add_to_debugoutput(action["osc_parameter"], action["last_value"], action["floating"])
+    
+    send_parameter(action["osc_parameter"], action["last_value"], action["floating"])
 
 
 def send_boolean(action: dict, value: bool) -> None:
@@ -135,15 +140,14 @@ def send_boolean(action: dict, value: bool) -> None:
     if not action["enabled"]:
         return
 
-    if value:
-        action["timestamp"] = curr_time
-    elif not value and curr_time - action["timestamp"] <= action["floating"]: 
-        value = action["last_value"]
+    if action["floating"]:
+        if value:
+            action["timestamp"] = curr_time
+            action["last_value"] = value
+        elif not value and curr_time - action["timestamp"] <= action["floating"]: 
+            value = action["last_value"]
 
-    action["last_value"] = value
-
-    oscClient.send_message(AVATAR_PARAMETERS_PREFIX + action["osc_parameter"], value)
-    add_to_debugoutput(action["osc_parameter"], value, action["floating"])
+    send_parameter(action["osc_parameter"], value, action["floating"])
 
 
 def send_vector1(action: dict, value: float) -> None:
@@ -160,15 +164,14 @@ def send_vector1(action: dict, value: float) -> None:
     if not action["enabled"]:
         return
     
-    if value > action["last_value"]:
-        action["timestamp"] = curr_time
-    elif value < action["last_value"] and curr_time - action["timestamp"] <= action["floating"]: 
-        value = action["last_value"]
-    
-    action["last_value"] = value
+    if action["floating"]:
+        if value > action["last_value"]:
+            action["timestamp"] = curr_time
+            action["last_value"] = value
+        elif value < action["last_value"] and curr_time - action["timestamp"] <= action["floating"]: 
+            value = action["last_value"]
 
-    oscClient.send_message(AVATAR_PARAMETERS_PREFIX + action["osc_parameter"], value)
-    add_to_debugoutput(action["osc_parameter"], value, action["floating"])
+    send_parameter(action["osc_parameter"], value, action["floating"])
 
 
 def send_vector2(action: dict, value: tuple) -> None:
@@ -183,28 +186,27 @@ def send_vector2(action: dict, value: tuple) -> None:
     global curr_time
 
     val_x, val_y = value
-    tmp = False
-    if val_x:
-        action["timestamp"][0] = curr_time
-    elif not val_x and curr_time - action["timestamp"][0] <= action["floating"][0]: 
-        val_x = action["last_value"][0]
-    if val_y:
-        action["timestamp"][1] = curr_time
-    elif not val_y and curr_time - action["timestamp"][1] <= action["floating"][1]:
-        val_y = action["last_value"][1]
+    tmp = (val_x > STICKTOLERANCE or val_y > STICKTOLERANCE) or (val_x < -STICKTOLERANCE or val_y < -STICKTOLERANCE)
+
+    if action["floating"]:
+        if val_x:
+            action["timestamp"][0] = curr_time
+        elif not val_x and curr_time - action["timestamp"][0] <= action["floating"][0]: 
+            val_x = action["last_value"][0]
+        if val_y:
+            action["timestamp"][1] = curr_time
+        elif not val_y and curr_time - action["timestamp"][1] <= action["floating"][1]:
+            val_y = action["last_value"][1]
+        action["last_value"] = [val_x, val_y, tmp]
 
     if action["enabled"][0]:
-        oscClient.send_message(AVATAR_PARAMETERS_PREFIX + action["osc_parameter"][0], val_x)
-        add_to_debugoutput(action["osc_parameter"][0], val_x, action["floating"][0])
+        send_parameter(action["osc_parameter"][0], val_x, action["floating"][0])
     if action["enabled"][1]:
-        oscClient.send_message(AVATAR_PARAMETERS_PREFIX + action["osc_parameter"][1], val_y)
-        add_to_debugoutput(action["osc_parameter"][1], val_y, action["floating"][1])
+        send_parameter(action["osc_parameter"][1], val_y, action["floating"][1])
     if len(action["osc_parameter"]) > 2 and action["enabled"][2]:
-        tmp = (val_x > STICKTOLERANCE or val_y > STICKTOLERANCE) or (val_x < -STICKTOLERANCE or val_y < -STICKTOLERANCE)
-        oscClient.send_message(AVATAR_PARAMETERS_PREFIX + action["osc_parameter"][2], tmp)
-        add_to_debugoutput(action["osc_parameter"][2], tmp)
-
-    action["last_value"] = [val_x, val_y, tmp]
+        if action["floating"]:
+            action["last_value"][2] = tmp
+        send_parameter(action["osc_parameter"][2], tmp)
 
 
 def handle_input() -> None:
@@ -231,7 +233,7 @@ def handle_input() -> None:
             _controller_type = get_controllertype()
             config["ControllerType"]["timestamp"] = curr_time
             config["ControllerType"]["last_value"] = _controller_type
-        send_special("ControllerType", _controller_type)
+        send_parameter("ControllerType", _controller_type)
         
 
     _strinputs = ""
@@ -242,16 +244,16 @@ def handle_input() -> None:
             send_boolean(action, val)
     if config["LeftThumb"]:
         _leftthumb = _strinputs[:4].rfind("1") + 1
-        send_special("LeftThumb", _leftthumb)
+        send_parameter("LeftThumb", _leftthumb)
     if config["RightThumb"]:
         _rightthumb = _strinputs[4:].rfind("1") + 1
-        send_special("RightThumb", _rightthumb)
+        send_parameter("RightThumb", _rightthumb)
     if config["LeftABButtons"]:
         _leftab = _strinputs[0] == "1" and _strinputs[1] == "1"
-        send_special("LeftABButtons", _leftab)
+        send_parameter("LeftABButtons", _leftab)
     if config["RightABButtons"]:
         _rightab = _strinputs[4] == "1" and _strinputs[5] == "1"
-        send_special("RightABButtons", _rightab)
+        send_parameter("RightABButtons", _rightab)
 
     for action in actions[8:]:
         val = get_value(action)

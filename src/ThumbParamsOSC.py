@@ -9,18 +9,33 @@ import argparse
 from pythonosc import udp_client
 
 
-def get_absolute_path(relative_path):
-    """Gets absolute path from relative path"""
+def get_absolute_path(relative_path) -> str:
+    """
+    Gets absolute path from relative path
+    Parameters:
+        relative_path (str): Relative path
+    Returns:
+        str: Absolute path
+    """
     base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
     return os.path.join(base_path, relative_path)
 
 
-def cls():
+def cls() -> None:
     """Clears Console"""
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
-def add_to_debugoutput(parameter, value, floating=""):
+def add_to_debugoutput(parameter, value, floating="") -> None:
+    """
+    Adds a line to the debugoutput string.
+    Parameters:
+        parameter (str): Name of the parameter
+        value (any): Value of the parameter
+        floating (str): Floating value of the parameter
+    Returns:
+        None
+    """
     global debugoutput
 
     if not args.debug:
@@ -35,7 +50,14 @@ def add_to_debugoutput(parameter, value, floating=""):
     debugoutput += f"{parameter.ljust(23, ' ')}\t{str(value).ljust(10, ' ')}\t{tmp}\n"
 
 
-def get_value(action):
+def get_value(action: dict) -> bool | float | tuple:
+    """
+    Gets the value of an action by querying SteamVR.
+    Parameters:
+        action (dict): Action
+    Returns:
+        any: Value of the action
+    """
     match action['type']:
         case "boolean":
             return bool(openvr.VRInput().getDigitalActionData(action['handle'], openvr.k_ulInvalidInputValueHandle).bState)
@@ -48,7 +70,12 @@ def get_value(action):
             raise TypeError("Unknown action type: " + action['type'])
 
 
-def get_controllertype():
+def get_controllertype() -> int:
+    """
+    Gets the type of controller from SteamVR.
+    Returns:
+        int: Type of controller (0 = Unknown, 1 = Knuckles, 2 = Oculus/Meta Touch)
+    """
     for i in range(1, openvr.k_unMaxTrackedDeviceCount):
         device_class = openvr.VRSystem().getTrackedDeviceClass(i)
         if device_class == 2:
@@ -62,12 +89,28 @@ def get_controllertype():
     return 0
 
 
-def send_special(action: str, value):
-    oscClient.send_message(AVATAR_PARAMETERS_PREFIX + action, value)
-    add_to_debugoutput(action, value)
+def send_special(parameter: str, value) -> None:
+    """
+    Sends a 'special' action to VRChat via OSC.
+    Parameters:
+        parameter (str): Name of the parameter
+        value (any): Value of the parameter
+    Returns:
+        None
+    """
+    oscClient.send_message(AVATAR_PARAMETERS_PREFIX + parameter, value)
+    add_to_debugoutput(parameter, value)
 
 
-def send_boolean(action: dict, value: bool):
+def send_boolean(action: dict, value: bool) -> None:
+    """
+    Sends a boolean action to VRChat via OSC.
+    Parameters:
+        action (dict): Action
+        value (bool): Value of the parameter
+    Returns:
+        None
+    """
     global curr_time
 
     if not action["enabled"]:
@@ -92,7 +135,15 @@ def send_boolean(action: dict, value: bool):
     add_to_debugoutput(action["osc_parameter"], value, action["floating"])
 
 
-def send_vector1(action: dict, value: float):
+def send_vector1(action: dict, value: float) -> None:
+    """
+    Sends a vector1 action to VRChat via OSC.
+    Parameters:
+        action (dict): Action
+        value (float): Value of the parameter
+    Returns:
+        None
+    """
     global curr_time
 
     if not action["enabled"]:
@@ -109,7 +160,15 @@ def send_vector1(action: dict, value: float):
     add_to_debugoutput(action["osc_parameter"], value, action["floating"])
 
 
-def send_vector2(action: dict, value: tuple):
+def send_vector2(action: dict, value: tuple) -> None:
+    """
+    Sends a vector2 action to VRChat via OSC.
+    Parameters:
+        action (dict): Action
+        value (tuple): X and Y value of the parameter in a tuple
+    Returns:
+        None
+    """
     global curr_time
 
     val_x, val_y = value
@@ -137,7 +196,12 @@ def send_vector2(action: dict, value: tuple):
     action["last_value"] = [val_x, val_y, tmp]
 
 
-def handle_input():
+def handle_input() -> None:
+    """
+    Handles SteamVR input and sends it to VRChat.
+    Returns:
+        None
+    """
     global curr_time, debugoutput
 
     _event = openvr.VREvent_t()

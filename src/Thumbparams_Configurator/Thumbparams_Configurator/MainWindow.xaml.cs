@@ -28,15 +28,17 @@ namespace Configurator
 
             Tbx_IP.Text = config.IP;
             Tbx_Port.Text = config.Port.ToString();
+            Tbx_Server_Port.Text = config.Server_Port.ToString();
+            Tbx_http_port.Text = config.HTTP_Port.ToString();
             Tbx_PollingRate.Text = config.PollingRate.ToString();
             Tbx_StickMoveTolerance.Text = config.StickMoveTolerance.ToString();
 
             ParameterList.Add(new BoolStringClass("ControllerType", config.ControllerType.enabled, "Integer", "Unavailable"));
-            ParameterList.Add(new BoolStringClass("LeftThumb", config.LeftThumb, "Integer", "Influenced by bools"));
-            ParameterList.Add(new BoolStringClass("RightThumb", config.RightThumb, "Integer", "Influenced by bools"));
+            ParameterList.Add(new BoolStringClass("LeftThumb", config.LeftThumb.enabled, "Integer", "Influenced by bools"));
+            ParameterList.Add(new BoolStringClass("RightThumb", config.RightThumb.enabled, "Integer", "Influenced by bools"));
 
-            ParameterList.Add(new BoolStringClass("LeftABButtons", config.LeftABButtons, "Boolean", "Influenced by A,B"));
-            ParameterList.Add(new BoolStringClass("RightABButtons", config.RightABButtons, "Boolean", "Influenced by A,B"));
+            ParameterList.Add(new BoolStringClass("LeftABButtons", config.LeftABButtons.enabled, "Boolean", "Influenced by A,B"));
+            ParameterList.Add(new BoolStringClass("RightABButtons", config.RightABButtons.enabled, "Boolean", "Influenced by A,B"));
 
             foreach (Action a in config.actions) {
                 if (a.type != "vector2")
@@ -106,16 +108,16 @@ namespace Configurator
                     config.ControllerType.enabled = check;
                     return;
                 case "LeftThumb":
-                    config.LeftThumb = check;
+                    config.LeftThumb.enabled = check;
                     return;
                 case "RightThumb":
-                    config.RightThumb = check;
+                    config.RightThumb.enabled = check;
                     return;
                 case "LeftABButtons":
-                    config.LeftABButtons = check;
+                    config.LeftABButtons.enabled = check;
                     return;
                 case "RightABButtons":
-                    config.RightABButtons = check;
+                    config.RightABButtons.enabled = check;
                     return;
             }
 
@@ -155,6 +157,10 @@ namespace Configurator
 
             Tbx_Port.Text = Regex.Replace(Tbx_Port.Text, "[^0-9]", "");
             Tbx_Port.SelectionStart = Tbx_Port.Text.Length;
+            Tbx_Server_Port.Text = Regex.Replace(Tbx_Server_Port.Text, "[^0-9]", "");
+            Tbx_Server_Port.SelectionStart = Tbx_Server_Port.Text.Length;
+            Tbx_http_port.Text = Regex.Replace(Tbx_http_port.Text, "[^0-9]", "");
+            Tbx_http_port.SelectionStart = Tbx_http_port.Text.Length;
             Tbx_PollingRate.Text = Regex.Replace(Tbx_PollingRate.Text, "[^0-9]", "");
             Tbx_PollingRate.SelectionStart = Tbx_PollingRate.Text.Length;
             Tbx_StickMoveTolerance.Text = Regex.Replace(Tbx_StickMoveTolerance.Text, "[^0-9]", "");
@@ -162,6 +168,8 @@ namespace Configurator
 
             config.IP = Tbx_IP.Text;
             config.Port = int.Parse(Tbx_Port.Text);
+            config.Server_Port = int.Parse(Tbx_Server_Port.Text);
+            config.HTTP_Port = int.Parse(Tbx_http_port.Text);
             config.PollingRate = int.Parse(Tbx_PollingRate.Text);
             config.StickMoveTolerance = int.Parse(Tbx_StickMoveTolerance.Text);
         }
@@ -174,10 +182,10 @@ namespace Configurator
             }
 
             config.ControllerType.enabled = false;
-            config.LeftThumb = false;
-            config.RightThumb = false;
-            config.LeftABButtons = false;
-            config.RightABButtons = false;
+            config.LeftThumb.enabled = false;
+            config.RightThumb.enabled = false;
+            config.LeftABButtons.enabled = false;
+            config.RightABButtons.enabled = false;
 
             foreach (Action a in config.actions)
             {
@@ -205,10 +213,10 @@ namespace Configurator
             }
 
             config.ControllerType.enabled = true;
-            config.LeftThumb = true;
-            config.RightThumb = true;
-            config.LeftABButtons = true;
-            config.RightABButtons = true;
+            config.LeftThumb.enabled = true;
+            config.RightThumb.enabled = true;
+            config.LeftABButtons.enabled = true;
+            config.RightABButtons.enabled = true;
 
             foreach (Action a in config.actions)
             {

@@ -68,7 +68,7 @@ def wait_get_oscquery_client():
 
 
 def osc_server_serve():
-    print(f"Starting OSC client on {osc_server_ip}:{osc_server_port}:{http_port}")
+    print(f"Starting OSC client on {IP}:{SERVER_PORT}:{HTTP_PORT}")
     server.serve_forever(2)
 
 
@@ -429,24 +429,24 @@ for action in actions:
 
 IP = args.ip if args.ip else config["IP"]
 PORT = args.port if args.port else config["Port"]
-osc_server_ip = IP
-osc_server_port = config["server_port"]
-http_port = config["http_port"]
-oscClient = udp_client.SimpleUDPClient(IP, PORT)
+SERVER_PORT = config["Server_Port"]
+HTTP_PORT = config["HTTP_Port"]
 POLLINGRATE = 1 / float(config['PollingRate'])
 STICKTOLERANCE = int(config['StickMoveTolerance']) / 100
 AVATAR_PARAMETERS_PREFIX = "/avatar/parameters/"
 AVATAR_CHANGE_PARAMETER = "/avatar/change"
 
+oscClient = udp_client.SimpleUDPClient(IP, PORT)
+
 disp = dispatcher.Dispatcher()
 disp.map(AVATAR_CHANGE_PARAMETER, set_avatar_change)
 
-if osc_server_port != 9001:
+if SERVER_PORT != 9001:
     print("OSC Server port is not default, testing port availability and advertising OSCQuery endpoints")
-    if osc_server_port <= 0 or not check_if_udp_port_open(osc_server_port):
-        osc_server_port = get_open_udp_port()
-    if http_port <= 0 or not check_if_tcp_port_open(http_port):
-        http_port = osc_server_port if check_if_tcp_port_open(osc_server_port) else get_open_tcp_port()
+    if SERVER_PORT <= 0 or not check_if_udp_port_open(SERVER_PORT):
+        SERVER_PORT = get_open_udp_port()
+    if HTTP_PORT <= 0 or not check_if_tcp_port_open(HTTP_PORT):
+        HTTP_PORT = SERVER_PORT if check_if_tcp_port_open(SERVER_PORT) else get_open_tcp_port()
 else:
     print("OSC Server port is default.")
 
@@ -457,10 +457,10 @@ try:
     print("VRChat started!")
     qclient = wait_get_oscquery_client()
     curr_avatar = qclient.query_node(AVATAR_CHANGE_PARAMETER).value[0]
-    server = osc_server.ThreadingOSCUDPServer((osc_server_ip, osc_server_port), disp)
+    server = osc_server.ThreadingOSCUDPServer((IP, SERVER_PORT), disp)
     server_thread = Thread(target=osc_server_serve, daemon=True)
     server_thread.start()
-    oscqs = OSCQueryService("ThumbParamsOSC", http_port, osc_server_port)
+    oscqs = OSCQueryService("ThumbParamsOSC", HTTP_PORT, SERVER_PORT)
     oscqs.advertise_endpoint(AVATAR_CHANGE_PARAMETER, access="readwrite")
 except OSError as e:
     print("You can only bind to the port 9001 once.")

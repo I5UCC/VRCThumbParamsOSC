@@ -9,3 +9,4 @@ venv/
 obj/
 bin/
 .vs/
+__pycache__/

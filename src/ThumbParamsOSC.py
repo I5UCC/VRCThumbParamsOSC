@@ -393,8 +393,7 @@ def handle_input() -> None:
                 send_vector2(action, val)
             case _:
                 raise TypeError("Unknown action type: " + action['type'])
-    
-    args.debug = True
+
     if args.debug:
         print_debugoutput()
 

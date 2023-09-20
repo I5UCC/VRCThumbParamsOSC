@@ -30,20 +30,16 @@ def cls() -> None:
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
-def add_to_debugoutput(parameter, value, floating="") -> None:
+def get_debug_string(parameter, value, floating="") -> str:
     """
-    Adds a line to the debugoutput string.
+    Gets a string for the debug output.
     Parameters:
         parameter (str): Name of the parameter
         value (any): Value of the parameter
         floating (str): Floating value of the parameter
     Returns:
-        None
+        str: Debug output string
     """
-    global debugoutput
-
-    if not args.debug:
-        return
 
     if isinstance(value, float):
         value = f"{value:.4f}"
@@ -51,7 +47,37 @@ def add_to_debugoutput(parameter, value, floating="") -> None:
     tmp = ""
     if floating != "" and float(floating) > 0:
         tmp = f"Floating: {floating}s"
-    debugoutput += f"{parameter.ljust(23, ' ')}\t{str(value).ljust(10, ' ')}\t{tmp}\n"
+    return f"{parameter.ljust(23, ' ')}\t{str(value).ljust(10, ' ')}\t{tmp}\n"
+
+
+def print_debugoutput() -> None:
+    """
+    Prints the debugoutput string.
+    Returns:
+        None
+    """
+    global config
+    
+    _debugoutput = ""
+    cls()
+
+    _debugoutput += get_debug_string("ControllerType", config["ControllerType"]["last_value"])
+    _debugoutput += get_debug_string("LeftThumb", config["LeftThumb"]["last_value"])
+    _debugoutput += get_debug_string("RightThumb", config["RightThumb"]["last_value"])
+    _debugoutput += get_debug_string("LeftABButtons", config["LeftABButtons"]["last_value"])
+    _debugoutput += get_debug_string("RightABButtons", config["RightABButtons"]["last_value"])
+
+    for action in actions:
+        if action["enabled"]:
+            if action["type"] == "vector2":
+                _debugoutput += get_debug_string(action["osc_parameter"][0], action["last_value"][0], action["floating"][0])
+                _debugoutput += get_debug_string(action["osc_parameter"][1], action["last_value"][1], action["floating"][1])
+                if len(action["osc_parameter"]) > 2:
+                    _debugoutput += get_debug_string(action["osc_parameter"][2], action["last_value"][2], action["floating"][2])
+            else:
+                _debugoutput += get_debug_string(action["osc_parameter"], action["last_value"], action["floating"])
+
+    print(_debugoutput)
 
 
 def get_value(action: dict) -> bool | float | tuple:
@@ -93,7 +119,7 @@ def get_controllertype() -> int:
     return 0
 
 
-def send_parameter(parameter: str, value, floating="") -> None:
+def send_parameter(parameter: str, value) -> None:
     """
     Sends a parameter to VRChat via OSC.
     Parameters:
@@ -104,7 +130,6 @@ def send_parameter(parameter: str, value, floating="") -> None:
         None
     """
     oscClient.send_message(AVATAR_PARAMETERS_PREFIX + parameter, value)
-    add_to_debugoutput(parameter, value, floating)
 
 
 def send_boolean_toggle(action: dict, value: bool) -> None:
@@ -123,7 +148,7 @@ def send_boolean_toggle(action: dict, value: bool) -> None:
         action["last_value"] = not action["last_value"]
         time.sleep(0.1)
     
-    send_parameter(action["osc_parameter"], action["last_value"], action["floating"])
+    send_parameter(action["osc_parameter"], action["last_value"])
 
 
 def send_boolean(action: dict, value: bool) -> None:
@@ -143,11 +168,12 @@ def send_boolean(action: dict, value: bool) -> None:
     if action["floating"]:
         if value:
             action["timestamp"] = curr_time
-            action["last_value"] = value
         elif not value and curr_time - action["timestamp"] <= action["floating"]: 
             value = action["last_value"]
+    
+    action["last_value"] = value
 
-    send_parameter(action["osc_parameter"], value, action["floating"])
+    send_parameter(action["osc_parameter"], value)
 
 
 def send_vector1(action: dict, value: float) -> None:
@@ -167,11 +193,12 @@ def send_vector1(action: dict, value: float) -> None:
     if action["floating"]:
         if value > action["last_value"]:
             action["timestamp"] = curr_time
-            action["last_value"] = value
         elif value < action["last_value"] and curr_time - action["timestamp"] <= action["floating"]: 
             value = action["last_value"]
 
-    send_parameter(action["osc_parameter"], value, action["floating"])
+    action["last_value"] = value
+
+    send_parameter(action["osc_parameter"], value)
 
 
 def send_vector2(action: dict, value: tuple) -> None:
@@ -197,12 +224,12 @@ def send_vector2(action: dict, value: tuple) -> None:
             action["timestamp"][1] = curr_time
         elif not val_y and curr_time - action["timestamp"][1] <= action["floating"][1]:
             val_y = action["last_value"][1]
-        action["last_value"] = [val_x, val_y, tmp]
+    action["last_value"] = [val_x, val_y, tmp]
 
     if action["enabled"][0]:
-        send_parameter(action["osc_parameter"][0], val_x, action["floating"][0])
+        send_parameter(action["osc_parameter"][0], val_x)
     if action["enabled"][1]:
-        send_parameter(action["osc_parameter"][1], val_y, action["floating"][1])
+        send_parameter(action["osc_parameter"][1], val_y)
     if len(action["osc_parameter"]) > 2 and action["enabled"][2]:
         if action["floating"]:
             action["last_value"][2] = tmp
@@ -215,7 +242,7 @@ def handle_input() -> None:
     Returns:
         None
     """
-    global curr_time, debugoutput
+    global curr_time
 
     _event = openvr.VREvent_t()
     _has_events = True
@@ -223,7 +250,6 @@ def handle_input() -> None:
         _has_events = application.pollNextEvent(_event)
     openvr.VRInput().updateActionState(actionsets)
 
-    debugoutput = ""
     curr_time = time.time()
 
     if config["ControllerType"]["enabled"]:
@@ -242,17 +268,21 @@ def handle_input() -> None:
         _strinputs += "1" if val else "0"
         if action["enabled"]:
             send_boolean(action, val)
-    if config["LeftThumb"]:
+    if config["LeftThumb"]["enabled"]:
         _leftthumb = _strinputs[:4].rfind("1") + 1
+        config["LeftThumb"]["last_value"] = _leftthumb
         send_parameter("LeftThumb", _leftthumb)
-    if config["RightThumb"]:
+    if config["RightThumb"]["enabled"]:
         _rightthumb = _strinputs[4:].rfind("1") + 1
+        config["RightThumb"]["last_value"] = _rightthumb
         send_parameter("RightThumb", _rightthumb)
-    if config["LeftABButtons"]:
+    if config["LeftABButtons"]["enabled"]:
         _leftab = _strinputs[0] == "1" and _strinputs[1] == "1"
+        config["LeftABButtons"]["last_value"] = _leftab
         send_parameter("LeftABButtons", _leftab)
-    if config["RightABButtons"]:
+    if config["RightABButtons"]["enabled"]:
         _rightab = _strinputs[4] == "1" and _strinputs[5] == "1"
+        config["RightABButtons"]["last_value"] = _rightab
         send_parameter("RightABButtons", _rightab)
 
     for action in actions[8:]:
@@ -271,8 +301,7 @@ def handle_input() -> None:
                 raise TypeError("Unknown action type: " + action['type'])
 
     if args.debug:
-        cls()
-        print(debugoutput.strip())
+        print_debugoutput()
 
 
 # Argument Parser

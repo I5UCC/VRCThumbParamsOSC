@@ -8,10 +8,22 @@
     "last_value": 0,
     "timestamp": 0
   },
-  "LeftThumb": true,
-  "RightThumb": true,
-  "LeftABButtons": true,
-  "RightABButtons": true,
+  "LeftThumb": {
+    "enabled": true,
+    "last_value": 0
+  },
+  "RightThumb": {
+    "enabled": true,
+    "last_value": 0
+  },
+  "LeftABButtons": {
+    "enabled": true,
+    "last_value": 0
+  },
+  "RightABButtons": {
+    "enabled": true,
+    "last_value": 0
+  },
   "default_bindings": [
     {
       "controller_type": "knuckles",

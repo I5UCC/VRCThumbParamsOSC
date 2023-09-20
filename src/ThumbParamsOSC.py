@@ -147,8 +147,7 @@ def send_boolean_toggle(action: dict, value: bool) -> None:
     if value:
         action["last_value"] = not action["last_value"]
         time.sleep(0.1)
-    
-    send_parameter(action["osc_parameter"], action["last_value"])
+        send_parameter(action["osc_parameter"], action["last_value"])
 
 
 def send_boolean(action: dict, value: bool) -> None:
@@ -162,7 +161,7 @@ def send_boolean(action: dict, value: bool) -> None:
     """
     global curr_time
 
-    if not action["enabled"]:
+    if not action["enabled"] or action["last_value"] == value:
         return
 
     if action["floating"]:
@@ -187,7 +186,7 @@ def send_vector1(action: dict, value: float) -> None:
     """
     global curr_time
 
-    if not action["enabled"]:
+    if not action["enabled"] or action["last_value"] == value:
         return
     
     if action["floating"]:
@@ -224,13 +223,14 @@ def send_vector2(action: dict, value: tuple) -> None:
             action["timestamp"][1] = curr_time
         elif not val_y and curr_time - action["timestamp"][1] <= action["floating"][1]:
             val_y = action["last_value"][1]
+
     action["last_value"] = [val_x, val_y, tmp]
 
-    if action["enabled"][0]:
+    if action["enabled"][0] and action["last_value"][0] != val_x:
         send_parameter(action["osc_parameter"][0], val_x)
-    if action["enabled"][1]:
+    if action["enabled"][1] and action["last_value"][1] != val_y:
         send_parameter(action["osc_parameter"][1], val_y)
-    if len(action["osc_parameter"]) > 2 and action["enabled"][2]:
+    if len(action["osc_parameter"]) > 2 and action["enabled"][2] and action["last_value"][2] != tmp:
         if action["floating"]:
             action["last_value"][2] = tmp
         send_parameter(action["osc_parameter"][2], tmp)
@@ -253,37 +253,39 @@ def handle_input() -> None:
     curr_time = time.time()
 
     if config["ControllerType"]["enabled"]:
-        if curr_time - config["ControllerType"]["timestamp"] <= 10.0:
-            _controller_type = config["ControllerType"]["last_value"]
-        else:
+        if curr_time - config["ControllerType"]["timestamp"] > 10.0:
             _controller_type = get_controllertype()
             config["ControllerType"]["timestamp"] = curr_time
+            if config["ControllerType"]["last_value"] != _controller_type:
+                send_parameter("ControllerType", _controller_type)
             config["ControllerType"]["last_value"] = _controller_type
-        send_parameter("ControllerType", _controller_type)
-        
 
     _strinputs = ""
     for action in actions[:8]: # Touch Actions
         val = get_value(action)
         _strinputs += "1" if val else "0"
-        if action["enabled"]:
+        if action["enabled"] and action["last_value"] != val:
             send_boolean(action, val)
     if config["LeftThumb"]["enabled"]:
         _leftthumb = _strinputs[:4].rfind("1") + 1
+        if config["LeftThumb"]["last_value"] != _leftthumb:
+            send_parameter("LeftThumb", _leftthumb)
         config["LeftThumb"]["last_value"] = _leftthumb
-        send_parameter("LeftThumb", _leftthumb)
     if config["RightThumb"]["enabled"]:
         _rightthumb = _strinputs[4:].rfind("1") + 1
+        if config["RightThumb"]["last_value"] != _rightthumb:
+            send_parameter("RightThumb", _rightthumb)
         config["RightThumb"]["last_value"] = _rightthumb
-        send_parameter("RightThumb", _rightthumb)
     if config["LeftABButtons"]["enabled"]:
         _leftab = _strinputs[0] == "1" and _strinputs[1] == "1"
+        if config["LeftABButtons"]["last_value"] != _leftab:
+            send_parameter("LeftABButtons", _leftab)
         config["LeftABButtons"]["last_value"] = _leftab
-        send_parameter("LeftABButtons", _leftab)
     if config["RightABButtons"]["enabled"]:
         _rightab = _strinputs[4] == "1" and _strinputs[5] == "1"
+        if config["RightABButtons"]["last_value"] != _rightab:
+            send_parameter("RightABButtons", _rightab)
         config["RightABButtons"]["last_value"] = _rightab
-        send_parameter("RightABButtons", _rightab)
 
     for action in actions[8:]:
         val = get_value(action)
@@ -300,6 +302,7 @@ def handle_input() -> None:
             case _:
                 raise TypeError("Unknown action type: " + action['type'])
 
+    args.debug = True
     if args.debug:
         print_debugoutput()
 

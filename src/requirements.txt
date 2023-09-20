@@ -1,3 +1,6 @@
 python-osc
 openvr
 argparse
+zeroconf
+requests
+psutil

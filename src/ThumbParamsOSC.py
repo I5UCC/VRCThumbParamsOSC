@@ -6,7 +6,13 @@ import time
 import traceback
 import ctypes
 import argparse
-from pythonosc import udp_client
+import zeroconf
+from pythonosc import udp_client, dispatcher, osc_server
+from tinyoscquery.queryservice import OSCQueryService
+from tinyoscquery.utility import get_open_tcp_port, get_open_udp_port, check_if_tcp_port_open, check_if_udp_port_open
+from tinyoscquery.query import OSCQueryBrowser, OSCQueryClient
+from psutil import process_iter
+from threading import Thread
 
 
 def get_absolute_path(relative_path) -> str:
@@ -30,6 +36,42 @@ def cls() -> None:
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
+def is_running() -> bool:
+        """
+        Checks if VRChat is running.
+        Returns:
+            bool: True if VRChat is running, False if not
+        """
+        _proc_name = "VRChat.exe" if os.name == 'nt' else "VRChat"
+        return _proc_name in (p.name() for p in process_iter())
+
+
+def wait_get_oscquery_client():
+    """
+    Waits for VRChat to be discovered and ready and returns the OSCQueryClient.
+    Returns:
+        OSCQueryClient: OSCQueryClient for VRChat
+    """
+    service_info = None
+    print("Waiting for VRChat to be discovered.")
+    while service_info is None:
+        browser = OSCQueryBrowser()
+        time.sleep(2) # Wait for discovery
+        service_info = browser.find_service_by_name("VRChat")
+    print("VRChat discovered!")
+    client = OSCQueryClient(service_info)
+    print("Waiting for VRChat to be ready.")
+    while client.query_node(AVATAR_CHANGE_PARAMETER) is None:
+        time.sleep(2)
+    print("VRChat ready!")
+    return client
+
+
+def osc_server_serve():
+    print(f"Starting OSC client on {osc_server_ip}:{osc_server_port}:{http_port}")
+    server.serve_forever(2)
+
+
 def get_debug_string(parameter, value, floating="") -> str:
     """
     Gets a string for the debug output.
@@ -40,7 +82,6 @@ def get_debug_string(parameter, value, floating="") -> str:
     Returns:
         str: Debug output string
     """
-
     if isinstance(value, float):
         value = f"{value:.4f}"
 
@@ -56,16 +97,19 @@ def print_debugoutput() -> None:
     Returns:
         None
     """
-    global config
-    
     _debugoutput = ""
     cls()
 
-    _debugoutput += get_debug_string("ControllerType", config["ControllerType"]["last_value"])
-    _debugoutput += get_debug_string("LeftThumb", config["LeftThumb"]["last_value"])
-    _debugoutput += get_debug_string("RightThumb", config["RightThumb"]["last_value"])
-    _debugoutput += get_debug_string("LeftABButtons", config["LeftABButtons"]["last_value"])
-    _debugoutput += get_debug_string("RightABButtons", config["RightABButtons"]["last_value"])
+    if config["ControllerType"]["enabled"]:
+        _debugoutput += get_debug_string("ControllerType", config["ControllerType"]["last_value"])
+    if config["LeftThumb"]["enabled"]:
+        _debugoutput += get_debug_string("LeftThumb", config["LeftThumb"]["last_value"])
+    if config["RightThumb"]["enabled"]:
+        _debugoutput += get_debug_string("RightThumb", config["RightThumb"]["last_value"])
+    if config["LeftABButtons"]["enabled"]:
+        _debugoutput += get_debug_string("LeftABButtons", config["LeftABButtons"]["last_value"])
+    if config["RightABButtons"]["enabled"]:
+        _debugoutput += get_debug_string("RightABButtons", config["RightABButtons"]["last_value"])
 
     for action in actions:
         if action["enabled"]:
@@ -117,6 +161,50 @@ def get_controllertype() -> int:
                 case _:
                     return 0
     return 0
+
+
+def set_avatar_change(addr, value) -> None:
+    """
+    Sends all the last values to VRChat via OSC after the avatar has changed.
+    Parameters:
+        addr (str): OSC address
+        value (any): Value of the parameter
+    Returns:
+        None
+    """
+    global curr_avatar
+
+    if curr_avatar == value:
+        return
+    
+    curr_avatar = value
+
+    if config["ControllerType"]["enabled"]:
+        send_parameter("ControllerType", config["ControllerType"]["last_value"])
+    if config["LeftThumb"]["enabled"]:
+        send_parameter("LeftThumb", config["LeftThumb"]["last_value"])
+    if config["RightThumb"]["enabled"]:
+        send_parameter("RightThumb", config["RightThumb"]["last_value"])
+    if config["LeftABButtons"]["enabled"]:
+        send_parameter("LeftABButtons", config["LeftABButtons"]["last_value"])
+    if config["RightABButtons"]["enabled"]:
+        send_parameter("RightABButtons", config["RightABButtons"]["last_value"])
+
+    for action in actions:
+        if action["enabled"]:
+            continue
+        match action['type']:
+            case "boolean":
+                send_parameter(action["osc_parameter"], action["last_value"])
+            case "vector1":
+                send_parameter(action["osc_parameter"], action["last_value"])
+            case "vector2":
+                send_parameter(action["osc_parameter"][0], action["last_value"][0])
+                send_parameter(action["osc_parameter"][1], action["last_value"][1])
+                if len(action["osc_parameter"]) > 2:
+                    send_parameter(action["osc_parameter"][2], action["last_value"][2])
+            case _:
+                raise TypeError("Unknown action type: " + action['type'])
 
 
 def send_parameter(parameter: str, value) -> None:
@@ -266,21 +354,25 @@ def handle_input() -> None:
         _strinputs += "1" if val else "0"
         if action["enabled"] and action["last_value"] != val:
             send_boolean(action, val)
+
     if config["LeftThumb"]["enabled"]:
         _leftthumb = _strinputs[:4].rfind("1") + 1
         if config["LeftThumb"]["last_value"] != _leftthumb:
             send_parameter("LeftThumb", _leftthumb)
         config["LeftThumb"]["last_value"] = _leftthumb
+
     if config["RightThumb"]["enabled"]:
         _rightthumb = _strinputs[4:].rfind("1") + 1
         if config["RightThumb"]["last_value"] != _rightthumb:
             send_parameter("RightThumb", _rightthumb)
         config["RightThumb"]["last_value"] = _rightthumb
+
     if config["LeftABButtons"]["enabled"]:
         _leftab = _strinputs[0] == "1" and _strinputs[1] == "1"
         if config["LeftABButtons"]["last_value"] != _leftab:
             send_parameter("LeftABButtons", _leftab)
         config["LeftABButtons"]["last_value"] = _leftab
+
     if config["RightABButtons"]["enabled"]:
         _rightab = _strinputs[4] == "1" and _strinputs[5] == "1"
         if config["RightABButtons"]["last_value"] != _rightab:
@@ -301,7 +393,7 @@ def handle_input() -> None:
                 send_vector2(action, val)
             case _:
                 raise TypeError("Unknown action type: " + action['type'])
-
+    
     args.debug = True
     if args.debug:
         print_debugoutput()
@@ -338,10 +430,48 @@ for action in actions:
 
 IP = args.ip if args.ip else config["IP"]
 PORT = args.port if args.port else config["Port"]
+osc_server_ip = IP
+osc_server_port = config["server_port"]
+http_port = config["http_port"]
 oscClient = udp_client.SimpleUDPClient(IP, PORT)
 POLLINGRATE = 1 / float(config['PollingRate'])
 STICKTOLERANCE = int(config['StickMoveTolerance']) / 100
 AVATAR_PARAMETERS_PREFIX = "/avatar/parameters/"
+AVATAR_CHANGE_PARAMETER = "/avatar/change"
+
+disp = dispatcher.Dispatcher()
+disp.map(AVATAR_CHANGE_PARAMETER, set_avatar_change)
+
+if osc_server_port != 9001:
+    print("OSC Server port is not default, testing port availability and advertising OSCQuery endpoints")
+    if osc_server_port <= 0 or not check_if_udp_port_open(osc_server_port):
+        osc_server_port = get_open_udp_port()
+    if http_port <= 0 or not check_if_tcp_port_open(http_port):
+        http_port = osc_server_port if check_if_tcp_port_open(osc_server_port) else get_open_tcp_port()
+else:
+    print("OSC Server port is default.")
+
+try:
+    print("Waiting for VRChat to start.")
+    while not is_running():
+        time.sleep(3)
+    print("VRChat started!")
+    qclient = wait_get_oscquery_client()
+    curr_avatar = qclient.query_node(AVATAR_CHANGE_PARAMETER).value[0]
+    server = osc_server.ThreadingOSCUDPServer((osc_server_ip, osc_server_port), disp)
+    server_thread = Thread(target=osc_server_serve, daemon=True)
+    server_thread.start()
+    oscqs = OSCQueryService("ThumbParamsOSC", http_port, osc_server_port)
+    oscqs.advertise_endpoint(AVATAR_CHANGE_PARAMETER, access="readwrite")
+except OSError as e:
+    print("You can only bind to the port 9001 once.")
+    print(traceback.format_exc())
+    if os.name == "nt":
+        ctypes.windll.user32.MessageBoxW(0, "You can only bind to the port 9001 once.", "AvatarParameterSync - Error", 0)
+    sys.exit(1)
+except zeroconf._exceptions.NonUniqueNameException as e:
+    print.error("NonUniqueNameException, trying again...")
+    os.execv(sys.executable, ['python'] + sys.argv)
 
 cls()
 if not args.debug:

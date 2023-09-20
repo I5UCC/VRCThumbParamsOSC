@@ -1,6 +1,8 @@
 {
   "IP": "127.0.0.1",
   "Port": 9000,
+  "server_port": 0,
+  "http_port": 0,
   "PollingRate": 25,
   "StickMoveTolerance": 5,
   "ControllerType": {

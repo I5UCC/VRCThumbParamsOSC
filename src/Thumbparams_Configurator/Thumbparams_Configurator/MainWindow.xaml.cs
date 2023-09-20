@@ -291,6 +291,7 @@ namespace Configurator
                     dir.Delete(true);
                 }
             }
+            MessageBox.Show("OSC cache cleared!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)

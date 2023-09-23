@@ -37,16 +37,16 @@ def cls() -> None:
 
 
 def is_running() -> bool:
-        """
-        Checks if VRChat is running.
-        Returns:
-            bool: True if VRChat is running, False if not
-        """
-        _proc_name = "VRChat.exe" if os.name == 'nt' else "VRChat"
-        return _proc_name in (p.name() for p in process_iter())
+    """
+    Checks if VRChat is running.
+    Returns:
+        bool: True if VRChat is running, False if not
+    """
+    _proc_name = "VRChat.exe" if os.name == 'nt' else "VRChat"
+    return _proc_name in (p.name() for p in process_iter())
 
 
-def wait_get_oscquery_client():
+def wait_get_oscquery_client() -> OSCQueryClient:
     """
     Waits for VRChat to be discovered and ready and returns the OSCQueryClient.
     Returns:
@@ -67,7 +67,12 @@ def wait_get_oscquery_client():
     return client
 
 
-def osc_server_serve():
+def osc_server_serve() -> None:
+    """
+    Starts the OSC server.
+    Returns:
+        None
+    """
     print(f"Starting OSC client on {IP}:{SERVER_PORT}:{HTTP_PORT}")
     server.serve_forever(2)
 
@@ -194,20 +199,7 @@ def set_avatar_change(addr, value) -> None:
         send_parameter("RightABButtons", config["RightABButtons"]["last_value"])
 
     for action in actions:
-        if action["enabled"]:
-            continue
-        match action['type']:
-            case "boolean":
-                send_parameter(action["osc_parameter"], action["last_value"])
-            case "vector1":
-                send_parameter(action["osc_parameter"], action["last_value"])
-            case "vector2":
-                send_parameter(action["osc_parameter"][0], action["last_value"][0])
-                send_parameter(action["osc_parameter"][1], action["last_value"][1])
-                if len(action["osc_parameter"]) > 2:
-                    send_parameter(action["osc_parameter"][2], action["last_value"][2])
-            case _:
-                raise TypeError("Unknown action type: " + action['type'])
+        send_osc(action, action["last_value"])
 
 
 def send_parameter(parameter: str, value) -> None:
@@ -332,6 +324,33 @@ def send_vector2(action: dict, value: tuple) -> None:
         send_parameter(action["osc_parameter"][2], tmp)
 
 
+def send_osc(action: dict | str, value: bool | float | tuple) -> None:
+    """
+    Sends an OSC message to VRChat.
+    Parameters:
+        action (dict | str): Action or OSC address
+        value (bool | float | tuple): Value of the parameter
+    Returns:
+        None
+    """
+    if isinstance(action, str):
+        send_parameter(action, value)
+        return
+    
+    match action['type']:
+        case "boolean":
+            if action["floating"] == -1:
+                send_boolean_toggle(action, value)
+            else:
+                send_boolean(action, value)
+        case "vector1":
+            send_vector1(action, value)
+        case "vector2":
+            send_vector2(action, value)
+        case _:
+            raise TypeError("Unknown action type: " + action['type'])
+
+
 def handle_input() -> None:
     """
     Handles SteamVR input and sends it to VRChat.
@@ -353,7 +372,7 @@ def handle_input() -> None:
             _controller_type = get_controllertype()
             config["ControllerType"]["timestamp"] = curr_time
             if config["ControllerType"]["last_value"] != _controller_type:
-                send_parameter("ControllerType", _controller_type)
+                send_osc("ControllerType", _controller_type)
             else:
                 config["ControllerType"]["last_value"] = _controller_type
 
@@ -361,52 +380,40 @@ def handle_input() -> None:
     for action in actions[:8]: # Touch Actions
         val = get_value(action)
         _strinputs += "1" if val else "0"
-        send_boolean(action, val)
+        send_osc(action, val)
 
     if config["LeftThumb"]["enabled"]:
         _leftthumb = _strinputs[:4].rfind("1") + 1
         if config["LeftThumb"]["last_value"] != _leftthumb or config["LeftThumb"]["always"]:
-            send_parameter("LeftThumb", _leftthumb)
+            send_osc("LeftThumb", _leftthumb)
         else:
             config["LeftThumb"]["last_value"] = _leftthumb
 
     if config["RightThumb"]["enabled"]:
         _rightthumb = _strinputs[4:].rfind("1") + 1
         if config["RightThumb"]["last_value"] != _rightthumb or config["RightThumb"]["always"]:
-            send_parameter("RightThumb", _rightthumb)
+            send_osc("RightThumb", _rightthumb)
         else:
             config["RightThumb"]["last_value"] = _rightthumb
 
     if config["LeftABButtons"]["enabled"]:
         _leftab = _strinputs[0] == "1" and _strinputs[1] == "1"
         if config["LeftABButtons"]["last_value"] != _leftab or config["LeftABButtons"]["always"]:
-            send_parameter("LeftABButtons", _leftab)
+            send_osc("LeftABButtons", _leftab)
         else:
             config["LeftABButtons"]["last_value"] = _leftab
 
     if config["RightABButtons"]["enabled"]:
         _rightab = _strinputs[4] == "1" and _strinputs[5] == "1"
         if config["RightABButtons"]["last_value"] != _rightab or config["RightABButtons"]["always"]:
-            send_parameter("RightABButtons", _rightab)
+            send_osc("RightABButtons", _rightab)
         else:
             config["RightABButtons"]["last_value"] = _rightab
 
     for action in actions[8:]:
         val = get_value(action)
-        match action['type']:
-            case "boolean":
-                if action["floating"] == -1:
-                    send_boolean_toggle(action, val)
-                else:
-                    send_boolean(action, val)
-            case "vector1":
-                send_vector1(action, val)
-            case "vector2":
-                send_vector2(action, val)
-            case _:
-                raise TypeError("Unknown action type: " + action['type'])
+        send_osc(action, val)
 
-    args.debug = True
     if args.debug:
         print_debugoutput()
 

@@ -88,19 +88,6 @@ class OSC:
         self.server.serve_forever(2)
 
 
-    def _send_parameter(self, parameter: str, value) -> None:
-        """
-        Sends a parameter to VRChat via OSC.
-        Parameters:
-            parameter (str): Name of the parameter
-            value (any): Value of the parameter
-            floating (str): Floating value of the parameter, just for for debug output
-        Returns:
-            None
-        """
-        self.osc_client.send_message(AVATAR_PARAMETERS_PREFIX + parameter, value)
-
-
     def _send_boolean_toggle(self, action: dict, value: bool) -> None:
         """
         Sends a boolean action as a toggle to VRChat via OSC.
@@ -116,11 +103,11 @@ class OSC:
         if value:
             action["last_value"] = not action["last_value"]
             time.sleep(0.1)
-            self._send_parameter(action["osc_parameter"], action["last_value"])
+            self.send_parameter(action["osc_parameter"], action["last_value"])
             return
         
         if action["always"]:
-            self._send_parameter(action["osc_parameter"], action["last_value"])
+            self.send_parameter(action["osc_parameter"], action["last_value"])
 
 
     def _send_boolean(self, action: dict, value: bool) -> None:
@@ -144,7 +131,7 @@ class OSC:
                 value = action["last_value"]
 
         if _do_send:
-            self._send_parameter(action["osc_parameter"], value)
+            self.send_parameter(action["osc_parameter"], value)
             action["last_value"] = value
 
 
@@ -169,7 +156,7 @@ class OSC:
                 value = action["last_value"]
 
         if _do_send:
-            self._send_parameter(action["osc_parameter"], value)
+            self.send_parameter(action["osc_parameter"], value)
             action["last_value"] = value
 
 
@@ -182,7 +169,7 @@ class OSC:
         Returns:
             None
         """
-        val_x, val_y = value
+        val_x, val_y = value[0], value[1]
         val_bool = (val_x > self.stick_tolerance or val_y > self.stick_tolerance) or (val_x < -self.stick_tolerance or val_y < -self.stick_tolerance)
 
         if action["floating"]:
@@ -199,7 +186,7 @@ class OSC:
 
         for i in range(len(action["osc_parameter"])):
             if action["enabled"][i] and (action["always"][i] or (action["last_value"][i] != value[i] and not action["always"][i])):
-                self._send_parameter(action["osc_parameter"][i], value[i])
+                self.send_parameter(action["osc_parameter"][i], value[i])
                 action["last_value"][i] = value[i]
 
 
@@ -210,6 +197,19 @@ class OSC:
             None
         """
         self.curr_time = time.time()
+
+
+    def send_parameter(self, parameter: str, value) -> None:
+        """
+        Sends a parameter to VRChat via OSC.
+        Parameters:
+            parameter (str): Name of the parameter
+            value (any): Value of the parameter
+            floating (str): Floating value of the parameter, just for for debug output
+        Returns:
+            None
+        """
+        self.osc_client.send_message(AVATAR_PARAMETERS_PREFIX + parameter, value)
 
 
     def send(self, action: dict | str, value: bool | float | tuple) -> None:

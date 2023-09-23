@@ -90,21 +90,28 @@ def resend_parameters(avatar_id) -> None:
     if osc.curr_avatar == avatar_id:
         return
 
+    logging.info(f"Resending parameters to {avatar_id}")
     osc.curr_avatar = avatar_id
 
     if config["ControllerType"]["enabled"]:
-        osc.send("ControllerType", config["ControllerType"]["last_value"])
+        osc.send_parameter("ControllerType", config["ControllerType"]["last_value"])
     if config["LeftThumb"]["enabled"]:
-        osc.send("LeftThumb", config["LeftThumb"]["last_value"])
+        osc.send_parameter("LeftThumb", config["LeftThumb"]["last_value"])
     if config["RightThumb"]["enabled"]:
-        osc.send("RightThumb", config["RightThumb"]["last_value"])
+        osc.send_parameter("RightThumb", config["RightThumb"]["last_value"])
     if config["LeftABButtons"]["enabled"]:
-        osc.send("LeftABButtons", config["LeftABButtons"]["last_value"])
+        osc.send_parameter("LeftABButtons", config["LeftABButtons"]["last_value"])
     if config["RightABButtons"]["enabled"]:
-        osc.send("RightABButtons", config["RightABButtons"]["last_value"])
+        osc.send_parameter("RightABButtons", config["RightABButtons"]["last_value"])
 
     for action in config["actions"]:
-        osc.send(action, action["last_value"])
+        if action["type"] == "vector2":
+            osc.send_parameter(action["osc_parameter"][0], action["last_value"][0])
+            osc.send_parameter(action["osc_parameter"][1], action["last_value"][1])
+            if len(action["osc_parameter"]) > 2:
+                osc.send_parameter(action["osc_parameter"][2], action["last_value"][2])
+            continue
+        osc.send_parameter(action["osc_parameter"], action["last_value"])
 
 
 def handle_input() -> None:

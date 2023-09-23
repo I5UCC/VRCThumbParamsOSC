@@ -72,7 +72,7 @@ def osc_server_serve():
     server.serve_forever(2)
 
 
-def get_debug_string(parameter, value, floating="") -> str:
+def get_debug_string(parameter, value, floating="", always = False) -> str:
     """
     Gets a string for the debug output.
     Parameters:
@@ -88,7 +88,10 @@ def get_debug_string(parameter, value, floating="") -> str:
     tmp = ""
     if floating != "" and float(floating) > 0:
         tmp = f"Floating: {floating}s"
-    return f"{parameter.ljust(23, ' ')}\t{str(value).ljust(10, ' ')}\t{tmp}\n"
+    tmp2 = ""
+    if always:
+        tmp2 = "-Always send-"
+    return f"{parameter.ljust(23, ' ')}\t{str(value).ljust(10, ' ')}\t{tmp}\t{tmp2}\n"
 
 
 def print_debugoutput() -> None:
@@ -101,25 +104,25 @@ def print_debugoutput() -> None:
     cls()
 
     if config["ControllerType"]["enabled"]:
-        _debugoutput += get_debug_string("ControllerType", config["ControllerType"]["last_value"])
+        _debugoutput += get_debug_string("ControllerType", config["ControllerType"]["last_value"], "", config["ControllerType"]["always"])
     if config["LeftThumb"]["enabled"]:
-        _debugoutput += get_debug_string("LeftThumb", config["LeftThumb"]["last_value"])
+        _debugoutput += get_debug_string("LeftThumb", config["LeftThumb"]["last_value"], "", config["LeftThumb"]["always"])
     if config["RightThumb"]["enabled"]:
-        _debugoutput += get_debug_string("RightThumb", config["RightThumb"]["last_value"])
+        _debugoutput += get_debug_string("RightThumb", config["RightThumb"]["last_value"], "", config["RightThumb"]["always"])
     if config["LeftABButtons"]["enabled"]:
-        _debugoutput += get_debug_string("LeftABButtons", config["LeftABButtons"]["last_value"])
+        _debugoutput += get_debug_string("LeftABButtons", config["LeftABButtons"]["last_value"], "", config["LeftABButtons"]["always"])
     if config["RightABButtons"]["enabled"]:
-        _debugoutput += get_debug_string("RightABButtons", config["RightABButtons"]["last_value"])
+        _debugoutput += get_debug_string("RightABButtons", config["RightABButtons"]["last_value"], "", config["RightABButtons"]["always"])
 
     for action in actions:
         if action["enabled"]:
             if action["type"] == "vector2":
-                _debugoutput += get_debug_string(action["osc_parameter"][0], action["last_value"][0], action["floating"][0])
-                _debugoutput += get_debug_string(action["osc_parameter"][1], action["last_value"][1], action["floating"][1])
+                _debugoutput += get_debug_string(action["osc_parameter"][0], action["last_value"][0], action["floating"][0], action["always"][0])
+                _debugoutput += get_debug_string(action["osc_parameter"][1], action["last_value"][1], action["floating"][1], action["always"][1])
                 if len(action["osc_parameter"]) > 2:
-                    _debugoutput += get_debug_string(action["osc_parameter"][2], action["last_value"][2], action["floating"][2])
+                    _debugoutput += get_debug_string(action["osc_parameter"][2], action["last_value"][2], action["floating"][2], action["always"][2])
             else:
-                _debugoutput += get_debug_string(action["osc_parameter"], action["last_value"], action["floating"])
+                _debugoutput += get_debug_string(action["osc_parameter"], action["last_value"], action["floating"], action["always"])
 
     print(_debugoutput)
 
@@ -236,6 +239,10 @@ def send_boolean_toggle(action: dict, value: bool) -> None:
         action["last_value"] = not action["last_value"]
         time.sleep(0.1)
         send_parameter(action["osc_parameter"], action["last_value"])
+        return
+    
+    if action["always"]:
+        send_parameter(action["osc_parameter"], action["last_value"])
 
 
 def send_boolean(action: dict, value: bool) -> None:
@@ -249,7 +256,7 @@ def send_boolean(action: dict, value: bool) -> None:
     """
     global curr_time
 
-    if not action["enabled"] or action["last_value"] == value:
+    if not action["enabled"] or (not action["always"] and action["last_value"] == value):
         return
 
     if action["floating"]:
@@ -258,9 +265,10 @@ def send_boolean(action: dict, value: bool) -> None:
         elif not value and curr_time - action["timestamp"] <= action["floating"]: 
             value = action["last_value"]
     
-    action["last_value"] = value
-
-    send_parameter(action["osc_parameter"], value)
+    if not action["always"]:
+        action["last_value"] = value
+    else:
+        send_parameter(action["osc_parameter"], value)
 
 
 def send_vector1(action: dict, value: float) -> None:
@@ -274,7 +282,7 @@ def send_vector1(action: dict, value: float) -> None:
     """
     global curr_time
 
-    if not action["enabled"] or action["last_value"] == value:
+    if not action["enabled"] or (not action["always"] and action["last_value"] == value):
         return
     
     if action["floating"]:
@@ -283,9 +291,10 @@ def send_vector1(action: dict, value: float) -> None:
         elif value < action["last_value"] and curr_time - action["timestamp"] <= action["floating"]: 
             value = action["last_value"]
 
-    action["last_value"] = value
-
-    send_parameter(action["osc_parameter"], value)
+    if not action["always"]:
+        action["last_value"] = value
+    else:
+        send_parameter(action["osc_parameter"], value)
 
 
 def send_vector2(action: dict, value: tuple) -> None:
@@ -312,13 +321,14 @@ def send_vector2(action: dict, value: tuple) -> None:
         elif not val_y and curr_time - action["timestamp"][1] <= action["floating"][1]:
             val_y = action["last_value"][1]
 
-    action["last_value"] = [val_x, val_y, tmp]
+    if not action["always"]:
+        action["last_value"] = [val_x, val_y, tmp]
 
-    if action["enabled"][0] and action["last_value"][0] != val_x:
+    if action["enabled"][0] and (action["always"][0] or action["last_value"][0] != val_x):
         send_parameter(action["osc_parameter"][0], val_x)
-    if action["enabled"][1] and action["last_value"][1] != val_y:
+    if action["enabled"][1] and (action["always"][1] or action["last_value"][1] != val_y):
         send_parameter(action["osc_parameter"][1], val_y)
-    if len(action["osc_parameter"]) > 2 and action["enabled"][2] and action["last_value"][2] != tmp:
+    if len(action["osc_parameter"]) > 2 and action["enabled"][2] and (action["always"][2] or action["last_value"][2] != tmp):
         if action["floating"]:
             action["last_value"][2] = tmp
         send_parameter(action["osc_parameter"][2], tmp)
@@ -352,30 +362,29 @@ def handle_input() -> None:
     for action in actions[:8]: # Touch Actions
         val = get_value(action)
         _strinputs += "1" if val else "0"
-        if action["enabled"] and action["last_value"] != val:
-            send_boolean(action, val)
+        send_boolean(action, val)
 
     if config["LeftThumb"]["enabled"]:
         _leftthumb = _strinputs[:4].rfind("1") + 1
-        if config["LeftThumb"]["last_value"] != _leftthumb:
+        if config["LeftThumb"]["last_value"] != _leftthumb or config["LeftThumb"]["always"]:
             send_parameter("LeftThumb", _leftthumb)
         config["LeftThumb"]["last_value"] = _leftthumb
 
     if config["RightThumb"]["enabled"]:
         _rightthumb = _strinputs[4:].rfind("1") + 1
-        if config["RightThumb"]["last_value"] != _rightthumb:
+        if config["RightThumb"]["last_value"] != _rightthumb or config["RightThumb"]["always"]:
             send_parameter("RightThumb", _rightthumb)
         config["RightThumb"]["last_value"] = _rightthumb
 
     if config["LeftABButtons"]["enabled"]:
         _leftab = _strinputs[0] == "1" and _strinputs[1] == "1"
-        if config["LeftABButtons"]["last_value"] != _leftab:
+        if config["LeftABButtons"]["last_value"] != _leftab or config["LeftABButtons"]["always"]:
             send_parameter("LeftABButtons", _leftab)
         config["LeftABButtons"]["last_value"] = _leftab
 
     if config["RightABButtons"]["enabled"]:
         _rightab = _strinputs[4] == "1" and _strinputs[5] == "1"
-        if config["RightABButtons"]["last_value"] != _rightab:
+        if config["RightABButtons"]["last_value"] != _rightab or config["RightABButtons"]["always"]:
             send_parameter("RightABButtons", _rightab)
         config["RightABButtons"]["last_value"] = _rightab
 
@@ -394,6 +403,7 @@ def handle_input() -> None:
             case _:
                 raise TypeError("Unknown action type: " + action['type'])
 
+    args.debug = True
     if args.debug:
         print_debugoutput()
 

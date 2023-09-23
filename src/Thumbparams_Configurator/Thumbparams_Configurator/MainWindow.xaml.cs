@@ -33,25 +33,26 @@ namespace Configurator
             Tbx_PollingRate.Text = config.PollingRate.ToString();
             Tbx_StickMoveTolerance.Text = config.StickMoveTolerance.ToString();
 
-            ParameterList.Add(new BoolStringClass("ControllerType", config.ControllerType.enabled, "Integer", "Unavailable"));
-            ParameterList.Add(new BoolStringClass("LeftThumb", config.LeftThumb.enabled, "Integer", "Influenced by bools"));
-            ParameterList.Add(new BoolStringClass("RightThumb", config.RightThumb.enabled, "Integer", "Influenced by bools"));
+            ParameterList.Add(new BoolStringClass("ControllerType", config.ControllerType.enabled, config.ControllerType.always, "Integer", "Unavailable"));
+            ParameterList.Add(new BoolStringClass("LeftThumb", config.LeftThumb.enabled, config.LeftThumb.always, "Integer", "Influenced by bools"));
+            ParameterList.Add(new BoolStringClass("RightThumb", config.RightThumb.enabled, config.RightThumb.always, "Integer", "Influenced by bools"));
 
-            ParameterList.Add(new BoolStringClass("LeftABButtons", config.LeftABButtons.enabled, "Boolean", "Influenced by A,B"));
-            ParameterList.Add(new BoolStringClass("RightABButtons", config.RightABButtons.enabled, "Boolean", "Influenced by A,B"));
+            ParameterList.Add(new BoolStringClass("LeftABButtons", config.LeftABButtons.enabled, config.LeftABButtons.always, "Boolean", "Influenced by A,B"));
+            ParameterList.Add(new BoolStringClass("RightABButtons", config.RightABButtons.enabled, config.RightABButtons.always, "Boolean", "Influenced by A,B"));
 
             foreach (Action a in config.actions) {
                 if (a.type != "vector2")
                 {
-                    ParameterList.Add(new BoolStringClass((string)a.osc_parameter, (bool)a.enabled, a.type == "boolean" ? "Boolean" : "Float", a.floating.ToString()));
+                    ParameterList.Add(new BoolStringClass((string)a.osc_parameter, (bool)a.enabled, (bool)a.always, a.type == "boolean" ? "Boolean" : "Float", a.floating.ToString()));
                 }
                 else {
                     String[] tmp = ((JArray)a.osc_parameter).ToObject<String[]>();
                     bool[] tmp2 = ((JArray)a.enabled).ToObject<bool[]>();
                     float[] tmp3 = ((JArray)a.floating).ToObject<float[]>();
+                    bool[] tmp4 = ((JArray)a.always).ToObject<bool[]>();
                     for (int i = 0; i < tmp.Length; i++)
                     {
-                        ParameterList.Add(new BoolStringClass(tmp[i], tmp2[i], i > 1 ? "Boolean" : "Float", tmp3[i] == -100 ? "Influenced by X,Y" : tmp3[i].ToString()));
+                        ParameterList.Add(new BoolStringClass(tmp[i], tmp2[i], tmp4[i], i > 1 ? "Boolean" : "Float", tmp3[i] == -100 ? "Influenced by X,Y" : tmp3[i].ToString()));
                     }
                 }
             }
@@ -62,10 +63,11 @@ namespace Configurator
 
         public class BoolStringClass
         {
-            public BoolStringClass(string Text, bool IsSelected, string Type, string Floating = "0.0")
+            public BoolStringClass(string Text, bool IsSelected, bool AlwaysSend, string Type, string Floating = "0.0")
             {
                 this.Text = Text;
                 this.IsSelected = IsSelected;
+                this.AlwaysSend = AlwaysSend;
                 this.Type = Type;
                 this.Floating = Floating;
             }
@@ -73,6 +75,8 @@ namespace Configurator
             public string Text { get; set; }
 
             public bool IsSelected { get; set; }
+
+            public bool AlwaysSend { get; set; }
 
             public string Type { get; set; }
 
@@ -90,6 +94,66 @@ namespace Configurator
             File.WriteAllText(ConfigPath, JsonConvert.SerializeObject(config, Formatting.Indented));
             Close();
         }
+
+
+        private void CheckBox_Checked_AS(object sender, RoutedEventArgs e)
+        {
+            if (Startup)
+                return;
+
+            CheckBox checkBox = sender as CheckBox;
+
+            bool check = (bool)checkBox.IsChecked;
+            string name = checkBox.ToolTip.ToString();
+
+            switch (name)
+            {
+                case "ControllerType":
+                    config.ControllerType.always = check;
+                    return;
+                case "LeftThumb":
+                    config.LeftThumb.always = check;
+                    return;
+                case "RightThumb":
+                    config.RightThumb.always = check;
+                    return;
+                case "LeftABButtons":
+                    config.LeftABButtons.always = check;
+                    return;
+                case "RightABButtons":
+                    config.RightABButtons.always = check;
+                    return;
+            }
+
+            foreach (Action a in config.actions)
+            {
+                if (a.type != "vector2")
+                {
+                    if (a.osc_parameter.ToString() == name)
+                    {
+                        a.always = check;
+                        return;
+                    }
+                }
+                else
+                {
+                    JArray tmp = ((JArray)a.osc_parameter);
+                    JArray tmp2 = ((JArray)a.always);
+
+                    for (int i = 0; i < tmp.Count; i++)
+                    {
+                        if (tmp[i].ToString() == name)
+                        {
+                            tmp2[i] = check;
+                            a.always = tmp2;
+                            return;
+                        }
+                    }
+                }
+            }
+
+        }
+
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {

@@ -6,22 +6,25 @@
         xmlns:local="clr-namespace:Configurator"
         mc:Ignorable="d"
         ResizeMode="NoResize"
-        Title="ThumbParams Configurator" Height="813" Width="433">
+        Title="ThumbParams Configurator" Height="813" Width="512">
     <Grid>
         <ListBox ItemsSource="{Binding ParameterList}" x:Name="Lbx_Params" Margin="10,228,10,147">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="2*" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
                             <RowDefinition Height="1*" />
                         </Grid.RowDefinitions>
                         <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}" Content="{Binding DisplayString}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
-                        <TextBox Width="100" Grid.Column="1" PreviewTextInput="TextBox_PreviewTextInput" TextChanged="TextBox_TextChanged" ToolTip="{Binding Text}" Text="{Binding Floating}" Margin="30, 0, 0, 0" />
+                        <TextBox Width="90" Grid.Column="1" PreviewTextInput="TextBox_PreviewTextInput" TextChanged="TextBox_TextChanged" ToolTip="{Binding Text}" Text="{Binding Floating}" Margin="30, 0, 0, 0" />
+                        <CheckBox Grid.Column="2" IsChecked="{Binding AlwaysSend}" Content="Always Send" Checked="CheckBox_Checked_AS" Unchecked="CheckBox_Checked_AS" ToolTip="{Binding Text}" Margin="20, 0, 0, 0"/>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -37,11 +40,11 @@
         <Button Content="Reset OSC Config" Margin="10,0,10,50" Click="Reset_OSC_Clicked" Height="32" VerticalAlignment="Bottom"/>
         <Label Content="Parameter" HorizontalAlignment="Left" Margin="14,197,0,0" VerticalAlignment="Top" Width="159" HorizontalContentAlignment="Left" FontWeight="Bold" Height="26"/>
         <Label Content="Type" HorizontalAlignment="Left" Margin="175,197,0,0" VerticalAlignment="Top" Width="159" HorizontalContentAlignment="Left" FontWeight="Bold" Height="26"/>
-        <Button Content="Untick all" Margin="10,0,0,117" Click="Untick_all_Click" HorizontalAlignment="Left" Width="193" Height="25" VerticalAlignment="Bottom"/>
-        <Button Content="Tick all" Margin="208,0,10,117" Click="Tick_all_Click" Height="25" VerticalAlignment="Bottom" RenderTransformOrigin="0.596,0.23"/>
-        <Button Content="Untick Click Actions" Margin="10,0,0,87" Click="Untick_Click_Click" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="121"/>
-        <Button Content="Untick Touch Actions" Margin="136,0,0,87" Click="Untick_Touch_Click" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="134"/>
-        <Button Content="Untick Position Actions" Margin="275,0,10,87" Click="Untick_Position_Click" Height="25" VerticalAlignment="Bottom"/>
+        <Button Content="Untick all" Margin="10,0,0,117" Click="Untick_all_Click" HorizontalAlignment="Left" Width="244" Height="25" VerticalAlignment="Bottom"/>
+        <Button Content="Tick all" Margin="259,0,10,117" Click="Tick_all_Click" Height="25" VerticalAlignment="Bottom" RenderTransformOrigin="0.596,0.23"/>
+        <Button Content="Untick Click Actions" Margin="10,0,0,87" Click="Untick_Click_Click" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="147"/>
+        <Button Content="Untick Touch Actions" Margin="162,0,0,87" Click="Untick_Touch_Click" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="192"/>
+        <Button Content="Untick Position Actions" Margin="359,0,10,87" Click="Untick_Position_Click" Height="25" VerticalAlignment="Bottom"/>
         <Button Content="Save" Margin="10,0,10,13" Click="Save_Clicked" Height="32" VerticalAlignment="Bottom"/>
         <Label Content="Floating Time" HorizontalAlignment="Left" Margin="254,197,0,0" VerticalAlignment="Top" Width="160" HorizontalContentAlignment="Left" FontWeight="Bold" Height="26"/>
         <Label Content="Server Port" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Width="193" HorizontalContentAlignment="Right"/>

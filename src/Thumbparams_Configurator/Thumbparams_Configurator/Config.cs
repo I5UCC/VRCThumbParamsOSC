@@ -8,6 +8,7 @@ namespace Configurator
         public string type { get; set; }
         public object osc_parameter { get; set; }
         public object enabled { get; set; }
+        public object always { get; set; }
         public object floating { get; set; }
         public object timestamp { get; set; }
         public object last_value { get; set; }
@@ -16,6 +17,7 @@ namespace Configurator
     public class ControllerType
     {
         public bool enabled { get; set; }
+        public bool always { get; set; }
         public int last_value { get; set; }
         public int timestamp { get; set; }
     }
@@ -23,6 +25,7 @@ namespace Configurator
     public class SpecialParameter
     {
         public bool enabled { get; set; }
+        public bool always { get; set; }
         public int last_value { get; set; }
     }
 

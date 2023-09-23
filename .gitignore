@@ -10,3 +10,4 @@ obj/
 bin/
 .vs/
 __pycache__/
+*.log

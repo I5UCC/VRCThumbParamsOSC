@@ -6,6 +6,7 @@ import time
 import os
 from threading import Thread
 from psutil import process_iter
+import logging
 
 AVATAR_PARAMETERS_PREFIX = "/avatar/parameters/"
 AVATAR_CHANGE_PARAMETER = "/avatar/change"
@@ -25,18 +26,18 @@ class OSC:
         self.disp = dispatcher.Dispatcher()
         self.disp.map(AVATAR_CHANGE_PARAMETER, avatar_change_function)
         if self.server_port != 9001:
-            print("OSC Server port is not default, testing port availability and advertising OSCQuery endpoints")
+            logging.info("OSC Server port is not default, testing port availability and advertising OSCQuery endpoints")
             if self.server_port <= 0 or not check_if_udp_port_open(self.server_port):
                 self.server_port = get_open_udp_port()
             if self.http_port <= 0 or not check_if_tcp_port_open(self.http_port):
                 self.http_port = self.server_port if check_if_tcp_port_open(self.server_port) else get_open_tcp_port()
         else:
-            print("OSC Server port is default.")
+            logging.info("OSC Server port is default.")
 
-        print("Waiting for VRChat to start.")
+        logging.info("Waiting for VRChat to start.")
         while not self.is_running():
             time.sleep(3)
-        print("VRChat started!")
+        logging.info("VRChat started!")
         self.qclient = self._wait_get_oscquery_client()
         self.curr_avatar = self.qclient.query_node(AVATAR_CHANGE_PARAMETER).value[0]
         self.server = osc_server.ThreadingOSCUDPServer((self.ip, self.server_port), self.disp)
@@ -63,17 +64,17 @@ class OSC:
             OSCQueryClient: OSCQueryClient for VRChat
         """
         service_info = None
-        print("Waiting for VRChat to be discovered.")
+        logging.info("Waiting for VRChat to be discovered.")
         while service_info is None:
             browser = OSCQueryBrowser()
             time.sleep(2) # Wait for discovery
             service_info = browser.find_service_by_name("VRChat")
-        print("VRChat discovered!")
+        logging.info("VRChat discovered!")
         client = OSCQueryClient(service_info)
-        print("Waiting for VRChat to be ready.")
+        logging.info("Waiting for VRChat to be ready.")
         while client.query_node(AVATAR_CHANGE_PARAMETER) is None:
             time.sleep(2)
-        print("VRChat ready!")
+        logging.info("VRChat ready!")
         return client
 
 
@@ -83,7 +84,7 @@ class OSC:
         Returns:
             None
         """
-        print(f"Starting OSC client on {self.ip}:{self.server_port}:{self.http_port}")
+        logging.info(f"Starting OSC client on {self.ip}:{self.server_port}:{self.http_port}")
         self.server.serve_forever(2)
 
 
@@ -156,7 +157,6 @@ class OSC:
         Returns:
             None
         """
-
         _do_send = action["always"] or action["last_value"] != value
 
         if not action["enabled"] or not _do_send:

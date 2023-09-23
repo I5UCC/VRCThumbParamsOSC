@@ -5,6 +5,7 @@ import time
 import traceback
 import ctypes
 import argparse
+import logging
 from osc import OSC
 from ovr import OVR
 from zeroconf._exceptions import NonUniqueNameException
@@ -12,7 +13,7 @@ from zeroconf._exceptions import NonUniqueNameException
 
 def get_absolute_path(relative_path) -> str:
     """
-    Gets absolute path from relative path
+    Gets absolute path relative to the executable.
     Parameters:
         relative_path (str): Relative path
     Returns:
@@ -31,34 +32,24 @@ def cls() -> None:
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
-def get_debug_string(parameter, value, floating="", always = False) -> str:
-    """
-    Gets a string for the debug output.
-    Parameters:
-        parameter (str): Name of the parameter
-        value (any): Value of the parameter
-        floating (str): Floating value of the parameter
-    Returns:
-        str: Debug output string
-    """
-    if isinstance(value, float):
-        value = f"{value:.4f}"
-
-    tmp = ""
-    if floating != "" and float(floating) > 0:
-        tmp = f"Floating: {floating}s"
-    tmp2 = ""
-    if always:
-        tmp2 = "-Always send-"
-    return f"{parameter.ljust(23, ' ')}\t{str(value).ljust(10, ' ')}\t{tmp}\t{tmp2}\n"
-
-
 def print_debugoutput() -> None:
     """
     Prints the debugoutput string.
     Returns:
         None
     """
+    def get_debug_string(parameter, value, floating="", always = False) -> str:
+        if isinstance(value, float):
+            value = f"{value:.4f}"
+
+        tmp = ""
+        if floating != "" and float(floating) > 0:
+            tmp = f"Floating: {floating}s"
+        tmp2 = ""
+        if always:
+            tmp2 = "-Always send-"
+        return f"{parameter.ljust(23, ' ')}\t{str(value).ljust(10, ' ')}\t{tmp}\t{tmp2}\n"
+
     _debugoutput = ""
     cls()
 
@@ -98,7 +89,7 @@ def resend_parameters(avatar_id) -> None:
 
     if osc.curr_avatar == avatar_id:
         return
-    
+
     osc.curr_avatar = avatar_id
 
     if config["ControllerType"]["enabled"]:
@@ -122,7 +113,6 @@ def handle_input() -> None:
     Returns:
         None
     """
-
     ovr.poll_next_events()
     osc.refresh_time()
 
@@ -147,6 +137,7 @@ def handle_input() -> None:
     if args.debug:
         print_debugoutput()
 
+
 def stop() -> None:
     """
     Stops the program.
@@ -157,6 +148,8 @@ def stop() -> None:
     osc.shutdown()
     sys.exit()
 
+
+logging.basicConfig(level=logging.DEBUG if len(sys.argv) > 1 else logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S', handlers=[logging.StreamHandler(), logging.FileHandler(get_absolute_path("log.log"))])
 
 # Argument Parser
 parser = argparse.ArgumentParser(description='ThumbParamsOSC: Takes button data from SteamVR and sends it to an OSC-Client')
@@ -180,33 +173,29 @@ try:
     ovr = OVR(config, CONFIG_PATH, MANIFEST_PATH, FIRST_LAUNCH_FILE)
     osc = OSC(config, lambda addr, value: resend_parameters(value))
 except OSError as e:
-    print("You can only bind to the port 9001 once.")
-    print(traceback.format_exc())
+    logging.error("You can only bind to the port 9001 once.")
+    logging.error(traceback.format_exc())
     if os.name == "nt":
         ctypes.windll.user32.MessageBoxW(0, "You can only bind to the port 9001 once.", "AvatarParameterSync - Error", 0)
     stop()
 except NonUniqueNameException as e:
-    print.error("NonUniqueNameException, trying again...")
+    logging.error("NonUniqueNameException, trying again...")
     os.execv(sys.executable, ['python'] + sys.argv)
 except Exception as e:
-    print("UNEXPECTED ERROR\n")
-    print("Please Create an Issue on GitHub with the following information:\n")
-    traceback.print_exc()
+    logging.error("UNEXPECTED ERROR\n")
+    logging.error("Please Create an Issue on GitHub with the following information:\n")
+    logging.error(traceback.format_exc())
     input("\nPress ENTER to exit")
     stop()
 
-cls()
-if not args.debug:
-    print("ThumbParamsOSC running...\n")
-    print("You can minimize this window.\n")
-    print("Press CTRL+C to exit.\n")
-    print(f"IP:\t\t\t{osc.ip}")
-    print(f"Port:\t\t\t{osc.port}")
-    print(f"Server Port:\t\t{osc.server_port}")
-    print(f"HTTP Port:\t\t{osc.http_port}")
-    print(f"PollingRate:\t\t{POLLINGRATE}s ({config['PollingRate']} Hz)")
-    print(f"StickMoveTolerance:\t{osc.stick_tolerance} ({config['StickMoveTolerance']}%)")
-    print("\nOpen Configurator.exe to change sent Parameters and other Settings.")
+logging.info("ThumbParamsOSC running...")
+logging.info(f"IP: {osc.ip}")
+logging.info(f"Port: {osc.port}")
+logging.info(f"Server Port: {osc.server_port}")
+logging.info(f"HTTP Port: {osc.http_port}")
+logging.info(f"PollingRate: {POLLINGRATE}s ({config['PollingRate']} Hz)")
+logging.info(f"StickMoveTolerance: {osc.stick_tolerance} ({config['StickMoveTolerance']}%)")
+logging.info("Open Configurator.exe to change sent Parameters and other Settings.")
 
 # Main Loop
 while True:
@@ -218,8 +207,8 @@ while True:
         stop()
     except Exception:
         cls()
-        print("UNEXPECTED ERROR\n")
-        print("Please Create an Issue on GitHub with the following information:\n")
-        traceback.print_exc()
+        logging.error("UNEXPECTED ERROR\n")
+        logging.error("Please Create an Issue on GitHub with the following information:\n")
+        logging.error(traceback.format_exc())
         input("\nPress ENTER to exit")
         stop()

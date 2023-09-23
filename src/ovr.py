@@ -1,13 +1,17 @@
 import openvr
 import os
+import logging
 
 class OVR:
     def __init__(self, config:dict, config_path: str, manifest_path: str, first_launch_file: str):
         self.application = openvr.init(openvr.VRApplication_Utility)
+        logging.info("OpenVR Initialized.")
         openvr.VRInput().setActionManifestPath(config_path)
         openvr.VRApplications().addApplicationManifest(manifest_path)
+        logging.info("Application Manifest Added.")
         if os.path.isfile(first_launch_file):
             openvr.VRApplications().setApplicationAutoLaunch("i5ucc.thumbparamsosc", True)
+            logging.info("Application set to auto launch.")
             os.remove(first_launch_file)
         self.action_set_handle = openvr.VRInput().getActionSetHandle("/actions/thumbparams")
         self.actionsets = (openvr.VRActiveActionSet_t * 1)()
@@ -54,13 +58,15 @@ class OVR:
                 return tmp.x, tmp.y
             case _:
                 raise TypeError("Unknown action type: " + action['type'])
-    
+
+
     def poll_next_events(self):
         _event = openvr.VREvent_t()
         _has_events = True
         while _has_events:
             _has_events = self.application.pollNextEvent(_event)
         openvr.VRInput().updateActionState(self.actionsets)
+
 
     def shutdown(self) -> bool:
         """Shuts down the OVR handler."""

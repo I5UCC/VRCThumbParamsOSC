@@ -130,8 +130,9 @@ class OSC:
         Returns:
             None
         """
+        _do_send = action["always"] or (action["last_value"] != value and not action["always"])
 
-        if not action["enabled"] or (not action["always"] and action["last_value"] == value):
+        if not action["enabled"] or not _do_send:
             return
 
         if action["floating"]:
@@ -139,11 +140,10 @@ class OSC:
                 action["timestamp"] = self.curr_time
             elif not value and self.curr_time - action["timestamp"] <= action["floating"]: 
                 value = action["last_value"]
-        
-        if not action["always"]:
-            action["last_value"] = value
-        else:
+
+        if _do_send:
             self._send_parameter(action["osc_parameter"], value)
+            action["last_value"] = value
 
 
     def _send_vector1(self, action: dict, value: float) -> None:
@@ -156,7 +156,9 @@ class OSC:
             None
         """
 
-        if not action["enabled"] or (not action["always"] and action["last_value"] == value):
+        _do_send = action["always"] or (action["last_value"] != value and not action["always"])
+
+        if not action["enabled"] or not _do_send:
             return
         
         if action["floating"]:
@@ -165,10 +167,9 @@ class OSC:
             elif value < action["last_value"] and self.curr_time - action["timestamp"] <= action["floating"]: 
                 value = action["last_value"]
 
-        if not action["always"]:
-            action["last_value"] = value
-        else:
+        if _do_send:
             self._send_parameter(action["osc_parameter"], value)
+            action["last_value"] = value
 
 
     def _send_vector2(self, action: dict, value: tuple) -> None:
@@ -193,15 +194,13 @@ class OSC:
             elif not val_y and self.curr_time - action["timestamp"][1] <= action["floating"][1]:
                 val_y = action["last_value"][1]
 
-        if not action["always"]:
-            action["last_value"] = [val_x, val_y, tmp]
+        value = [val_x, val_y, tmp]
 
-        if action["enabled"][0] and (action["always"][0] or action["last_value"][0] != val_x):
-            self._send_parameter(action["osc_parameter"][0], val_x)
-        if action["enabled"][1] and (action["always"][1] or action["last_value"][1] != val_y):
-            self._send_parameter(action["osc_parameter"][1], val_y)
-        if len(action["osc_parameter"]) > 2 and action["enabled"][2] and (action["always"][2] or action["last_value"][2] != tmp):
-            self._send_parameter(action["osc_parameter"][2], tmp)
+        for i in range(len(action["osc_parameter"])):
+            if action["enabled"][i] and (action["always"][i] or (action["last_value"][i] != value[i] and not action["always"][i])):
+                self._send_parameter(action["osc_parameter"][i], value[i])
+
+        action["last_value"] = value
 
 
     def refresh_time(self) -> None:

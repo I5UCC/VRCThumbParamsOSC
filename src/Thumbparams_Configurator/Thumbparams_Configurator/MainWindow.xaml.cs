@@ -231,11 +231,11 @@ namespace Configurator
             Tbx_StickMoveTolerance.SelectionStart = Tbx_StickMoveTolerance.Text.Length;
 
             config.IP = Tbx_IP.Text;
-            config.Port = int.Parse(Tbx_Port.Text);
-            config.Server_Port = int.Parse(Tbx_Server_Port.Text);
-            config.HTTP_Port = int.Parse(Tbx_http_port.Text);
-            config.PollingRate = int.Parse(Tbx_PollingRate.Text);
-            config.StickMoveTolerance = int.Parse(Tbx_StickMoveTolerance.Text);
+            config.Port = Tbx_Port.Text != "" ? int.Parse(Tbx_Port.Text) : 0;
+            config.Server_Port = Tbx_Server_Port.Text != "" ? int.Parse(Tbx_Server_Port.Text) : 0;
+            config.HTTP_Port = Tbx_http_port.Text != "" ? int.Parse(Tbx_http_port.Text) : 0;
+            config.PollingRate = Tbx_PollingRate.Text != "" ? int.Parse(Tbx_PollingRate.Text) : 0;
+            config.StickMoveTolerance = Tbx_StickMoveTolerance.Text != "" ? int.Parse(Tbx_StickMoveTolerance.Text) : 0;
         }
 
         private void Button_AS_Click(object sender, RoutedEventArgs e)

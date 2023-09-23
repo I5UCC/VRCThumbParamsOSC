@@ -13,5 +13,5 @@ setup(
     version="1.3.2",
     description="ThumbParamsOSC",
     options={"build_exe": build_exe_options},
-    executables=[Executable("ThumbParamsOSC.py", target_name="ThumbParamsOSC.exe", base=False, icon="icon.ico"), Executable("ThumbParamsOSC.py", target_name="ThumbParamsOSC_NoConsole.exe", base="Win32GUI", icon="icon.ico")],
+    executables=[Executable("main.py", target_name="ThumbParamsOSC.exe", base=False, icon="icon.ico"), Executable("main.py", target_name="ThumbParamsOSC_NoConsole.exe", base="Win32GUI", icon="icon.ico")],
 )

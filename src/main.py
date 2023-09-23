@@ -7,6 +7,7 @@ import ctypes
 import argparse
 from osc import OSC
 from ovr import OVR
+from zeroconf._exceptions import NonUniqueNameException
 
 
 def get_absolute_path(relative_path) -> str:
@@ -194,8 +195,24 @@ config["IP"] = args.ip if args.ip else config["IP"]
 config["Port"] = args.port if args.port else config["Port"]
 POLLINGRATE = 1 / float(config['PollingRate'])
 
-ovr = OVR(config, CONFIG_PATH, MANIFEST_PATH, FIRST_LAUNCH_FILE)
-osc = OSC(config, lambda addr, value: resend_parameters(value))
+try:
+    ovr = OVR(config, CONFIG_PATH, MANIFEST_PATH, FIRST_LAUNCH_FILE)
+    osc = OSC(config, lambda addr, value: resend_parameters(value))
+except OSError as e:
+    print("You can only bind to the port 9001 once.")
+    print(traceback.format_exc())
+    if os.name == "nt":
+        ctypes.windll.user32.MessageBoxW(0, "You can only bind to the port 9001 once.", "AvatarParameterSync - Error", 0)
+    sys.exit(1)
+except NonUniqueNameException as e:
+    print.error("NonUniqueNameException, trying again...")
+    os.execv(sys.executable, ['python'] + sys.argv)
+except Exception as e:
+    print("UNEXPECTED ERROR\n")
+    print("Please Create an Issue on GitHub with the following information:\n")
+    traceback.print_exc()
+    input("\nPress ENTER to exit")
+    sys.exit(1)
 
 cls()
 if not args.debug:

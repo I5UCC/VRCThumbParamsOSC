@@ -4,12 +4,8 @@ from tinyoscquery.utility import get_open_tcp_port, get_open_udp_port, check_if_
 from tinyoscquery.query import OSCQueryBrowser, OSCQueryClient
 import time
 import os
-import sys
-import ctypes
-import traceback
 from threading import Thread
 from psutil import process_iter
-import zeroconf
 
 AVATAR_PARAMETERS_PREFIX = "/avatar/parameters/"
 AVATAR_CHANGE_PARAMETER = "/avatar/change"
@@ -24,7 +20,7 @@ class OSC:
         self.curr_avatar = ""
         self.curr_time = 0
 
-        self.oscClient = udp_client.SimpleUDPClient(self.ip, self.port)
+        self.osc_client = udp_client.SimpleUDPClient(self.ip, self.port)
         self.disp = dispatcher.Dispatcher()
         self.disp.map(AVATAR_CHANGE_PARAMETER, avatar_change_function)
         if self.server_port != 9001:
@@ -36,27 +32,17 @@ class OSC:
         else:
             print("OSC Server port is default.")
 
-        try:
-            print("Waiting for VRChat to start.")
-            while not self.is_running():
-                time.sleep(3)
-            print("VRChat started!")
-            self.qclient = self._wait_get_oscquery_client()
-            self.curr_avatar = self.qclient.query_node(AVATAR_CHANGE_PARAMETER).value[0]
-            self.server = osc_server.ThreadingOSCUDPServer((self.ip, self.server_port), self.disp)
-            server_thread = Thread(target=self._osc_server_serve, daemon=True)
-            server_thread.start()
-            self.oscqs = OSCQueryService("ThumbParamsOSC", self.http_port, self.server_port)
-            self.oscqs.advertise_endpoint(AVATAR_CHANGE_PARAMETER, access="readwrite")
-        except OSError as e:
-            print("You can only bind to the port 9001 once.")
-            print(traceback.format_exc())
-            if os.name == "nt":
-                ctypes.windll.user32.MessageBoxW(0, "You can only bind to the port 9001 once.", "AvatarParameterSync - Error", 0)
-            sys.exit(1)
-        except zeroconf._exceptions.NonUniqueNameException as e:
-            print.error("NonUniqueNameException, trying again...")
-            os.execv(sys.executable, ['python'] + sys.argv)
+        print("Waiting for VRChat to start.")
+        while not self.is_running():
+            time.sleep(3)
+        print("VRChat started!")
+        self.qclient = self._wait_get_oscquery_client()
+        self.curr_avatar = self.qclient.query_node(AVATAR_CHANGE_PARAMETER).value[0]
+        self.server = osc_server.ThreadingOSCUDPServer((self.ip, self.server_port), self.disp)
+        server_thread = Thread(target=self._osc_server_serve, daemon=True)
+        server_thread.start()
+        self.oscqs = OSCQueryService("ThumbParamsOSC", self.http_port, self.server_port)
+        self.oscqs.advertise_endpoint(AVATAR_CHANGE_PARAMETER, access="readwrite")
 
 
     def is_running(self) -> bool:
@@ -110,7 +96,7 @@ class OSC:
         Returns:
             None
         """
-        self.oscClient.send_message(AVATAR_PARAMETERS_PREFIX + parameter, value)
+        self.osc_client.send_message(AVATAR_PARAMETERS_PREFIX + parameter, value)
 
 
     def _send_boolean_toggle(self, action: dict, value: bool) -> None:

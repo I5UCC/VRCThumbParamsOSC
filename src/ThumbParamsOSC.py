@@ -1,5 +1,4 @@
 import json
-import openvr
 import sys
 import os
 import time
@@ -7,6 +6,7 @@ import traceback
 import ctypes
 import argparse
 from osc import OSC
+from ovr import OVR
 
 
 def get_absolute_path(relative_path) -> str:
@@ -72,7 +72,7 @@ def print_debugoutput() -> None:
     if config["RightABButtons"]["enabled"]:
         _debugoutput += get_debug_string("RightABButtons", config["RightABButtons"]["last_value"], "", config["RightABButtons"]["always"])
 
-    for action in actions:
+    for action in config["actions"]:
         if action["enabled"]:
             if action["type"] == "vector2":
                 _debugoutput += get_debug_string(action["osc_parameter"][0], action["last_value"][0], action["floating"][0], action["always"][0])
@@ -85,46 +85,7 @@ def print_debugoutput() -> None:
     print(_debugoutput)
 
 
-def get_value(action: dict) -> bool | float | tuple:
-    """
-    Gets the value of an action by querying SteamVR.
-    Parameters:
-        action (dict): Action
-    Returns:
-        any: Value of the action
-    """
-    match action['type']:
-        case "boolean":
-            return bool(openvr.VRInput().getDigitalActionData(action['handle'], openvr.k_ulInvalidInputValueHandle).bState)
-        case "vector1":
-            return float(openvr.VRInput().getAnalogActionData(action['handle'], openvr.k_ulInvalidInputValueHandle).x)
-        case "vector2":
-            tmp = openvr.VRInput().getAnalogActionData(action['handle'], openvr.k_ulInvalidInputValueHandle)
-            return tmp.x, tmp.y
-        case _:
-            raise TypeError("Unknown action type: " + action['type'])
-
-
-def get_controllertype() -> int:
-    """
-    Gets the type of controller from SteamVR.
-    Returns:
-        int: Type of controller (0 = Unknown, 1 = Knuckles, 2 = Oculus/Meta Touch)
-    """
-    for i in range(1, openvr.k_unMaxTrackedDeviceCount):
-        device_class = openvr.VRSystem().getTrackedDeviceClass(i)
-        if device_class == 2:
-            match openvr.VRSystem().getStringTrackedDeviceProperty(i, openvr.Prop_ControllerType_String):
-                case 'knuckles':
-                    return 1
-                case 'oculus_touch':
-                    return 2
-                case _:
-                    return 0
-    return 0
-
-
-def set_avatar_change(addr, value) -> None:
+def resend_parameters(avatar_id) -> None:
     """
     Sends all the last values to VRChat via OSC after the avatar has changed.
     Parameters:
@@ -135,10 +96,10 @@ def set_avatar_change(addr, value) -> None:
     """
     global osc
 
-    if osc.curr_avatar == value:
+    if osc.curr_avatar == avatar_id:
         return
     
-    osc.curr_avatar = value
+    osc.curr_avatar = avatar_id
 
     if config["ControllerType"]["enabled"]:
         osc.send("ControllerType", config["ControllerType"]["last_value"])
@@ -151,7 +112,7 @@ def set_avatar_change(addr, value) -> None:
     if config["RightABButtons"]["enabled"]:
         osc.send("RightABButtons", config["RightABButtons"]["last_value"])
 
-    for action in actions:
+    for action in config["actions"]:
         osc.send(action, action["last_value"])
 
 
@@ -162,17 +123,12 @@ def handle_input() -> None:
         None
     """
 
-    _event = openvr.VREvent_t()
-    _has_events = True
-    while _has_events:
-        _has_events = application.pollNextEvent(_event)
-    openvr.VRInput().updateActionState(actionsets)
-
+    ovr.poll_next_events()
     osc.refresh_time()
 
     if config["ControllerType"]["enabled"]:
         if osc.curr_time - config["ControllerType"]["timestamp"] > 10.0:
-            _controller_type = get_controllertype()
+            _controller_type = ovr.get_controllertype()
             config["ControllerType"]["timestamp"] = osc.curr_time
             if config["ControllerType"]["last_value"] != _controller_type:
                 osc.send("ControllerType", _controller_type)
@@ -180,8 +136,8 @@ def handle_input() -> None:
                 config["ControllerType"]["last_value"] = _controller_type
 
     _strinputs = ""
-    for action in actions[:8]: # Touch Actions
-        val = get_value(action)
+    for action in config["actions"][:8]: # Touch Actions
+        val = ovr.get_value(action)
         _strinputs += "1" if val else "0"
         osc.send(action, val)
 
@@ -213,8 +169,8 @@ def handle_input() -> None:
         else:
             config["RightABButtons"]["last_value"] = _rightab
 
-    for action in actions[8:]:
-        val = get_value(action)
+    for action in config["actions"][8:]:
+        val = ovr.get_value(action)
         osc.send(action, val)
 
     if args.debug:
@@ -231,29 +187,16 @@ args = parser.parse_args()
 if os.name == 'nt':
     ctypes.windll.kernel32.SetConsoleTitleW("ThumbParamsOSC v1.3.2" + (" (Debug)" if args.debug else ""))
 
-first_launch_file = get_absolute_path("bindings/first_launch")
-config_path = get_absolute_path('config.json')
-manifest_path = get_absolute_path("app.vrmanifest")
-application = openvr.init(openvr.VRApplication_Utility)
-openvr.VRInput().setActionManifestPath(config_path)
-openvr.VRApplications().addApplicationManifest(manifest_path)
-if os.path.isfile(first_launch_file):
-    openvr.VRApplications().setApplicationAutoLaunch("i5ucc.thumbparamsosc", True)
-    os.remove(first_launch_file)
-action_set_handle = openvr.VRInput().getActionSetHandle("/actions/thumbparams")
-actionsets = (openvr.VRActiveActionSet_t * 1)()
-actionset = actionsets[0]
-actionset.ulActionSet = action_set_handle
-
-config = json.load(open(config_path))
-actions = config["actions"]
-for action in actions:
-    action["handle"] = openvr.VRInput().getActionHandle(action['name'])
-
+CONFIG_PATH = get_absolute_path('config.json')
+MANIFEST_PATH = get_absolute_path("app.vrmanifest")
+FIRST_LAUNCH_FILE = get_absolute_path("bindings/first_launch")
+config = json.load(open(CONFIG_PATH))
 config["IP"] = args.ip if args.ip else config["IP"]
 config["Port"] = args.port if args.port else config["Port"]
 POLLINGRATE = 1 / float(config['PollingRate'])
-osc = OSC(config, set_avatar_change)
+
+ovr = OVR(config, CONFIG_PATH, MANIFEST_PATH, FIRST_LAUNCH_FILE)
+osc = OSC(config, lambda addr, value: resend_parameters(value))
 
 cls()
 if not args.debug:

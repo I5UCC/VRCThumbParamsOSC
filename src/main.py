@@ -170,6 +170,16 @@ def handle_input() -> None:
     if args.debug:
         print_debugoutput()
 
+def stop() -> None:
+    """
+    Stops the program.
+    Returns:
+        None
+    """
+    ovr.shutdown()
+    osc.shutdown()
+    sys.exit()
+
 
 # Argument Parser
 parser = argparse.ArgumentParser(description='ThumbParamsOSC: Takes button data from SteamVR and sends it to an OSC-Client')
@@ -197,7 +207,7 @@ except OSError as e:
     print(traceback.format_exc())
     if os.name == "nt":
         ctypes.windll.user32.MessageBoxW(0, "You can only bind to the port 9001 once.", "AvatarParameterSync - Error", 0)
-    sys.exit(1)
+    stop()
 except NonUniqueNameException as e:
     print.error("NonUniqueNameException, trying again...")
     os.execv(sys.executable, ['python'] + sys.argv)
@@ -206,7 +216,7 @@ except Exception as e:
     print("Please Create an Issue on GitHub with the following information:\n")
     traceback.print_exc()
     input("\nPress ENTER to exit")
-    sys.exit(1)
+    stop()
 
 cls()
 if not args.debug:
@@ -228,11 +238,11 @@ while True:
         time.sleep(POLLINGRATE)
     except KeyboardInterrupt:
         cls()
-        sys.exit()
+        stop()
     except Exception:
         cls()
         print("UNEXPECTED ERROR\n")
         print("Please Create an Issue on GitHub with the following information:\n")
         traceback.print_exc()
         input("\nPress ENTER to exit")
-        sys.exit()
+        stop()

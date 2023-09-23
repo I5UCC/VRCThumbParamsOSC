@@ -236,3 +236,12 @@ class OSC:
                 self._send_vector2(action, value)
             case _:
                 raise TypeError("Unknown action type: " + action['type'])
+
+    def shutdown(self) -> None:
+        """
+        Stops the OSC server.
+        Returns:
+            None
+        """
+        self.server.shutdown()
+        self.oscqs.stop()

@@ -61,3 +61,13 @@ class OVR:
         while _has_events:
             _has_events = self.application.pollNextEvent(_event)
         openvr.VRInput().updateActionState(self.actionsets)
+
+    def shutdown(self) -> bool:
+        """Shuts down the OVR handler."""
+
+        try:
+            openvr.shutdown()
+            return True
+        except Exception as e:
+            print("Error shutting down OVR: " + str(e))
+            return False

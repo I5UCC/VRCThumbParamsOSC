@@ -189,7 +189,7 @@ parser.add_argument('-p', '--port', required=False, type=str, help="set OSC port
 args = parser.parse_args()
 
 if os.name == 'nt':
-    ctypes.windll.kernel32.SetConsoleTitleW("ThumbParamsOSC v1.3.2" + (" (Debug)" if args.debug else ""))
+    ctypes.windll.kernel32.SetConsoleTitleW("ThumbParamsOSC v2.0.0-Beta" + (" (Debug)" if args.debug else ""))
 
 CONFIG_PATH = get_absolute_path('config.json')
 MANIFEST_PATH = get_absolute_path("app.vrmanifest")

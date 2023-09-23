@@ -12,6 +12,7 @@ AVATAR_CHANGE_PARAMETER = "/avatar/change"
 
 class OSC:
     def __init__(self, conf: dict, avatar_change_function) -> None:
+        self.config = conf
         self.ip = conf["IP"]
         self.port = conf["Port"]
         self.server_port = conf["Server_Port"]
@@ -221,7 +222,9 @@ class OSC:
             None
         """
         if isinstance(action, str):
-            self._send_parameter(action, value)
+            self.config[action]["osc_parameter"] = action
+            self.config[action]["floating"] = 0.0
+            self._send_boolean(self.config[action], value)
             return
         
         match action['type']:

@@ -128,40 +128,17 @@ def handle_input() -> None:
 
     if config["ControllerType"]["enabled"] and (osc.curr_time - config["ControllerType"]["timestamp"] > 10.0 or config["ControllerType"]["always"]):
         _controller_type = ovr.get_controllertype()
-        config["ControllerType"]["timestamp"] = osc.curr_time
-        if config["ControllerType"]["last_value"] != _controller_type or config["ControllerType"]["always"]:
-            osc.send("ControllerType", _controller_type)
-            config["ControllerType"]["last_value"] = _controller_type
+        osc.send("ControllerType", _controller_type)
 
     _strinputs = ""
     for action in config["actions"][:8]: # Touch Actions
         val = ovr.get_value(action)
         _strinputs += "1" if val else "0"
         osc.send(action, val)
-
-    if config["LeftThumb"]["enabled"]:
-        _leftthumb = _strinputs[:4].rfind("1") + 1
-        if config["LeftThumb"]["last_value"] != _leftthumb or config["LeftThumb"]["always"]:
-            osc.send("LeftThumb", _leftthumb)
-            config["LeftThumb"]["last_value"] = _leftthumb
-
-    if config["RightThumb"]["enabled"]:
-        _rightthumb = _strinputs[4:].rfind("1") + 1
-        if config["RightThumb"]["last_value"] != _rightthumb or config["RightThumb"]["always"]:
-            osc.send("RightThumb", _rightthumb)
-            config["RightThumb"]["last_value"] = _rightthumb
-
-    if config["LeftABButtons"]["enabled"]:
-        _leftab = _strinputs[0] == "1" and _strinputs[1] == "1"
-        if config["LeftABButtons"]["last_value"] != _leftab or config["LeftABButtons"]["always"]:
-            osc.send("LeftABButtons", _leftab)
-            config["LeftABButtons"]["last_value"] = _leftab
-
-    if config["RightABButtons"]["enabled"]:
-        _rightab = _strinputs[4] == "1" and _strinputs[5] == "1"
-        if config["RightABButtons"]["last_value"] != _rightab or config["RightABButtons"]["always"]:
-            osc.send("RightABButtons", _rightab)
-            config["RightABButtons"]["last_value"] = _rightab
+    osc.send("LeftThumb", _strinputs[:4].rfind("1") + 1)
+    osc.send("RightThumb", _strinputs[4:].rfind("1") + 1)
+    osc.send("LeftABButtons", _strinputs[0] == "1" and _strinputs[1] == "1")
+    osc.send("RightABButtons", _strinputs[4] == "1" and _strinputs[5] == "1")
 
     for action in config["actions"][8:]:
         val = ovr.get_value(action)

@@ -130,7 +130,7 @@ class OSC:
         Returns:
             None
         """
-        _do_send = action["always"] or (action["last_value"] != value and not action["always"])
+        _do_send = action["always"] or action["last_value"] != value
 
         if not action["enabled"] or not _do_send:
             return
@@ -156,7 +156,7 @@ class OSC:
             None
         """
 
-        _do_send = action["always"] or (action["last_value"] != value and not action["always"])
+        _do_send = action["always"] or action["last_value"] != value
 
         if not action["enabled"] or not _do_send:
             return
@@ -199,8 +199,7 @@ class OSC:
         for i in range(len(action["osc_parameter"])):
             if action["enabled"][i] and (action["always"][i] or (action["last_value"][i] != value[i] and not action["always"][i])):
                 self._send_parameter(action["osc_parameter"][i], value[i])
-
-        action["last_value"] = value
+                action["last_value"][i] = value[i]
 
 
     def refresh_time(self) -> None:

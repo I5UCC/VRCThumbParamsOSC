@@ -126,14 +126,12 @@ def handle_input() -> None:
     ovr.poll_next_events()
     osc.refresh_time()
 
-    if config["ControllerType"]["enabled"]:
-        if osc.curr_time - config["ControllerType"]["timestamp"] > 10.0:
-            _controller_type = ovr.get_controllertype()
-            config["ControllerType"]["timestamp"] = osc.curr_time
-            if config["ControllerType"]["last_value"] != _controller_type:
-                osc.send("ControllerType", _controller_type)
-            else:
-                config["ControllerType"]["last_value"] = _controller_type
+    if config["ControllerType"]["enabled"] and (osc.curr_time - config["ControllerType"]["timestamp"] > 10.0 or config["ControllerType"]["always"]):
+        _controller_type = ovr.get_controllertype()
+        config["ControllerType"]["timestamp"] = osc.curr_time
+        if config["ControllerType"]["last_value"] != _controller_type or config["ControllerType"]["always"]:
+            osc.send("ControllerType", _controller_type)
+            config["ControllerType"]["last_value"] = _controller_type
 
     _strinputs = ""
     for action in config["actions"][:8]: # Touch Actions
@@ -145,28 +143,24 @@ def handle_input() -> None:
         _leftthumb = _strinputs[:4].rfind("1") + 1
         if config["LeftThumb"]["last_value"] != _leftthumb or config["LeftThumb"]["always"]:
             osc.send("LeftThumb", _leftthumb)
-        else:
             config["LeftThumb"]["last_value"] = _leftthumb
 
     if config["RightThumb"]["enabled"]:
         _rightthumb = _strinputs[4:].rfind("1") + 1
         if config["RightThumb"]["last_value"] != _rightthumb or config["RightThumb"]["always"]:
             osc.send("RightThumb", _rightthumb)
-        else:
             config["RightThumb"]["last_value"] = _rightthumb
 
     if config["LeftABButtons"]["enabled"]:
         _leftab = _strinputs[0] == "1" and _strinputs[1] == "1"
         if config["LeftABButtons"]["last_value"] != _leftab or config["LeftABButtons"]["always"]:
             osc.send("LeftABButtons", _leftab)
-        else:
             config["LeftABButtons"]["last_value"] = _leftab
 
     if config["RightABButtons"]["enabled"]:
         _rightab = _strinputs[4] == "1" and _strinputs[5] == "1"
         if config["RightABButtons"]["last_value"] != _rightab or config["RightABButtons"]["always"]:
             osc.send("RightABButtons", _rightab)
-        else:
             config["RightABButtons"]["last_value"] = _rightab
 
     for action in config["actions"][8:]:

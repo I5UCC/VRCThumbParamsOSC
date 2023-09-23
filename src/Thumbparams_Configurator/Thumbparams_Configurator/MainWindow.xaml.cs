@@ -238,18 +238,51 @@ namespace Configurator
             config.StickMoveTolerance = int.Parse(Tbx_StickMoveTolerance.Text);
         }
 
-        private void Untick_all_Click(object sender, RoutedEventArgs e)
+        private void Button_AS_Click(object sender, RoutedEventArgs e)
         {
+            bool value = ((Button)sender).Name == "TAAS";
             foreach (BoolStringClass item in Lbx_Params.Items)
             {
-                item.IsSelected = false;
+                item.AlwaysSend = value;
             }
 
-            config.ControllerType.enabled = false;
-            config.LeftThumb.enabled = false;
-            config.RightThumb.enabled = false;
-            config.LeftABButtons.enabled = false;
-            config.RightABButtons.enabled = false;
+            config.ControllerType.always = value;
+            config.LeftThumb.always = value;
+            config.RightThumb.always = value;
+            config.LeftABButtons.always = value;
+            config.RightABButtons.always = value;
+
+            foreach (Action a in config.actions)
+            {
+                if (a.type == "vector2")
+                {
+                    if (((JArray)a.always).Count > 2)
+                        a.always = new JArray(new bool[3]);
+                    else
+                        a.always = new JArray(new bool[2]);
+                }
+                else
+                {
+                    a.always = value;
+                }
+            }
+
+            Lbx_Params.Items.Refresh();
+        }
+
+        private void Button_Param_Click(object sender, RoutedEventArgs e)
+        {
+            bool value = ((Button)sender).Name == "TAP";
+            foreach (BoolStringClass item in Lbx_Params.Items)
+            {
+                item.IsSelected = value;
+            }
+
+            config.ControllerType.enabled = value;
+            config.LeftThumb.enabled = value;
+            config.RightThumb.enabled = value;
+            config.LeftABButtons.enabled = value;
+            config.RightABButtons.enabled = value;
 
             foreach (Action a in config.actions)
             {
@@ -262,7 +295,7 @@ namespace Configurator
                 }
                 else
                 {
-                    a.enabled = false;
+                    a.enabled = value;
                 }
             }
 
@@ -300,56 +333,6 @@ namespace Configurator
             Lbx_Params.Items.Refresh();
         }
 
-        private void Untick_Click_Click(object sender, RoutedEventArgs e)
-        {
-            for (int i = 10; i < 18 ; i++)
-            {
-                (Lbx_Params.Items[i + 3] as BoolStringClass).IsSelected = false;
-                config.actions[i].enabled = false;
-            }
-            Lbx_Params.Items.Refresh();
-        }
-
-        private void Untick_Touch_Click(object sender, RoutedEventArgs e)
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                (Lbx_Params.Items[i + 3] as BoolStringClass).IsSelected = false;
-                config.actions[i].enabled = false;
-            }
-            Lbx_Params.Items.Refresh();
-        }
-
-        private void Untick_Position_Click(object sender, RoutedEventArgs e)
-        {
-            foreach (BoolStringClass item in Lbx_Params.Items)
-            {
-                if (item.Type == "Float")
-                {
-                    item.IsSelected = false;
-                }
-            }
-
-            foreach (Action a in config.actions)
-            {
-                if (a.type == "boolean")
-                    continue;
-
-                if (a.type == "vector2")
-                {
-                    if (((JArray)a.enabled).Count > 2)
-                        a.enabled = new JArray(new bool[3] { false, false, false });
-                    else
-                        a.enabled = new JArray(new bool[2] { false, false });
-                }
-                else
-                {
-                    a.enabled = false;
-                }
-            }
-            Lbx_Params.Items.Refresh();
-        }
-
         private void Reset_OSC_Clicked(object sender, RoutedEventArgs e)
         {
             string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -369,7 +352,7 @@ namespace Configurator
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             string text = ((TextBox)sender).Text;
-            if (text == string.Empty || text == "-") { return; }
+            if (text == string.Empty || text == "-") { text = "0"; }
             for (int i = 0; i < config.actions.Count; i++)
             {
                 Action a = config.actions[i];

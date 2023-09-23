@@ -329,8 +329,6 @@ def send_vector2(action: dict, value: tuple) -> None:
     if action["enabled"][1] and (action["always"][1] or action["last_value"][1] != val_y):
         send_parameter(action["osc_parameter"][1], val_y)
     if len(action["osc_parameter"]) > 2 and action["enabled"][2] and (action["always"][2] or action["last_value"][2] != tmp):
-        if action["floating"]:
-            action["last_value"][2] = tmp
         send_parameter(action["osc_parameter"][2], tmp)
 
 
@@ -356,7 +354,8 @@ def handle_input() -> None:
             config["ControllerType"]["timestamp"] = curr_time
             if config["ControllerType"]["last_value"] != _controller_type:
                 send_parameter("ControllerType", _controller_type)
-            config["ControllerType"]["last_value"] = _controller_type
+            else:
+                config["ControllerType"]["last_value"] = _controller_type
 
     _strinputs = ""
     for action in actions[:8]: # Touch Actions
@@ -368,25 +367,29 @@ def handle_input() -> None:
         _leftthumb = _strinputs[:4].rfind("1") + 1
         if config["LeftThumb"]["last_value"] != _leftthumb or config["LeftThumb"]["always"]:
             send_parameter("LeftThumb", _leftthumb)
-        config["LeftThumb"]["last_value"] = _leftthumb
+        else:
+            config["LeftThumb"]["last_value"] = _leftthumb
 
     if config["RightThumb"]["enabled"]:
         _rightthumb = _strinputs[4:].rfind("1") + 1
         if config["RightThumb"]["last_value"] != _rightthumb or config["RightThumb"]["always"]:
             send_parameter("RightThumb", _rightthumb)
-        config["RightThumb"]["last_value"] = _rightthumb
+        else:
+            config["RightThumb"]["last_value"] = _rightthumb
 
     if config["LeftABButtons"]["enabled"]:
         _leftab = _strinputs[0] == "1" and _strinputs[1] == "1"
         if config["LeftABButtons"]["last_value"] != _leftab or config["LeftABButtons"]["always"]:
             send_parameter("LeftABButtons", _leftab)
-        config["LeftABButtons"]["last_value"] = _leftab
+        else:
+            config["LeftABButtons"]["last_value"] = _leftab
 
     if config["RightABButtons"]["enabled"]:
         _rightab = _strinputs[4] == "1" and _strinputs[5] == "1"
         if config["RightABButtons"]["last_value"] != _rightab or config["RightABButtons"]["always"]:
             send_parameter("RightABButtons", _rightab)
-        config["RightABButtons"]["last_value"] = _rightab
+        else:
+            config["RightABButtons"]["last_value"] = _rightab
 
     for action in actions[8:]:
         val = get_value(action)

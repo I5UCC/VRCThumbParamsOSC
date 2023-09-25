@@ -15,7 +15,6 @@ namespace Configurator
         private Config config;
         private string ConfigPath;
         private bool Startup;
-        private string[] disabled_inputs = { "ControllerType", "LeftThumb", "RightThumb", "LeftABButtons", "RightABButtons", "LeftStickMoved", "RightStickMoved" };
 
         public MainWindow()
         {
@@ -33,26 +32,26 @@ namespace Configurator
             Tbx_PollingRate.Text = config.PollingRate.ToString();
             Tbx_StickMoveTolerance.Text = config.StickMoveTolerance.ToString();
 
-            ParameterList.Add(new BoolStringClass("ControllerType", config.ControllerType.enabled, config.ControllerType.always, "Integer", "Unavailable"));
-            ParameterList.Add(new BoolStringClass("LeftThumb", config.LeftThumb.enabled, config.LeftThumb.always, "Integer", "Influenced by bools"));
-            ParameterList.Add(new BoolStringClass("RightThumb", config.RightThumb.enabled, config.RightThumb.always, "Integer", "Influenced by bools"));
+            ParameterList.Add(new BoolStringClass("ControllerType", config.ControllerType.enabled, config.ControllerType.always, "Integer", "Unavailable", false));
+            ParameterList.Add(new BoolStringClass("LeftThumb", config.LeftThumb.enabled, config.LeftThumb.always, "Integer", "Infl. by bools", false));
+            ParameterList.Add(new BoolStringClass("RightThumb", config.RightThumb.enabled, config.RightThumb.always, "Integer", "Infl. by bools", false));
 
-            ParameterList.Add(new BoolStringClass("LeftABButtons", config.LeftABButtons.enabled, config.LeftABButtons.always, "Boolean", "Influenced by A,B"));
-            ParameterList.Add(new BoolStringClass("RightABButtons", config.RightABButtons.enabled, config.RightABButtons.always, "Boolean", "Influenced by A,B"));
+            ParameterList.Add(new BoolStringClass("LeftABButtons", config.LeftABButtons.enabled, config.LeftABButtons.always, "Boolean", "Infl. by A,B", false));
+            ParameterList.Add(new BoolStringClass("RightABButtons", config.RightABButtons.enabled, config.RightABButtons.always, "Boolean", "Infl. by A,B", false));
 
             foreach (Action a in config.actions) {
                 if (a.type != "vector2")
                 {
-                    ParameterList.Add(new BoolStringClass((string)a.osc_parameter, (bool)a.enabled, (bool)a.always, a.type == "boolean" ? "Boolean" : "Float", a.floating.ToString()));
+                    ParameterList.Add(new BoolStringClass((string)a.osc_parameter, (bool)a.enabled, int.Parse(a.always.ToString()), a.type == "boolean" ? "Boolean" : "Float", a.floating.ToString()));
                 }
                 else {
                     String[] tmp = ((JArray)a.osc_parameter).ToObject<String[]>();
                     bool[] tmp2 = ((JArray)a.enabled).ToObject<bool[]>();
                     float[] tmp3 = ((JArray)a.floating).ToObject<float[]>();
-                    bool[] tmp4 = ((JArray)a.always).ToObject<bool[]>();
+                    int[] tmp4 = ((JArray)a.always).ToObject<int[]>();
                     for (int i = 0; i < tmp.Length; i++)
                     {
-                        ParameterList.Add(new BoolStringClass(tmp[i], tmp2[i], tmp4[i], i > 1 ? "Boolean" : "Float", tmp3[i] == -100 ? "Influenced by X,Y" : tmp3[i].ToString()));
+                        ParameterList.Add(new BoolStringClass(tmp[i], tmp2[i], tmp4[i], i > 1 ? "Boolean" : "Float", tmp3[i] == -100 ? "Infl. by X,Y" : tmp3[i].ToString(), tmp3[i] != -100));
                     }
                 }
             }
@@ -63,24 +62,27 @@ namespace Configurator
 
         public class BoolStringClass
         {
-            public BoolStringClass(string Text, bool IsSelected, bool AlwaysSend, string Type, string Floating = "0.0")
+            public BoolStringClass(string Text, bool IsSelected, int AlwaysSend, string Type, string Floating = "0.0", bool isEnabled = true)
             {
                 this.Text = Text;
                 this.IsSelected = IsSelected;
                 this.AlwaysSend = AlwaysSend;
                 this.Type = Type;
                 this.Floating = Floating;
+                this.isEnabled = isEnabled;
             }
 
             public string Text { get; set; }
 
             public bool IsSelected { get; set; }
 
-            public bool AlwaysSend { get; set; }
+            public int AlwaysSend { get; set; }
 
             public string Type { get; set; }
 
             public string Floating { get; set; }
+
+            public bool isEnabled { get; set; }
 
             public string DisplayString
             {
@@ -103,7 +105,7 @@ namespace Configurator
 
             CheckBox checkBox = sender as CheckBox;
 
-            bool check = (bool)checkBox.IsChecked;
+            int check = 0;
             string name = checkBox.ToolTip.ToString();
 
             switch (name)
@@ -238,40 +240,11 @@ namespace Configurator
             config.StickMoveTolerance = Tbx_StickMoveTolerance.Text != "" ? int.Parse(Tbx_StickMoveTolerance.Text) : 0;
         }
 
-        private void Button_AS_Click(object sender, RoutedEventArgs e)
-        {
-            bool value = ((Button)sender).Name == "TAAS";
-            foreach (BoolStringClass item in Lbx_Params.Items)
-            {
-                item.AlwaysSend = value;
-            }
-
-            config.ControllerType.always = value;
-            config.LeftThumb.always = value;
-            config.RightThumb.always = value;
-            config.LeftABButtons.always = value;
-            config.RightABButtons.always = value;
-
-            foreach (Action a in config.actions)
-            {
-                if (a.type == "vector2")
-                {
-                    if (((JArray)a.always).Count > 2)
-                        a.always = new JArray(new bool[3]);
-                    else
-                        a.always = new JArray(new bool[2]);
-                }
-                else
-                {
-                    a.always = value;
-                }
-            }
-
-            Lbx_Params.Items.Refresh();
-        }
-
         private void Button_Param_Click(object sender, RoutedEventArgs e)
         {
+            if (Startup)
+                return;
+            Startup = true;
             bool value = ((Button)sender).Name == "TAP";
             foreach (BoolStringClass item in Lbx_Params.Items)
             {
@@ -289,9 +262,9 @@ namespace Configurator
                 if (a.type == "vector2")
                 {
                     if (((JArray)a.enabled).Count > 2)
-                        a.enabled = new JArray(new bool[3]);
+                        a.enabled = new JArray(new bool[3] { value, value, value });
                     else
-                        a.enabled = new JArray(new bool[2]);
+                        a.enabled = new JArray(new bool[2] { value, value });
                 }
                 else
                 {
@@ -300,10 +273,14 @@ namespace Configurator
             }
 
             Lbx_Params.Items.Refresh();
+            Startup = false;
         }
 
         private void Tick_all_Click(object sender, RoutedEventArgs e)
         {
+            if (Startup)
+                return;
+            Startup = true;
             foreach (BoolStringClass item in Lbx_Params.Items)
             {
                 item.IsSelected = true;
@@ -329,12 +306,14 @@ namespace Configurator
                     a.enabled = true;
                 }
             }
-
+            Startup = false;
             Lbx_Params.Items.Refresh();
         }
 
         private void Reset_OSC_Clicked(object sender, RoutedEventArgs e)
         {
+            if (Startup)
+                return;
             string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string[] folders = Directory.GetDirectories(appdata + "\\..\\LocalLow\\VRChat\\VRChat\\OSC");
             foreach (string folder in folders)
@@ -349,10 +328,51 @@ namespace Configurator
             MessageBox.Show("OSC cache cleared!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
+        private void Mode_Click(object sender, RoutedEventArgs e)
+        {
+            if (Startup)
+                return;
+            Startup = true;
+            Button button = sender as Button;
+            int value = button.Name == "ASP" ? 1 : button.Name == "AS" ? 2 : 0;
+
+            foreach (BoolStringClass item in Lbx_Params.Items)
+            {
+                item.AlwaysSend = value;
+            }
+
+            config.ControllerType.always = value;
+            config.LeftThumb.always = value;
+            config.RightThumb.always = value;
+            config.LeftABButtons.always = value;
+            config.RightABButtons.always = value;
+
+            foreach (Action a in config.actions)
+            {
+                if (a.type == "vector2")
+                {
+                    if (((JArray)a.enabled).Count > 2)
+                        a.always = new JArray(new int[3] { value, value, value });
+                    else
+                        a.always = new JArray(new int[2] { value, value });
+                }
+                else
+                {
+                    a.always = value;
+                }
+            }
+            Startup = false;
+            Lbx_Params.Items.Refresh();
+        }
+
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (Startup)
+                return;
             string text = ((TextBox)sender).Text;
-            if (text == string.Empty || text == "-") { text = "0"; }
+            if (text == string.Empty || text == "-") 
+                text = "0";
+
             for (int i = 0; i < config.actions.Count; i++)
             {
                 Action a = config.actions[i];
@@ -389,13 +409,65 @@ namespace Configurator
 
         private void TextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
-            if (Array.IndexOf(disabled_inputs, ((TextBox)sender).ToolTip.ToString()) >= 0)
-            {
-                e.Handled = true;
+            if (Startup)
                 return;
-            }
             Regex regex = new Regex("[0-9,\\.-]+");
             e.Handled = !regex.IsMatch(e.Text);
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (Startup)
+                return;
+            ComboBox box = sender as ComboBox;
+            string name = box.ToolTip.ToString();
+            int value = box.SelectedIndex;
+
+            switch (name)
+            {
+                case "ControllerType":
+                    config.ControllerType.always = value;
+                    return;
+                case "LeftThumb":
+                    config.LeftThumb.always = value;
+                    return;
+                case "RightThumb":
+                    config.RightThumb.always = value;
+                    return;
+                case "LeftABButtons":
+                    config.LeftABButtons.always = value;
+                    return;
+                case "RightABButtons":
+                    config.RightABButtons.always = value;
+                    return;
+            }
+
+            foreach (Action a in config.actions)
+            {
+                if (a.type != "vector2")
+                {
+                    if (a.osc_parameter.ToString() == name)
+                    {
+                        a.always = value;
+                        return;
+                    }
+                }
+                else
+                {
+                    JArray tmp = ((JArray)a.osc_parameter);
+                    JArray tmp2 = ((JArray)a.always);
+
+                    for (int i = 0; i < tmp.Count; i++)
+                    {
+                        if (tmp[i].ToString() == name)
+                        {
+                            tmp2[i] = value;
+                            a.always = tmp2;
+                            return;
+                        }
+                    }
+                }
+            }
         }
     }
 }

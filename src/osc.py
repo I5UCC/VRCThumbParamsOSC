@@ -119,7 +119,7 @@ class OSC:
         Returns:
             None
         """
-        _do_send = action["always"] or action["last_value"] != value
+        _do_send = action["always"] == 2 or (action["always"] == 0 and action["last_value"] != value) or (action["always"] == 1 and value)
 
         if not action["enabled"] or not _do_send:
             return
@@ -144,7 +144,7 @@ class OSC:
         Returns:
             None
         """
-        _do_send = action["always"] or action["last_value"] != value
+        _do_send = action["always"] == 2 or (action["always"] == 0 and action["last_value"] != value) or (action["always"] == 1 and value)
 
         if not action["enabled"] or not _do_send:
             return
@@ -185,7 +185,9 @@ class OSC:
         value = [val_x, val_y, val_bool]
 
         for i in range(len(action["osc_parameter"])):
-            if action["enabled"][i] and (action["always"][i] or (action["last_value"][i] != value[i] and not action["always"][i])):
+            if not action["enabled"][i]:
+                continue
+            if action["always"][i] == 2 or (action["always"][i] == 0 and action["last_value"][i] != value[i]) or (action["always"][i] == 1 and value[i]):
                 self.send_parameter(action["osc_parameter"][i], value[i])
                 action["last_value"][i] = value[i]
 

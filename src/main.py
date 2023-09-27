@@ -38,17 +38,21 @@ def print_debugoutput() -> None:
     Returns:
         None
     """
-    def get_debug_string(parameter, value, floating="", always = False) -> str:
+    def get_debug_string(parameter, value, floating="", always = 0) -> str:
         if isinstance(value, float):
             value = f"{value:.4f}"
 
-        tmp = ""
         if floating != "" and float(floating) > 0:
-            tmp = f"Floating: {floating}s"
-        tmp2 = ""
+            floating = f"Floating: {floating}s"
         if always:
-            tmp2 = "-Always send-"
-        return f"{parameter.ljust(23, ' ')}\t{str(value).ljust(10, ' ')}\t{tmp}\t{tmp2}\n"
+            match always:
+                case 1:
+                    always = "-Always send-"
+                case 2:
+                    always = "-Send on change-"
+                case _:
+                    always = "-Send on true-"
+        return f"{parameter.ljust(23, ' ')}\t{str(value).ljust(10, ' ')}\t{floating}\t{always}\n"
 
     _debugoutput = ""
     cls()

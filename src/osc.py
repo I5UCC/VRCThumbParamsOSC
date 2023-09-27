@@ -170,7 +170,6 @@ class OSC:
             None
         """
         val_x, val_y = value[0], value[1]
-        val_bool = (val_x > self.stick_tolerance or val_y > self.stick_tolerance) or (val_x < -self.stick_tolerance or val_y < -self.stick_tolerance)
 
         if action["floating"]:
             if val_x:
@@ -182,6 +181,7 @@ class OSC:
             elif not val_y and self.curr_time - action["timestamp"][1] <= action["floating"][1]:
                 val_y = action["last_value"][1]
 
+        val_bool = (val_x > self.stick_tolerance or val_y > self.stick_tolerance) or (val_x < -self.stick_tolerance or val_y < -self.stick_tolerance)
         value = [val_x, val_y, val_bool]
 
         for i in range(len(action["osc_parameter"])):

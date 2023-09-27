@@ -25,8 +25,8 @@
                         <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}" Content="{Binding DisplayString}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
                         <TextBox Width="100" Grid.Column="1" PreviewTextInput="TextBox_PreviewTextInput" TextChanged="TextBox_TextChanged" ToolTip="{Binding Text}" Text="{Binding Floating}" Margin="30, 0, 0, 0" IsEnabled="{Binding isEnabled}"/>
                         <ComboBox Grid.Column="2" Margin="20, 0, 0, 0" SelectedIndex="{Binding AlwaysSend}" ToolTip="{Binding Text}" SelectionChanged="ComboBox_SelectionChanged" Width="120">
-                            <ComboBoxItem>Only Send New</ComboBoxItem>
-                            <ComboBoxItem>Always Send Positive</ComboBoxItem>
+                            <ComboBoxItem>Send On Change</ComboBoxItem>
+                            <ComboBoxItem>Send On Positive</ComboBoxItem>
                             <ComboBoxItem>Always Send</ComboBoxItem>
                         </ComboBox>
                     </Grid>

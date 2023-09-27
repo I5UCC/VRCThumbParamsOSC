@@ -23,39 +23,36 @@ def get_absolute_path(relative_path) -> str:
     return os.path.join(base_path, relative_path)
 
 
-def cls() -> None:
-    """
-    Clears Console.
-    Returns:
-        None
-    """
-    os.system('cls' if os.name == 'nt' else 'clear')
-
-
 def print_debugoutput() -> None:
     """
     Prints the debugoutput string.
     Returns:
         None
     """
+    index = 0
+    _debugoutput = ""
+    os.system('cls' if os.name == 'nt' else 'clear')
+
     def get_debug_string(parameter, value, floating="", always = 0) -> str:
+        nonlocal index
         if isinstance(value, float):
             value = f"{value:.4f}"
 
         if floating != "" and float(floating) > 0:
             floating = f"Floating: {floating}s"
-        if always:
-            match always:
-                case 1:
-                    always = "-Always send-"
-                case 2:
-                    always = "-Send on change-"
-                case _:
-                    always = "-Send on true-"
-        return f"{parameter.ljust(23, ' ')}\t{str(value).ljust(10, ' ')}\t{floating}\t{always}\n"
-
-    _debugoutput = ""
-    cls()
+        else:
+            floating = ""
+        match always:
+            case 1:
+                always = "-Always send-"
+            case 2:
+                always = "-Send on change-"
+            case _:
+                always = ""
+        
+        res = f"{parameter.ljust(23, ' ')}\t{str(value).ljust(6, ' ')}\t{floating.ljust(10, ' ')}\t{always}\t" + ("\n" if index % 2 == 0 else "")
+        index += 1
+        return res
 
     if config["ControllerType"]["enabled"]:
         _debugoutput += get_debug_string("ControllerType", config["ControllerType"]["last_value"], "", config["ControllerType"]["always"])

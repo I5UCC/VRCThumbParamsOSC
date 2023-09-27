@@ -53,8 +53,8 @@
         <Label Content="HTTP Port" HorizontalAlignment="Left" Margin="10,102,0,0" VerticalAlignment="Top" Width="193" HorizontalContentAlignment="Right"/>
         <TextBox x:Name="Tbx_http_port" Margin="216,105,10,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" TextChanged="TextChanged" FontSize="14"/>
         <Label Content="Mode" HorizontalAlignment="Left" Margin="376,197,0,0" VerticalAlignment="Top" Width="160" HorizontalContentAlignment="Left" FontWeight="Bold" Height="26" RenderTransformOrigin="0.494,0.064"/>
-        <Button x:Name="OSN" Content="Only Send New" Margin="10,0,0,87" Click="Mode_Click" HorizontalAlignment="Left" Width="178" Height="25" VerticalAlignment="Bottom"/>
-        <Button x:Name="ASP" Content="Always Send Positives" Margin="0,0,9,87" Click="Mode_Click" Height="25" VerticalAlignment="Bottom" RenderTransformOrigin="0.596,0.23" HorizontalAlignment="Right" Width="179"/>
+        <Button x:Name="OSN" Content="Send On Change" Margin="10,0,0,87" Click="Mode_Click" HorizontalAlignment="Left" Width="178" Height="25" VerticalAlignment="Bottom"/>
+        <Button x:Name="ASP" Content="Send On Positive" Margin="0,0,9,87" Click="Mode_Click" Height="25" VerticalAlignment="Bottom" RenderTransformOrigin="0.596,0.23" HorizontalAlignment="Right" Width="179"/>
         <Button x:Name="AS" Content="Always Send" Margin="193,0,193,87" Click="Mode_Click" Height="25" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>

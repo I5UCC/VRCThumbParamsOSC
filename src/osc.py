@@ -12,7 +12,7 @@ AVATAR_PARAMETERS_PREFIX = "/avatar/parameters/"
 AVATAR_CHANGE_PARAMETER = "/avatar/change"
 
 class OSC:
-    def __init__(self, conf: dict, avatar_change_function) -> None:
+    def __init__(self, conf: dict, avatar_change_function, run_server = True) -> None:
         self.config = conf
         self.ip = conf["IP"]
         self.port = conf["Port"]
@@ -23,6 +23,17 @@ class OSC:
         self.curr_time = 0
 
         self.osc_client = udp_client.SimpleUDPClient(self.ip, self.port)
+        if run_server:
+            self.start_server(avatar_change_function)
+        
+    def start_server(self, avatar_change_function) -> None:
+        """
+        Starts the OSC server and OSCQuery endpoints and advertises them.
+        Parameters:
+            avatar_change_function (function): Function to be called when the avatar changes
+        Returns:
+            None
+        """
         self.disp = dispatcher.Dispatcher()
         self.disp.map(AVATAR_CHANGE_PARAMETER, avatar_change_function)
         if self.server_port != 9001:
@@ -248,5 +259,7 @@ class OSC:
         Returns:
             None
         """
-        self.server.shutdown()
-        self.oscqs.stop()
+        if self.server:
+            self.server.shutdown()
+        if self.oscqs:
+            self.oscqs.stop()

@@ -146,6 +146,32 @@ def handle_input() -> None:
         print_debugoutput()
 
 
+def get_server_needed() -> bool:
+    """
+    Checks if the OSC server is needed.
+    """
+    if config["ControllerType"]["enabled"] and not config["ControllerType"]["always"]:
+        return True
+    if config["LeftThumb"]["enabled"] and not config["LeftThumb"]["always"]:
+        return True
+    if config["RightThumb"]["enabled"] and not config["RightThumb"]["always"]:
+        return True
+    if config["LeftABButtons"]["enabled"] and not config["LeftABButtons"]["always"]:
+        return True
+    if config["RightABButtons"]["enabled"] and not config["RightABButtons"]["always"]:
+        return True
+    for action in config["actions"]:
+        if action["type"] != "vector2":
+            if not action["always"] and action["enabled"]:
+                return True
+            continue
+        if not action["always"][0] and action["enabled"][0] or not action["always"][1] and action["enabled"][1]:
+            return True
+        if len(action["always"]) > 2 and not action["always"][2] and action["enabled"][2]:
+            return True
+    return False
+
+
 def stop() -> None:
     """
     Stops the program.
@@ -172,14 +198,14 @@ if os.name == 'nt':
 CONFIG_PATH = get_absolute_path('config.json')
 MANIFEST_PATH = get_absolute_path("app.vrmanifest")
 FIRST_LAUNCH_FILE = get_absolute_path("bindings/first_launch")
-config = json.load(open(CONFIG_PATH))
+config: dict = json.load(open(CONFIG_PATH))
 config["IP"] = args.ip if args.ip else config["IP"]
 config["Port"] = args.port if args.port else config["Port"]
 POLLINGRATE = 1 / float(config['PollingRate'])
 
 try:
-    ovr = OVR(config, CONFIG_PATH, MANIFEST_PATH, FIRST_LAUNCH_FILE)
-    osc = OSC(config, lambda addr, value: resend_parameters(value))
+    ovr: OVR = OVR(config, CONFIG_PATH, MANIFEST_PATH, FIRST_LAUNCH_FILE)
+    osc: OSC = OSC(config, lambda addr, value: resend_parameters(value), get_server_needed())
 except OSError as e:
     logging.error("You can only bind to the port 9001 once.")
     logging.error(traceback.format_exc())
@@ -211,10 +237,8 @@ while True:
         handle_input()
         time.sleep(POLLINGRATE)
     except KeyboardInterrupt:
-        cls()
         stop()
     except Exception:
-        cls()
         logging.error("UNEXPECTED ERROR\n")
         logging.error("Please Create an Issue on GitHub with the following information:\n")
         logging.error(traceback.format_exc())

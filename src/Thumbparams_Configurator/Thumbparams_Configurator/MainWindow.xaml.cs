@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Windows.Controls;
 using System.Text.RegularExpressions;
+using System.Security.RightsManagement;
 
 namespace Configurator
 {
@@ -32,26 +33,27 @@ namespace Configurator
             Tbx_PollingRate.Text = config.PollingRate.ToString();
             Tbx_StickMoveTolerance.Text = config.StickMoveTolerance.ToString();
 
-            ParameterList.Add(new BoolStringClass("ControllerType", config.ControllerType.enabled, config.ControllerType.always, "Integer", "Unavailable", false));
-            ParameterList.Add(new BoolStringClass("LeftThumb", config.LeftThumb.enabled, config.LeftThumb.always, "Integer", "Infl. by bools", false));
-            ParameterList.Add(new BoolStringClass("RightThumb", config.RightThumb.enabled, config.RightThumb.always, "Integer", "Infl. by bools", false));
+            ParameterList.Add(new BoolStringClass("ControllerType", config.ControllerType.enabled, config.ControllerType.always, "Integer", "Unavailable", false, false, "Hidden"));
+            ParameterList.Add(new BoolStringClass("LeftThumb", config.LeftThumb.enabled, config.LeftThumb.always, "Integer", "Infl. by bools", false, false, "Hidden"));
+            ParameterList.Add(new BoolStringClass("RightThumb", config.RightThumb.enabled, config.RightThumb.always, "Integer", "Infl. by bools", false, false, "Hidden"));
 
-            ParameterList.Add(new BoolStringClass("LeftABButtons", config.LeftABButtons.enabled, config.LeftABButtons.always, "Boolean", "Infl. by A,B", false));
-            ParameterList.Add(new BoolStringClass("RightABButtons", config.RightABButtons.enabled, config.RightABButtons.always, "Boolean", "Infl. by A,B", false));
+            ParameterList.Add(new BoolStringClass("LeftABButtons", config.LeftABButtons.enabled, config.LeftABButtons.always, "Boolean", "Infl. by A,B", false, false, "Hidden"));
+            ParameterList.Add(new BoolStringClass("RightABButtons", config.RightABButtons.enabled, config.RightABButtons.always, "Boolean", "Infl. by A,B", false, false, "Hidden"));
 
             foreach (Action a in config.actions) {
                 if (a.type != "vector2")
                 {
-                    ParameterList.Add(new BoolStringClass((string)a.osc_parameter, (bool)a.enabled, int.Parse(a.always.ToString()), a.type == "boolean" ? "Boolean" : "Float", a.floating.ToString()));
+                    ParameterList.Add(new BoolStringClass((string)a.osc_parameter, (bool)a.enabled, int.Parse(a.always.ToString()), a.type == "boolean" ? "Boolean" : "Float", a.floating.ToString(), true, false, "Hidden"));
                 }
                 else {
                     String[] tmp = ((JArray)a.osc_parameter).ToObject<String[]>();
                     bool[] tmp2 = ((JArray)a.enabled).ToObject<bool[]>();
                     float[] tmp3 = ((JArray)a.floating).ToObject<float[]>();
                     int[] tmp4 = ((JArray)a.always).ToObject<int[]>();
+                    bool[] tmp5 = ((JArray)a.unsigned).ToObject<bool[]>();
                     for (int i = 0; i < tmp.Length; i++)
                     {
-                        ParameterList.Add(new BoolStringClass(tmp[i], tmp2[i], tmp4[i], i > 1 ? "Boolean" : "Float", tmp3[i] == -100 ? "Infl. by X,Y" : tmp3[i].ToString(), tmp3[i] != -100));
+                        ParameterList.Add(new BoolStringClass(tmp[i], tmp2[i], tmp4[i], i > 1 ? "Boolean" : "Float", tmp3[i] == -100 ? "Infl. by X,Y" : tmp3[i].ToString(), tmp3[i] != -100, i < 2 ? tmp5[i] : true, i >= 2 ? "Hidden" : "Visible"));
                     }
                 }
             }
@@ -62,7 +64,7 @@ namespace Configurator
 
         public class BoolStringClass
         {
-            public BoolStringClass(string Text, bool IsSelected, int AlwaysSend, string Type, string Floating = "0.0", bool isEnabled = true)
+            public BoolStringClass(string Text, bool IsSelected, int AlwaysSend, string Type, string Floating = "0.0", bool isEnabled = true, bool Unsigned = true, string Unsigned_Visibility = "Visible")
             {
                 this.Text = Text;
                 this.IsSelected = IsSelected;
@@ -70,6 +72,8 @@ namespace Configurator
                 this.Type = Type;
                 this.Floating = Floating;
                 this.isEnabled = isEnabled;
+                this.Unsigned = Unsigned;
+                this.Unsigned_Visibility = Unsigned_Visibility;
             }
 
             public string Text { get; set; }
@@ -83,6 +87,10 @@ namespace Configurator
             public string Floating { get; set; }
 
             public bool isEnabled { get; set; }
+
+            public bool Unsigned { get; set; }
+
+            public string Unsigned_Visibility { get; set; }
 
             public string DisplayString
             {
@@ -98,56 +106,29 @@ namespace Configurator
         }
 
 
-        private void CheckBox_Checked_AS(object sender, RoutedEventArgs e)
+        private void CheckBox_Checked_Unsigned(object sender, RoutedEventArgs e)
         {
             if (Startup)
                 return;
 
             CheckBox checkBox = sender as CheckBox;
 
-            int check = 0;
+            bool check = (bool)checkBox.IsChecked;
             string name = checkBox.ToolTip.ToString();
-
-            switch (name)
-            {
-                case "ControllerType":
-                    config.ControllerType.always = check;
-                    return;
-                case "LeftThumb":
-                    config.LeftThumb.always = check;
-                    return;
-                case "RightThumb":
-                    config.RightThumb.always = check;
-                    return;
-                case "LeftABButtons":
-                    config.LeftABButtons.always = check;
-                    return;
-                case "RightABButtons":
-                    config.RightABButtons.always = check;
-                    return;
-            }
 
             foreach (Action a in config.actions)
             {
-                if (a.type != "vector2")
-                {
-                    if (a.osc_parameter.ToString() == name)
-                    {
-                        a.always = check;
-                        return;
-                    }
-                }
-                else
+                if (a.type == "vector2")
                 {
                     JArray tmp = ((JArray)a.osc_parameter);
-                    JArray tmp2 = ((JArray)a.always);
+                    JArray tmp2 = ((JArray)a.unsigned);
 
                     for (int i = 0; i < tmp.Count; i++)
                     {
                         if (tmp[i].ToString() == name)
                         {
                             tmp2[i] = check;
-                            a.always = tmp2;
+                            a.unsigned = tmp2;
                             return;
                         }
                     }

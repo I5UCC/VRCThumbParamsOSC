@@ -82,7 +82,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": false
+      "last_value": false,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/leftbbutton",
@@ -92,7 +93,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": false
+      "last_value": false,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/lefttrackpad",
@@ -102,7 +104,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": false
+      "last_value": false,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/leftstick",
@@ -112,7 +115,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": false
+      "last_value": false,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/rightabutton",
@@ -122,7 +126,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": false
+      "last_value": false,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/rightbbutton",
@@ -132,7 +137,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": false
+      "last_value": false,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/righttrackpad",
@@ -142,7 +148,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": false
+      "last_value": false,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/rightstick",
@@ -152,7 +159,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": false
+      "last_value": false,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/leftabuttonclick",
@@ -162,7 +170,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": false
+      "last_value": false,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/leftbbuttonclick",
@@ -172,7 +181,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": false
+      "last_value": false,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/lefttrackpadclick",
@@ -182,7 +192,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": false
+      "last_value": false,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/leftstickclick",
@@ -192,7 +203,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": false
+      "last_value": false,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/rightabuttonclick",
@@ -202,7 +214,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": false
+      "last_value": false,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/rightbbuttonclick",
@@ -212,7 +225,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": false
+      "last_value": false,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/righttrackpadclick",
@@ -222,7 +236,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": false
+      "last_value": false,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/rightstickclick",
@@ -232,7 +247,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": false
+      "last_value": false,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/leftgrab",
@@ -242,7 +258,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": false
+      "last_value": false,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/rightgrab",
@@ -252,7 +269,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": false
+      "last_value": false,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/leftfoottracker",
@@ -262,7 +280,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": false
+      "last_value": false,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/rightfoottracker",
@@ -272,7 +291,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": false
+      "last_value": false,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/waisttracker",
@@ -282,7 +302,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": false
+      "last_value": false,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/chesttracker",
@@ -292,7 +313,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": false
+      "last_value": false,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/leftelbowtracker",
@@ -302,7 +324,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": false
+      "last_value": false,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/rightelbowtracker",
@@ -312,7 +335,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": false
+      "last_value": false,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/leftkneetracker",
@@ -322,7 +346,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": false
+      "last_value": false,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/rightkneetracker",
@@ -332,7 +357,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": false
+      "last_value": false,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/lefttrigger",
@@ -342,7 +368,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": 0.0
+      "last_value": 0.0,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/righttrigger",
@@ -352,7 +379,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": 0.0
+      "last_value": 0.0,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/leftgrabforce",
@@ -362,7 +390,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": 0.0
+      "last_value": 0.0,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/rightgrabforce",
@@ -372,7 +401,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": 0.0
+      "last_value": 0.0,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/righttrackpadforce",
@@ -382,7 +412,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": 0.0
+      "last_value": 0.0,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/lefttrackpadforce",
@@ -392,7 +423,8 @@
       "always": 0,
       "floating": 0.0,
       "timestamp": 0,
-      "last_value": 0.0
+      "last_value": 0.0,
+      "unsigned": null
     },
     {
       "name": "/actions/thumbparams/in/leftstickxy",
@@ -426,6 +458,11 @@
         0.0,
         0.0,
         0.0
+      ],
+      "unsigned": [
+        false,
+        false,
+        false
       ]
     },
     {
@@ -460,6 +497,11 @@
         0.0,
         0.0,
         0.0
+      ],
+      "unsigned": [
+        false,
+        false,
+        false
       ]
     },
     {
@@ -488,6 +530,10 @@
       "last_value": [
         0.0,
         0.0
+      ],
+      "unsigned": [
+        false,
+        false
       ]
     },
     {
@@ -516,6 +562,10 @@
       "last_value": [
         0.0,
         0.0
+      ],
+      "unsigned": [
+        false,
+        false
       ]
     }
   ]

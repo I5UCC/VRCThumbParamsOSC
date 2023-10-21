@@ -181,6 +181,10 @@ class OSC:
             None
         """
         val_x, val_y = value[0], value[1]
+        if action["unsigned"][0]:
+            val_x = (val_x + 1) / 2
+        if action["unsigned"][1]:
+            val_y = (val_y + 1) / 2
 
         if action["floating"]:
             if val_x:

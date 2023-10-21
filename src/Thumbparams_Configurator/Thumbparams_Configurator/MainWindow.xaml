@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Configurator"
         mc:Ignorable="d"
         ResizeMode="NoResize"
-        Title="ThumbParams Configurator" Height="851" Width="549">
+        Title="ThumbParams Configurator" Height="851" Width="591">
     <Grid>
         <ListBox ItemsSource="{Binding ParameterList}" x:Name="Lbx_Params" Margin="10,228,10,147">
             <ListBox.ItemTemplate>
@@ -16,19 +16,22 @@
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="1*" />
                             <RowDefinition Height="1*" />
                             <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
                         </Grid.RowDefinitions>
                         <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}" Content="{Binding DisplayString}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
-                        <TextBox Width="100" Grid.Column="1" PreviewTextInput="TextBox_PreviewTextInput" TextChanged="TextBox_TextChanged" ToolTip="{Binding Text}" Text="{Binding Floating}" Margin="30, 0, 0, 0" IsEnabled="{Binding isEnabled}"/>
+                        <TextBox Width="100" Grid.Column="1" PreviewTextInput="TextBox_PreviewTextInput" TextChanged="TextBox_TextChanged" ToolTip="{Binding Text}" Text="{Binding Floating}" Margin="70, 0, 0, 0" IsEnabled="{Binding isEnabled}"/>
                         <ComboBox Grid.Column="2" Margin="20, 0, 0, 0" SelectedIndex="{Binding AlwaysSend}" ToolTip="{Binding Text}" SelectionChanged="ComboBox_SelectionChanged" Width="120">
                             <ComboBoxItem>Send On Change</ComboBoxItem>
                             <ComboBoxItem>Send On Positive</ComboBoxItem>
                             <ComboBoxItem>Always Send</ComboBoxItem>
                         </ComboBox>
+                        <CheckBox Grid.Column="1" IsChecked="{Binding Unsigned}" Content="Unsigned" ToolTip="{Binding Text}" Visibility="{Binding Unsigned_Visibility}" Margin="-13, 0, 0, 0" Checked="CheckBox_Checked_Unsigned" Unchecked="CheckBox_Checked_Unsigned"/>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -44,15 +47,15 @@
         <Button Content="Reset OSC Config" Margin="10,0,10,50" Click="Reset_OSC_Clicked" Height="32" VerticalAlignment="Bottom"/>
         <Label Content="Parameter" HorizontalAlignment="Left" Margin="14,197,0,0" VerticalAlignment="Top" Width="159" HorizontalContentAlignment="Left" FontWeight="Bold" Height="26"/>
         <Label Content="Type" HorizontalAlignment="Left" Margin="175,197,0,0" VerticalAlignment="Top" Width="159" HorizontalContentAlignment="Left" FontWeight="Bold" Height="26"/>
-        <Button x:Name="UAP" Content="Untick all Parameters" Margin="10,0,275,117" Click="Button_Param_Click" Height="25" VerticalAlignment="Bottom"/>
-        <Button x:Name="TAP" Content="Tick all Parameters" Margin="0,0,9,117" Click="Button_Param_Click" RenderTransformOrigin="0.596,0.23" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="260"/>
+        <Button x:Name="UAP" Content="Untick all Parameters" Margin="10,0,295,117" Click="Button_Param_Click" Height="25" VerticalAlignment="Bottom"/>
+        <Button x:Name="TAP" Content="Tick all Parameters" Margin="0,0,9,117" Click="Button_Param_Click" RenderTransformOrigin="0.596,0.23" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="281"/>
         <Button Content="Save" Margin="10,0,10,13" Click="Save_Clicked" Height="32" VerticalAlignment="Bottom"/>
-        <Label Content="Floating Time" HorizontalAlignment="Left" Margin="254,197,0,0" VerticalAlignment="Top" Width="160" HorizontalContentAlignment="Left" FontWeight="Bold" Height="26"/>
+        <Label Content="Floating Time" HorizontalAlignment="Left" Margin="295,197,0,0" VerticalAlignment="Top" Width="160" HorizontalContentAlignment="Left" FontWeight="Bold" Height="26"/>
         <Label Content="Server Port" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Width="193" HorizontalContentAlignment="Right"/>
         <TextBox x:Name="Tbx_Server_Port" Margin="216,74,10,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" TextChanged="TextChanged" FontSize="14"/>
         <Label Content="HTTP Port" HorizontalAlignment="Left" Margin="10,102,0,0" VerticalAlignment="Top" Width="193" HorizontalContentAlignment="Right"/>
         <TextBox x:Name="Tbx_http_port" Margin="216,105,10,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" TextChanged="TextChanged" FontSize="14"/>
-        <Label Content="Mode" HorizontalAlignment="Left" Margin="376,197,0,0" VerticalAlignment="Top" Width="160" HorizontalContentAlignment="Left" FontWeight="Bold" Height="26" RenderTransformOrigin="0.494,0.064"/>
+        <Label Content="Mode" HorizontalAlignment="Left" Margin="416,197,0,0" VerticalAlignment="Top" Width="160" HorizontalContentAlignment="Left" FontWeight="Bold" Height="26" RenderTransformOrigin="0.494,0.064"/>
         <Button x:Name="OSN" Content="Send On Change" Margin="10,0,0,87" Click="Mode_Click" HorizontalAlignment="Left" Width="178" Height="25" VerticalAlignment="Bottom"/>
         <Button x:Name="ASP" Content="Send On Positive" Margin="0,0,9,87" Click="Mode_Click" Height="25" VerticalAlignment="Bottom" RenderTransformOrigin="0.596,0.23" HorizontalAlignment="Right" Width="179"/>
         <Button x:Name="AS" Content="Always Send" Margin="193,0,193,87" Click="Mode_Click" Height="25" VerticalAlignment="Bottom"/>

@@ -12,6 +12,7 @@ namespace Configurator
         public object floating { get; set; }
         public object timestamp { get; set; }
         public object last_value { get; set; }
+        public object unsigned { get; set; } 
     }
 
     public class ControllerType

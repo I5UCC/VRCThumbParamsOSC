@@ -8,7 +8,7 @@ rmdir /S /Q src\Thumbparams_Configurator\Thumbparams_Configurator\bin
 cd src/Thumbparams_Configurator
 dotnet publish -r win-x64
 cd ..
-"../venv/Scripts/python.exe" setup.py build
+"../.venv/Scripts/python.exe" setup.py build
 cd build
 robocopy exe.win-amd64-3.10 ThumbparamsOSC /MOVE /E /NFL /NDL /NJH /NJS /nc /ns /np
 cd ..

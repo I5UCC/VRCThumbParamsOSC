@@ -10,7 +10,7 @@ build_exe_options = {"packages": packages, "excludes": exclude, "include_files":
 
 setup(
     name="ThumbParamsOSC",
-    version="2.0.0.b1",
+    version="2.0.0.b2",
     description="ThumbParamsOSC",
     options={"build_exe": build_exe_options},
     executables=[Executable("main.py", target_name="ThumbParamsOSC.exe", base=False, icon="icon.ico"), Executable("main.py", target_name="ThumbParamsOSC_NoConsole.exe", base="Win32GUI", icon="icon.ico")],

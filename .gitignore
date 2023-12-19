@@ -11,3 +11,4 @@ bin/
 .vs/
 __pycache__/
 *.log
+.venv/

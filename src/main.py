@@ -142,7 +142,7 @@ def handle_input() -> None:
         val = ovr.get_value(action)
         osc.send(action, val)
 
-    if args.debug:
+    if debug:
         print_debugoutput()
 
 
@@ -190,17 +190,32 @@ parser = argparse.ArgumentParser(description='ThumbParamsOSC: Takes button data 
 parser.add_argument('-d', '--debug', required=False, action='store_true', help='prints values for debugging')
 parser.add_argument('-i', '--ip', required=False, type=str, help="set OSC ip. Default=127.0.0.1")
 parser.add_argument('-p', '--port', required=False, type=str, help="set OSC port. Default=9000")
-args = parser.parse_args()
+ip = None
+port = None
+debug = False
+try:
+    args = parser.parse_args()
+    ip = args.ip
+    port = args.port
+    debug = args.debug
+except Exception as e:
+    logging.error("Argument Error, continuing without arguments")
+    ip = None
+    port = None
+    debug = False
 
 if os.name == 'nt':
-    ctypes.windll.kernel32.SetConsoleTitleW("ThumbParamsOSC v2.0.0-Beta2" + (" (Debug)" if args.debug else ""))
+    try:
+        ctypes.windll.kernel32.SetConsoleTitleW("ThumbParamsOSC v2.0.0-Beta2" + (" (Debug)" if debug else ""))
+    except Exception:
+        pass
 
 CONFIG_PATH = get_absolute_path('config.json')
 MANIFEST_PATH = get_absolute_path("app.vrmanifest")
 FIRST_LAUNCH_FILE = get_absolute_path("bindings/first_launch")
 config: dict = json.load(open(CONFIG_PATH))
-config["IP"] = args.ip if args.ip else config["IP"]
-config["Port"] = args.port if args.port else config["Port"]
+config["IP"] = ip if ip else config["IP"]
+config["Port"] = port if port else config["Port"]
 POLLINGRATE = 1 / float(config['PollingRate'])
 
 try:

@@ -4,3 +4,4 @@ argparse
 zeroconf
 requests
 psutil
+inputs

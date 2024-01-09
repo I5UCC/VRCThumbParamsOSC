@@ -139,12 +139,12 @@ def handle_input() -> None:
     osc.send("LeftABButtons", _strinputs[0] == "1" and _strinputs[1] == "1")
     osc.send("RightABButtons", _strinputs[4] == "1" and _strinputs[5] == "1")
 
-    for action in config["actions"][8:]:
+    for action in config["actions"][8:36]:
         val = ovr.get_value(action)
         osc.send(action, val)
 
     # xinput buttons
-    for action in config["xinput_actions"]:
+    for action in config["actions"][36:]:
         val = xinput.get_value(action)
         osc.send(action, val)
 

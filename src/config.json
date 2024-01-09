@@ -567,7 +567,9 @@
         false,
         false
       ]
-    },
+    }
+  ],
+  "xinput_actions": [
     {
       "name": "A",
       "type": "boolean",

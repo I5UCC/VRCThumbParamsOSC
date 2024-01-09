@@ -141,7 +141,7 @@ class XInputController:
                 self.RightJoystickX, self.RightJoystickY, self.deadzone
             )
         elif name == "DPadXY":
-            return self.DPadX, self.DPadY
+            return float(self.DPadX), float(self.DPadY)
         else:
             raise ValueError(f"Value for {name} not found.")
 

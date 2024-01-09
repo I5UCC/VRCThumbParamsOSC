@@ -122,7 +122,6 @@ def handle_input() -> None:
     Returns:
         None
     """
-    xinput.poll_next_events()
     ovr.poll_next_events()
     osc.refresh_time()
 

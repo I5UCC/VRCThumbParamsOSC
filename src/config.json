@@ -823,6 +823,45 @@
         false,
         false
       ]
+    },
+    {
+      "name": "DPadXY",
+      "type": "vector2",
+      "osc_parameter": [
+        "XInputDPadX",
+        "XInputDPadY",
+        "XInputDPadMoved"
+      ],
+      "enabled": [
+        true,
+        true,
+        true
+      ],
+      "always": [
+        0,
+        0,
+        0
+      ],
+      "floating": [
+        0.0,
+        0.0,
+        -100
+      ],
+      "timestamp": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "last_value": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "unsigned": [
+        false,
+        false,
+        false
+      ]
     }
   ]
 }

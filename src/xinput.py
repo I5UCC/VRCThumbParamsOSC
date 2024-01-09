@@ -9,8 +9,9 @@ class XInputController:
     MAX_TRIG_VAL = math.pow(2, 8)
     MAX_JOY_VAL = math.pow(2, 15)
 
-    def __init__(self, config: dict):
+    def __init__(self, config: dict, deadzone=0.2):
         self.config = config
+        self.deadzone = deadzone
 
         self.LeftJoystickY = 0
         self.LeftJoystickX = 0
@@ -43,17 +44,17 @@ class XInputController:
         self._monitor_thread.daemon = True
         self._monitor_thread.start()
 
-    def read(self):  # return the buttons/triggers that you care about in this methode
-        x = self.LeftJoystickX
-        y = self.LeftJoystickY
-        a = self.A
-        b = self.X  # b=1, x=2
-        rb = self.RightBumper
-        return [x, y, a, b, rb]
-
     def _monitor_controller(self):
         while True:
             self.poll_next_events()
+
+    def normalize_joy(self, v):
+        # normalize between -1 and 1
+        return v / XInputController.MAX_JOY_VAL
+
+    def normalize_trigger(self, v):
+        # normalize between -1 and 1
+        return v / XInputController.MAX_TRIG_VAL
 
     def poll_next_events(self):
         try:
@@ -61,29 +62,17 @@ class XInputController:
             self.is_plugged = True
             for event in events:
                 if event.code == "ABS_Y":
-                    self.LeftJoystickY = round(
-                        event.state / XInputController.MAX_JOY_VAL, 4
-                    )  # normalize between -1 and 1
+                    self.LeftJoystickY = self.normalize_joy(event.state)
                 elif event.code == "ABS_X":
-                    self.LeftJoystickX = round(
-                        event.state / XInputController.MAX_JOY_VAL, 4
-                    )  # normalize between -1 and 1
+                    self.LeftJoystickX = self.normalize_joy(event.state)
                 elif event.code == "ABS_RY":
-                    self.RightJoystickY = round(
-                        event.state / XInputController.MAX_JOY_VAL, 4
-                    )  # normalize between -1 and 1
+                    self.RightJoystickY = self.normalize_joy(event.state)
                 elif event.code == "ABS_RX":
-                    self.RightJoystickX = round(
-                        event.state / XInputController.MAX_JOY_VAL, 4
-                    )  # normalize between -1 and 1
+                    self.RightJoystickX = self.normalize_joy(event.state)
                 elif event.code == "ABS_Z":
-                    self.LeftTrigger = round(
-                        event.state / XInputController.MAX_TRIG_VAL, 4
-                    )  # normalize between 0 and 1
+                    self.LeftTrigger = self.normalize_trigger(event.state)
                 elif event.code == "ABS_RZ":
-                    self.RightTrigger = round(
-                        event.state / XInputController.MAX_TRIG_VAL, 4
-                    )  # normalize between 0 and 1
+                    self.RightTrigger = self.normalize_trigger(event.state)
                 elif event.code == "BTN_TL":
                     self.LeftBumper = event.state
                 elif event.code == "BTN_TR":
@@ -144,10 +133,35 @@ class XInputController:
         if hasattr(self, name):
             return getattr(self, name)
         elif name == "LeftJoystickXY":
-            return self.LeftJoystickX, self.LeftJoystickY
+            return dz_scaled_radial(
+                self.LeftJoystickX, self.LeftJoystickY, self.deadzone
+            )
         elif name == "RightJoystickXY":
-            return self.RightJoystickX, self.RightJoystickY
+            return dz_scaled_radial(
+                self.RightJoystickX, self.RightJoystickY, self.deadzone
+            )
         elif name == "DPadXY":
             return self.DPadX, self.DPadY
         else:
             raise ValueError(f"Value for {name} not found.")
+
+
+def map_range(v, old_min, old_max, new_min, new_max):
+    return new_min + (new_max - new_min) * (v - old_min) / (old_max - old_min)
+
+
+def dz_scaled_radial(x: float, y: float, deadzone: float) -> tuple[float, float]:
+    input_magnitude = math.sqrt(x**2 + y**2)
+    if input_magnitude < deadzone:
+        return 0.0, 0.0
+    else:
+        x_normalized = x / input_magnitude
+        y_normalized = y / input_magnitude
+        # Formula:
+        # max_value = 1
+        # min_value = 0
+        # retval = input_normalized * (min_value + (max_value - min_value) * ((input_magnitude - deadzone) / (max_value - deadzone)))
+        mapped_magnitude = map_range(input_magnitude, deadzone, 1, 0, 1)
+        new_x = x_normalized * mapped_magnitude
+        new_y = y_normalized * mapped_magnitude
+        return new_x, new_y

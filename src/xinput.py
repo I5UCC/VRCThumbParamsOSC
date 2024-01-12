@@ -13,28 +13,28 @@ class XInputController:
         self.config = config
         self.deadzone = deadzone
 
-        self.LeftJoystickY = 0
-        self.LeftJoystickX = 0
-        self.RightJoystickY = 0
-        self.RightJoystickX = 0
-        self.LeftTrigger = 0
-        self.RightTrigger = 0
-        self.LeftBumper = 0
-        self.RightBumper = 0
-        self.A = 0
-        self.X = 0
-        self.Y = 0
-        self.B = 0
-        self.LeftThumb = 0
-        self.RightThumb = 0
-        self.Back = 0
-        self.Start = 0
-        self.LeftDPad = 0
-        self.RightDPad = 0
-        self.UpDPad = 0
-        self.DownDPad = 0
-        self.DPadX = 0
-        self.DPadY = 0
+        self.LeftJoystickY = 0.0
+        self.LeftJoystickX = 0.0
+        self.RightJoystickY = 0.0
+        self.RightJoystickX = 0.0
+        self.LeftTrigger = 0.0
+        self.RightTrigger = 0.0
+        self.LeftBumper = False
+        self.RightBumper = False
+        self.A = False
+        self.X = False
+        self.Y = False
+        self.B = False
+        self.LeftThumb = False
+        self.RightThumb = False
+        self.Back = False
+        self.Start = False
+        self.LeftDPad = False
+        self.RightDPad = False
+        self.UpDPad = False
+        self.DownDPad = False
+        self.DPadX = 0.0
+        self.DPadY = 0.0
 
         self.is_plugged = True
 
@@ -74,55 +74,55 @@ class XInputController:
                 elif event.code == "ABS_RZ":
                     self.RightTrigger = self.normalize_trigger(event.state)
                 elif event.code == "BTN_TL":
-                    self.LeftBumper = event.state
+                    self.LeftBumper = bool(event.state)
                 elif event.code == "BTN_TR":
-                    self.RightBumper = event.state
+                    self.RightBumper = bool(event.state)
                 elif event.code == "BTN_SOUTH":
-                    self.A = event.state
+                    self.A = bool(event.state)
                 elif event.code == "BTN_NORTH":
-                    self.Y = event.state  # previously switched with X
+                    self.Y = bool(event.state)  # previously switched with X
                 elif event.code == "BTN_WEST":
-                    self.X = event.state  # previously switched with Y
+                    self.X = bool(event.state)  # previously switched with Y
                 elif event.code == "BTN_EAST":
-                    self.B = event.state
+                    self.B = bool(event.state)
                 elif event.code == "BTN_THUMBL":
-                    self.LeftThumb = event.state
+                    self.LeftThumb = bool(event.state)
                 elif event.code == "BTN_THUMBR":
-                    self.RightThumb = event.state
+                    self.RightThumb = bool(event.state)
                 elif event.code == "BTN_SELECT":
-                    self.Back = event.state
+                    self.Back = bool(event.state)
                 elif event.code == "BTN_START":
-                    self.Start = event.state
+                    self.Start = bool(event.state)
                 elif event.code == "BTN_TRIGGER_HAPPY1":
-                    self.LeftDPad = event.state
+                    self.LeftDPad = bool(event.state)
                 elif event.code == "BTN_TRIGGER_HAPPY2":
-                    self.RightDPad = event.state
+                    self.RightDPad = bool(event.state)
                 elif event.code == "BTN_TRIGGER_HAPPY3":
-                    self.UpDPad = event.state
+                    self.UpDPad = bool(event.state)
                 elif event.code == "BTN_TRIGGER_HAPPY4":
-                    self.DownDPad = event.state
+                    self.DownDPad = bool(event.state)
                 elif event.code == "ABS_HAT0X":
                     self.DPadX = event.state
                     if event.state == 1:
-                        self.LeftDPad = 0
-                        self.RightDPad = 1
+                        self.LeftDPad = False
+                        self.RightDPad = True
                     elif event.state == -1:
-                        self.LeftDPad = 1
-                        self.RightDPad = 0
+                        self.LeftDPad = True
+                        self.RightDPad = False
                     else:
-                        self.LeftDPad = 0
-                        self.RightDPad = 0
+                        self.LeftDPad = False
+                        self.RightDPad = False
                 elif event.code == "ABS_HAT0Y":
                     self.DPadY = -event.state  # set upwards positive
                     if event.state == 1:
-                        self.UpDPad = 0
-                        self.DownDPad = 1
+                        self.UpDPad = False
+                        self.DownDPad = True
                     elif event.state == -1:
-                        self.UpDPad = 1
-                        self.DownDPad = 0
+                        self.UpDPad = True
+                        self.DownDPad = False
                     else:
-                        self.UpDPad = 0
-                        self.DownDPad = 0
+                        self.UpDPad = False
+                        self.DownDPad = False
                 elif event.code != "SYN_REPORT":
                     logging.error(f"Event code not found: {event.code}")
         except UnpluggedError:

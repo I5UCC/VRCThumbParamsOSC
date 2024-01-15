@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Configurator
 {
@@ -51,6 +52,11 @@ namespace Configurator
         public SpecialParameter RightABButtons { get; set; }
         public List<DefaultBinding> default_bindings { get; set; }
         public List<Action> actions { get; set; }
+        public List<Action> xinput_actions { get; set; }
+        public List<Action> ConcatenateActions()
+        {
+            return actions.Concat(xinput_actions).ToList();
+        }
     }
 
 }

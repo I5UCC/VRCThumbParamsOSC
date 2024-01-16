@@ -8,6 +8,7 @@ import argparse
 import logging
 from osc import OSC
 from ovr import OVR
+from xinput import XInputController
 from zeroconf._exceptions import NonUniqueNameException
 
 
@@ -142,6 +143,11 @@ def handle_input() -> None:
         val = ovr.get_value(action)
         osc.send(action, val)
 
+    # xinput buttons
+    for action in config["xinput_actions"]:
+        val = xinput.get_value(action)
+        osc.send(action, val)
+
     if debug:
         print_debugoutput()
 
@@ -221,6 +227,7 @@ POLLINGRATE = 1 / float(config['PollingRate'])
 try:
     ovr: OVR = OVR(config, CONFIG_PATH, MANIFEST_PATH, FIRST_LAUNCH_FILE)
     osc: OSC = OSC(config, lambda addr, value: resend_parameters(value), get_server_needed())
+    xinput = XInputController(config)
 except OSError as e:
     logging.error("You can only bind to the port 9001 once.")
     logging.error(traceback.format_exc())

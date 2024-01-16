@@ -40,7 +40,7 @@ namespace Configurator
             ParameterList.Add(new BoolStringClass("LeftABButtons", config.LeftABButtons.enabled, config.LeftABButtons.always, "Boolean", "Infl. by A,B", false, false, "Hidden"));
             ParameterList.Add(new BoolStringClass("RightABButtons", config.RightABButtons.enabled, config.RightABButtons.always, "Boolean", "Infl. by A,B", false, false, "Hidden"));
 
-            foreach (Action a in config.actions) {
+            foreach (Action a in config.ConcatenateActions()) {
                 if (a.type != "vector2")
                 {
                     ParameterList.Add(new BoolStringClass((string)a.osc_parameter, (bool)a.enabled, int.Parse(a.always.ToString()), a.type == "boolean" ? "Boolean" : "Float", a.floating.ToString(), true, false, "Hidden"));

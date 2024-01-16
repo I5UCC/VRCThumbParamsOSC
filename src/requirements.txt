@@ -4,3 +4,4 @@ openvr
 argparse
 requests
 psutil
+inputs

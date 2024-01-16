@@ -568,5 +568,300 @@
         false
       ]
     }
+  ],
+  "xinput_actions": [
+    {
+      "name": "A",
+      "type": "boolean",
+      "osc_parameter": "XInputAButton",
+      "enabled": true,
+      "always": 0,
+      "floating": 0.0,
+      "timestamp": 0,
+      "last_value": false,
+      "unsigned": null
+    },
+    {
+      "name": "B",
+      "type": "boolean",
+      "osc_parameter": "XInputBButton",
+      "enabled": true,
+      "always": 0,
+      "floating": 0.0,
+      "timestamp": 0,
+      "last_value": false,
+      "unsigned": null
+    },
+    {
+      "name": "X",
+      "type": "boolean",
+      "osc_parameter": "XInputXButton",
+      "enabled": true,
+      "always": 0,
+      "floating": 0.0,
+      "timestamp": 0,
+      "last_value": false,
+      "unsigned": null
+    },
+    {
+      "name": "Y",
+      "type": "boolean",
+      "osc_parameter": "XInputYButton",
+      "enabled": true,
+      "always": 0,
+      "floating": 0.0,
+      "timestamp": 0,
+      "last_value": false,
+      "unsigned": null
+    },
+    {
+      "name": "LeftThumb",
+      "type": "boolean",
+      "osc_parameter": "XInputLeftThumbstick",
+      "enabled": true,
+      "always": 0,
+      "floating": 0.0,
+      "timestamp": 0,
+      "last_value": false,
+      "unsigned": null
+    },
+    {
+      "name": "RightThumb",
+      "type": "boolean",
+      "osc_parameter": "XInputRightThumbstick",
+      "enabled": true,
+      "always": 0,
+      "floating": 0.0,
+      "timestamp": 0,
+      "last_value": false,
+      "unsigned": null
+    },
+    {
+      "name": "LeftBumper",
+      "type": "boolean",
+      "osc_parameter": "XInputLeftBumper",
+      "enabled": true,
+      "always": 0,
+      "floating": 0.0,
+      "timestamp": 0,
+      "last_value": false,
+      "unsigned": null
+    },
+    {
+      "name": "RightBumper",
+      "type": "boolean",
+      "osc_parameter": "XInputRightBumper",
+      "enabled": true,
+      "always": 0,
+      "floating": 0.0,
+      "timestamp": 0,
+      "last_value": false,
+      "unsigned": null
+    },
+    {
+      "name": "Back",
+      "type": "boolean",
+      "osc_parameter": "XInputBackButton",
+      "enabled": true,
+      "always": 0,
+      "floating": 0.0,
+      "timestamp": 0,
+      "last_value": false,
+      "unsigned": null
+    },
+    {
+      "name": "Start",
+      "type": "boolean",
+      "osc_parameter": "XInputStartButton",
+      "enabled": true,
+      "always": 0,
+      "floating": 0.0,
+      "timestamp": 0,
+      "last_value": false,
+      "unsigned": null
+    },
+    {
+      "name": "LeftDPad",
+      "type": "boolean",
+      "osc_parameter": "XInputLeftDPad",
+      "enabled": true,
+      "always": 0,
+      "floating": 0.0,
+      "timestamp": 0,
+      "last_value": false,
+      "unsigned": null
+    },
+    {
+      "name": "RightDPad",
+      "type": "boolean",
+      "osc_parameter": "XInputRightDPad",
+      "enabled": true,
+      "always": 0,
+      "floating": 0.0,
+      "timestamp": 0,
+      "last_value": false,
+      "unsigned": null
+    },
+    {
+      "name": "UpDPad",
+      "type": "boolean",
+      "osc_parameter": "XInputUpDPad",
+      "enabled": true,
+      "always": 0,
+      "floating": 0.0,
+      "timestamp": 0,
+      "last_value": false,
+      "unsigned": null
+    },
+    {
+      "name": "DownDPad",
+      "type": "boolean",
+      "osc_parameter": "XInputDownDPad",
+      "enabled": true,
+      "always": 0,
+      "floating": 0.0,
+      "timestamp": 0,
+      "last_value": false,
+      "unsigned": null
+    },
+    {
+      "name": "LeftTrigger",
+      "type": "vector1",
+      "osc_parameter": "XInputLeftTrigger",
+      "enabled": true,
+      "always": 0,
+      "floating": 0.0,
+      "timestamp": 0,
+      "last_value": 0.0,
+      "unsigned": null
+    },
+    {
+      "name": "RightTrigger",
+      "type": "vector1",
+      "osc_parameter": "XInputRightTrigger",
+      "enabled": true,
+      "always": 0,
+      "floating": 0.0,
+      "timestamp": 0,
+      "last_value": 0.0,
+      "unsigned": null
+    },
+    {
+      "name": "LeftJoystickXY",
+      "type": "vector2",
+      "osc_parameter": [
+        "XInputLeftThumbStickX",
+        "XInputLeftThumbStickY",
+        "XInputLeftStickMoved"
+      ],
+      "enabled": [
+        true,
+        true,
+        true
+      ],
+      "always": [
+        0,
+        0,
+        0
+      ],
+      "floating": [
+        0.0,
+        0.0,
+        -100
+      ],
+      "timestamp": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "last_value": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "unsigned": [
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "name": "RightJoystickXY",
+      "type": "vector2",
+      "osc_parameter": [
+        "XInputRightThumbStickX",
+        "XInputRightThumbStickY",
+        "XInputRightStickMoved"
+      ],
+      "enabled": [
+        true,
+        true,
+        true
+      ],
+      "always": [
+        0,
+        0,
+        0
+      ],
+      "floating": [
+        0.0,
+        0.0,
+        -100
+      ],
+      "timestamp": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "last_value": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "unsigned": [
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "name": "DPadXY",
+      "type": "vector2",
+      "osc_parameter": [
+        "XInputDPadX",
+        "XInputDPadY",
+        "XInputDPadMoved"
+      ],
+      "enabled": [
+        true,
+        true,
+        true
+      ],
+      "always": [
+        0,
+        0,
+        0
+      ],
+      "floating": [
+        0.0,
+        0.0,
+        -100
+      ],
+      "timestamp": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "last_value": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "unsigned": [
+        false,
+        false,
+        false
+      ]
+    }
   ]
 }

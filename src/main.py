@@ -128,6 +128,8 @@ def handle_input() -> None:
 
     if config["ControllerType"]["enabled"] and (osc.curr_time - config["ControllerType"]["timestamp"] > 10.0 or config["ControllerType"]["always"]):
         _controller_type = ovr.get_controllertype()
+        if _controller_type == 0 and xinput.is_plugged:
+            _controller_type = 10
         osc.send("ControllerType", _controller_type)
 
     _strinputs = ""

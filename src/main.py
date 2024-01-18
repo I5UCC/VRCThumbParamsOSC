@@ -224,7 +224,7 @@ except Exception as e:
 
 if os.name == 'nt':
     try:
-        ctypes.windll.kernel32.SetConsoleTitleW("ThumbParamsOSC v2.0.0-Beta2" + (" (Debug)" if debug else ""))
+        ctypes.windll.kernel32.SetConsoleTitleW("ThumbParamsOSC v2.1.0-Beta1" + (" (Debug)" if debug else ""))
     except Exception:
         pass
 

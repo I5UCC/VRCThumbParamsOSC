@@ -76,6 +76,16 @@ def print_debugoutput() -> None:
             else:
                 _debugoutput += get_debug_string(action["osc_parameter"], action["last_value"], action["floating"], action["always"])
 
+    for action in config["xinput_actions"]:
+        if action["enabled"]:
+            if action["type"] == "vector2":
+                _debugoutput += get_debug_string(action["osc_parameter"][0], action["last_value"][0], action["floating"][0], action["always"][0])
+                _debugoutput += get_debug_string(action["osc_parameter"][1], action["last_value"][1], action["floating"][1], action["always"][1])
+                if len(action["osc_parameter"]) > 2:
+                    _debugoutput += get_debug_string(action["osc_parameter"][2], action["last_value"][2], action["floating"][2], action["always"][2])
+            else:
+                _debugoutput += get_debug_string(action["osc_parameter"], action["last_value"], action["floating"], action["always"])
+
     print(_debugoutput)
 
 

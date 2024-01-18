@@ -1,5 +1,7 @@
 import logging
 import math
+import threading
+
 from inputs import get_gamepad, UnpluggedError
 
 
@@ -35,6 +37,16 @@ class XInputController:
         self.DPadY = 0.0
 
         self.is_plugged = True
+
+        self._monitor_thread = threading.Thread(
+            target=self._monitor_controller, args=()
+        )
+        self._monitor_thread.daemon = True
+        self._monitor_thread.start()
+
+    def _monitor_controller(self):
+        while True:
+            self.poll_next_events()
 
     def normalize_joy(self, v):
         # normalize between -1 and 1

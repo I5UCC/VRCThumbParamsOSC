@@ -60,47 +60,34 @@ class XInputController:
         try:
             events = get_gamepad()
             self.is_plugged = True
+
+            event_actions = {
+                "ABS_Y": ("LeftJoystickY", self.normalize_joy),
+                "ABS_X": ("LeftJoystickX", self.normalize_joy),
+                "ABS_RY": ("RightJoystickY", self.normalize_joy),
+                "ABS_RX": ("RightJoystickX", self.normalize_joy),
+                "ABS_Z": ("LeftTrigger", self.normalize_trigger),
+                "ABS_RZ": ("RightTrigger", self.normalize_trigger),
+                "BTN_TL": ("LeftBumper", bool),
+                "BTN_TR": ("RightBumper", bool),
+                "BTN_SOUTH": ("A", bool),
+                "BTN_NORTH": ("Y", bool),
+                "BTN_WEST": ("X", bool),
+                "BTN_EAST": ("B", bool),
+                "BTN_THUMBL": ("LeftThumb", bool),
+                "BTN_THUMBR": ("RightThumb", bool),
+                "BTN_SELECT": ("Back", bool),
+                "BTN_START": ("Start", bool),
+                "BTN_TRIGGER_HAPPY1": ("LeftDPad", bool),
+                "BTN_TRIGGER_HAPPY2": ("RightDPad", bool),
+                "BTN_TRIGGER_HAPPY3": ("UpDPad", bool),
+                "BTN_TRIGGER_HAPPY4": ("DownDPad", bool),
+            }
+
             for event in events:
-                if event.code == "ABS_Y":
-                    self.LeftJoystickY = self.normalize_joy(event.state)
-                elif event.code == "ABS_X":
-                    self.LeftJoystickX = self.normalize_joy(event.state)
-                elif event.code == "ABS_RY":
-                    self.RightJoystickY = self.normalize_joy(event.state)
-                elif event.code == "ABS_RX":
-                    self.RightJoystickX = self.normalize_joy(event.state)
-                elif event.code == "ABS_Z":
-                    self.LeftTrigger = self.normalize_trigger(event.state)
-                elif event.code == "ABS_RZ":
-                    self.RightTrigger = self.normalize_trigger(event.state)
-                elif event.code == "BTN_TL":
-                    self.LeftBumper = bool(event.state)
-                elif event.code == "BTN_TR":
-                    self.RightBumper = bool(event.state)
-                elif event.code == "BTN_SOUTH":
-                    self.A = bool(event.state)
-                elif event.code == "BTN_NORTH":
-                    self.Y = bool(event.state)  # previously switched with X
-                elif event.code == "BTN_WEST":
-                    self.X = bool(event.state)  # previously switched with Y
-                elif event.code == "BTN_EAST":
-                    self.B = bool(event.state)
-                elif event.code == "BTN_THUMBL":
-                    self.LeftThumb = bool(event.state)
-                elif event.code == "BTN_THUMBR":
-                    self.RightThumb = bool(event.state)
-                elif event.code == "BTN_SELECT":
-                    self.Back = bool(event.state)
-                elif event.code == "BTN_START":
-                    self.Start = bool(event.state)
-                elif event.code == "BTN_TRIGGER_HAPPY1":
-                    self.LeftDPad = bool(event.state)
-                elif event.code == "BTN_TRIGGER_HAPPY2":
-                    self.RightDPad = bool(event.state)
-                elif event.code == "BTN_TRIGGER_HAPPY3":
-                    self.UpDPad = bool(event.state)
-                elif event.code == "BTN_TRIGGER_HAPPY4":
-                    self.DownDPad = bool(event.state)
+                action = event_actions.get(event.code)
+                if action:
+                    setattr(self, action[0], action[1](event.state))
                 elif event.code == "ABS_HAT0X":
                     self.DPadX = event.state
                     if event.state == 1:

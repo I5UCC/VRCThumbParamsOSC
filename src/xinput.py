@@ -32,6 +32,10 @@ class XInputController:
         Normalizes the joystick value between -1 and 1.
     normalize_trigger(v: float) -> float:
         Normalizes the trigger value between 0 and 1.
+    poll_next_events():
+        Polls the next events from the gamepad.
+    get_value(action: dict):
+        Retrieves the value of a specified action.
     """
     MAX_TRIG_VAL = math.pow(2, 8)
     MAX_JOY_VAL = math.pow(2, 15)
@@ -72,6 +76,29 @@ class XInputController:
         self.DownDPad = False
         self.DPadX = 0.0
         self.DPadY = 0.0
+
+        self.event_actions = {
+            "ABS_Y": ("LeftJoystickY", self.normalize_joy),
+            "ABS_X": ("LeftJoystickX", self.normalize_joy),
+            "ABS_RY": ("RightJoystickY", self.normalize_joy),
+            "ABS_RX": ("RightJoystickX", self.normalize_joy),
+            "ABS_Z": ("LeftTrigger", self.normalize_trigger),
+            "ABS_RZ": ("RightTrigger", self.normalize_trigger),
+            "BTN_TL": ("LeftBumper", bool),
+            "BTN_TR": ("RightBumper", bool),
+            "BTN_SOUTH": ("A", bool),
+            "BTN_NORTH": ("Y", bool),
+            "BTN_WEST": ("X", bool),
+            "BTN_EAST": ("B", bool),
+            "BTN_THUMBL": ("LeftThumb", bool),
+            "BTN_THUMBR": ("RightThumb", bool),
+            "BTN_SELECT": ("Back", bool),
+            "BTN_START": ("Start", bool),
+            "BTN_TRIGGER_HAPPY1": ("LeftDPad", bool),
+            "BTN_TRIGGER_HAPPY2": ("RightDPad", bool),
+            "BTN_TRIGGER_HAPPY3": ("UpDPad", bool),
+            "BTN_TRIGGER_HAPPY4": ("DownDPad", bool),
+        }
 
         self.is_plugged = True
 
@@ -132,31 +159,8 @@ class XInputController:
             events = get_gamepad()
             self.is_plugged = True
 
-            event_actions = {
-                "ABS_Y": ("LeftJoystickY", self.normalize_joy),
-                "ABS_X": ("LeftJoystickX", self.normalize_joy),
-                "ABS_RY": ("RightJoystickY", self.normalize_joy),
-                "ABS_RX": ("RightJoystickX", self.normalize_joy),
-                "ABS_Z": ("LeftTrigger", self.normalize_trigger),
-                "ABS_RZ": ("RightTrigger", self.normalize_trigger),
-                "BTN_TL": ("LeftBumper", bool),
-                "BTN_TR": ("RightBumper", bool),
-                "BTN_SOUTH": ("A", bool),
-                "BTN_NORTH": ("Y", bool),
-                "BTN_WEST": ("X", bool),
-                "BTN_EAST": ("B", bool),
-                "BTN_THUMBL": ("LeftThumb", bool),
-                "BTN_THUMBR": ("RightThumb", bool),
-                "BTN_SELECT": ("Back", bool),
-                "BTN_START": ("Start", bool),
-                "BTN_TRIGGER_HAPPY1": ("LeftDPad", bool),
-                "BTN_TRIGGER_HAPPY2": ("RightDPad", bool),
-                "BTN_TRIGGER_HAPPY3": ("UpDPad", bool),
-                "BTN_TRIGGER_HAPPY4": ("DownDPad", bool),
-            }
-
             for event in events:
-                action = event_actions.get(event.code)
+                action = self.event_actions.get(event.code)
                 if action:
                     setattr(self, action[0], action[1](event.state))
                 elif event.code == "ABS_HAT0X":

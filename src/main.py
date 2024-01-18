@@ -133,7 +133,6 @@ def handle_input() -> None:
         None
     """
     ovr.poll_next_events()
-    xinput.poll_next_events()
     osc.refresh_time()
 
     if config["ControllerType"]["enabled"] and (osc.curr_time - config["ControllerType"]["timestamp"] > 10.0 or config["ControllerType"]["always"]):

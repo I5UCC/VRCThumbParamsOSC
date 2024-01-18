@@ -1,7 +1,5 @@
 import logging
 import math
-import threading
-
 from inputs import get_gamepad, UnpluggedError
 
 

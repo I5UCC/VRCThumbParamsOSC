@@ -108,14 +108,14 @@ class XInputController:
         self._monitor_thread.daemon = True
         self._monitor_thread.start()
 
-    def _monitor_controller(self):
+    def _monitor_controller(self) -> None:
         """
         Monitors the controller's input in a loop.
         """
         while True:
             self.poll_next_events()
 
-    def normalize_joy(self, v):
+    def normalize_joy(self, v) -> float:
         """
         Normalizes the joystick value between -1 and 1.
 
@@ -131,7 +131,7 @@ class XInputController:
         """
         return v / XInputController.MAX_JOY_VAL
 
-    def normalize_trigger(self, v):
+    def normalize_trigger(self, v) -> float:
         """
         Normalizes the trigger value between 0 and 1.
 
@@ -147,7 +147,7 @@ class XInputController:
         """
         return v / XInputController.MAX_TRIG_VAL
 
-    def poll_next_events(self):
+    def poll_next_events(self) -> None:
         """
         Polls the next events from the gamepad.
 
@@ -190,7 +190,7 @@ class XInputController:
         except UnpluggedError:
             self.is_plugged = False
 
-    def get_value(self, action: dict):
+    def get_value(self, action: dict) -> float:
         """
         Retrieves the value of a specified action.
 
@@ -221,7 +221,7 @@ class XInputController:
             raise ValueError(f"Value for {name} not found.")
 
 
-def map_range(v, old_min, old_max, new_min, new_max):
+def map_range(v, old_min, old_max, new_min, new_max) -> float:
     """
     Maps a value from one range to another.
 

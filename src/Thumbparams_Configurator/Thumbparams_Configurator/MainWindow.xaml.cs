@@ -252,6 +252,20 @@ namespace Configurator
                     a.enabled = value;
                 }
             }
+            foreach (Action a in config.xinput_actions)
+            {
+                if (a.type == "vector2")
+                {
+                    if (((JArray)a.enabled).Count > 2)
+                        a.enabled = new JArray(new bool[3] { value, value, value });
+                    else
+                        a.enabled = new JArray(new bool[2] { value, value });
+                }
+                else
+                {
+                    a.enabled = value;
+                }
+            }
 
             Lbx_Params.Items.Refresh();
             Startup = false;
@@ -274,6 +288,20 @@ namespace Configurator
             config.RightABButtons.enabled = true;
 
             foreach (Action a in config.actions)
+            {
+                if (a.type == "vector2")
+                {
+                    if (((JArray)a.enabled).Count > 2)
+                        a.enabled = new JArray(new bool[3] { true, true, true });
+                    else
+                        a.enabled = new JArray(new bool[2] { true, true });
+                }
+                else
+                {
+                    a.enabled = true;
+                }
+            }
+            foreach (Action a in config.xinput_actions)
             {
                 if (a.type == "vector2")
                 {
@@ -449,6 +477,75 @@ namespace Configurator
                     }
                 }
             }
+        }
+
+        private void Untick_SteamVR_Parameters(object sender, RoutedEventArgs e)
+        {
+            if (Startup)
+                return;
+            Startup = true;
+            foreach (BoolStringClass item in Lbx_Params.Items)
+            {
+                if (!item.Text.Contains("XInput") && item.Text != "ControllerType")
+                {
+                    item.IsSelected = false;
+                }
+            }
+
+            config.LeftThumb.enabled = false;
+            config.RightThumb.enabled = false;
+            config.LeftABButtons.enabled = false;
+            config.RightABButtons.enabled = false;
+
+            foreach (Action a in config.actions)
+            {
+                if (a.type == "vector2")
+                {
+                    if (((JArray)a.enabled).Count > 2)
+                        a.enabled = new JArray(new bool[3] { false, false, false });
+                    else
+                        a.enabled = new JArray(new bool[2] { false, false });
+                }
+                else
+                {
+                    a.enabled = false;
+                }
+            } 
+
+            Lbx_Params.Items.Refresh();
+            Startup = false;
+        }
+
+        private void Untick_XInput_Parameters(object sender, RoutedEventArgs e)
+        {
+            if (Startup)
+                return;
+            Startup = true;
+            foreach (BoolStringClass item in Lbx_Params.Items)
+            {
+                if (item.Text.Contains("XInput"))
+                {
+                    item.IsSelected = false;
+                }
+            }
+
+            foreach (Action a in config.xinput_actions)
+            {
+                if (a.type == "vector2")
+                {
+                    if (((JArray)a.enabled).Count > 2)
+                        a.enabled = new JArray(new bool[3] { false, false, false });
+                    else
+                        a.enabled = new JArray(new bool[2] { false, false });
+                }
+                else
+                {
+                    a.enabled = false;
+                }
+            } 
+
+            Lbx_Params.Items.Refresh();
+            Startup = false;
         }
     }
 }

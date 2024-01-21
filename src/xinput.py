@@ -1,6 +1,5 @@
 import logging
 import math
-import threading
 
 from inputs import get_gamepad, UnpluggedError
 
@@ -21,13 +20,9 @@ class XInputController:
         The deadzone for the joystick.
     is_plugged : bool
         The state of the controller's connection.
-    _monitor_thread : threading.Thread
-        The thread that monitors the controller's input.
 
     Methods:
     -------
-    _monitor_controller():
-        Monitors the controller's input in a loop.
     normalize_joy(v: float) -> float:
         Normalizes the joystick value between -1 and 1.
     normalize_trigger(v: float) -> float:
@@ -101,19 +96,6 @@ class XInputController:
         }
 
         self.is_plugged = True
-
-        self._monitor_thread = threading.Thread(
-            target=self._monitor_controller, args=()
-        )
-        self._monitor_thread.daemon = True
-        self._monitor_thread.start()
-
-    def _monitor_controller(self) -> None:
-        """
-        Monitors the controller's input in a loop.
-        """
-        while True:
-            self.poll_next_events()
 
     def normalize_joy(self, v) -> float:
         """

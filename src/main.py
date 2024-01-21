@@ -1,15 +1,17 @@
-import json
-import sys
-import os
-import time
-import traceback
-import ctypes
 import argparse
+import asyncio
+import ctypes
+import json
 import logging
+import os
+import sys
+import traceback
+
+from zeroconf._exceptions import NonUniqueNameException
+
 from osc import OSC
 from ovr import OVR
 from xinput import XInputController
-from zeroconf._exceptions import NonUniqueNameException
 
 
 def get_absolute_path(relative_path) -> str:
@@ -133,7 +135,6 @@ def handle_input() -> None:
         None
     """
     ovr.poll_next_events()
-    xinput.poll_next_events()
     osc.refresh_time()
 
     if config["ControllerType"]["enabled"] and (osc.curr_time - config["ControllerType"]["timestamp"] > 10.0 or config["ControllerType"]["always"]):
@@ -266,16 +267,28 @@ logging.info(f"PollingRate: {POLLINGRATE}s ({config['PollingRate']} Hz)")
 logging.info(f"StickMoveTolerance: {osc.stick_tolerance} ({config['StickMoveTolerance']}%)")
 logging.info("Open Configurator.exe to change sent Parameters and other Settings.")
 
-# Main Loop
-while True:
-    try:
-        handle_input()
-        time.sleep(POLLINGRATE)
-    except KeyboardInterrupt:
-        stop()
-    except Exception:
-        logging.error("UNEXPECTED ERROR\n")
-        logging.error("Please Create an Issue on GitHub with the following information:\n")
-        logging.error(traceback.format_exc())
-        input("\nPress ENTER to exit")
-        stop()
+
+async def main_loop():
+    # Main Loop
+    while True:
+        try:
+            handle_input()
+            await asyncio.sleep(POLLINGRATE)
+        except KeyboardInterrupt:
+            stop()
+        except Exception:
+            logging.error("UNEXPECTED ERROR\n")
+            logging.error("Please Create an Issue on GitHub with the following information:\n")
+            logging.error(traceback.format_exc())
+            input("\nPress ENTER to exit")
+            stop()
+
+
+async def main():
+    async with asyncio.TaskGroup() as tg:
+        tg.create_task(main_loop())
+        tg.create_task(xinput.monitor_controller())
+
+
+# start the main loop with asyncio
+asyncio.run(main())

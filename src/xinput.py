@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import math
 
@@ -48,6 +49,8 @@ class XInputController:
         """
         self.config = config
         self.deadzone = deadzone
+        self.polling_rate = 1000
+        self.sleep_time = 1 / self.polling_rate
 
         self.LeftJoystickY = 0.0
         self.LeftJoystickX = 0.0
@@ -97,6 +100,11 @@ class XInputController:
 
         self.is_plugged = True
 
+    async def monitor_controller(self):
+        while True:
+            self.poll_next_events()
+            await asyncio.sleep(self.sleep_time)
+
     def normalize_joy(self, v) -> float:
         """
         Normalizes the joystick value between -1 and 1.
@@ -133,8 +141,8 @@ class XInputController:
         """
         Polls the next events from the gamepad.
 
-        This method retrieves the next events from the gamepad, normalizes the joystick and trigger values, 
-        and sets the corresponding attributes on the XInputController object. If the gamepad is unplugged, 
+        This method retrieves the next events from the gamepad, normalizes the joystick and trigger values,
+        and sets the corresponding attributes on the XInputController object. If the gamepad is unplugged,
         it sets the is_plugged attribute to False.
         """
         try:
@@ -172,7 +180,7 @@ class XInputController:
         except UnpluggedError:
             self.is_plugged = False
 
-    def get_value(self, action: dict) -> float:
+    def get_value(self, action: dict) -> tuple[float, float]:
         """
         Retrieves the value of a specified action.
 
@@ -183,7 +191,7 @@ class XInputController:
 
         Returns:
         -------
-            The value of the action. If the action is a joystick or DPad action, it returns a tuple of two floats. 
+            The value of the action. If the action is a joystick or DPad action, it returns a tuple of two floats.
             If the action is not found, it raises a ValueError.
         """
         name = action["name"]

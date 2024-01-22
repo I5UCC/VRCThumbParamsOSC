@@ -4,4 +4,4 @@ openvr
 argparse
 requests
 psutil
-inputs
+pyglet

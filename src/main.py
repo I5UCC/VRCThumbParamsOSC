@@ -11,7 +11,7 @@ from zeroconf._exceptions import NonUniqueNameException
 
 from osc import OSC
 from ovr import OVR
-from xinput import XInputController
+from xbox_controller import XboxController
 
 
 def get_absolute_path(relative_path) -> str:
@@ -198,9 +198,9 @@ def stop() -> None:
     Returns:
         None
     """
+    xinput.running = False
     ovr.shutdown()
     osc.shutdown()
-    sys.exit()
 
 
 logging.basicConfig(level=logging.DEBUG if len(sys.argv) > 1 else logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S', handlers=[logging.StreamHandler(), logging.FileHandler(get_absolute_path("log.log"))])
@@ -241,7 +241,7 @@ POLLINGRATE = 1 / float(config['PollingRate'])
 try:
     ovr: OVR = OVR(config, CONFIG_PATH, MANIFEST_PATH, FIRST_LAUNCH_FILE)
     osc: OSC = OSC(config, lambda addr, value: resend_parameters(value), get_server_needed())
-    xinput = XInputController(config)
+    xinput = XboxController(polling_rate=config.get("XInputPollingRate", 1000))
 except OSError as e:
     logging.error("You can only bind to the port 9001 once.")
     logging.error(traceback.format_exc())
@@ -274,21 +274,23 @@ async def main_loop():
         try:
             handle_input()
             await asyncio.sleep(POLLINGRATE)
-        except KeyboardInterrupt:
-            stop()
         except Exception:
             logging.error("UNEXPECTED ERROR\n")
             logging.error("Please Create an Issue on GitHub with the following information:\n")
             logging.error(traceback.format_exc())
             input("\nPress ENTER to exit")
-            stop()
+            break
+    stop()
 
 
 async def main():
     async with asyncio.TaskGroup() as tg:
         tg.create_task(main_loop())
-        tg.create_task(xinput.monitor_controller())
+        tg.create_task(xinput.polling_loop())
 
 
 # start the main loop with asyncio
-asyncio.run(main())
+try:
+    asyncio.run(main())
+except KeyboardInterrupt:
+    stop()

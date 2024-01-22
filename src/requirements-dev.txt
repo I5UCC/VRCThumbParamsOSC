@@ -1,0 +1,10 @@
+zeroconf==0.119.0
+python-osc
+openvr
+argparse
+requests
+psutil
+pyglet
+cx_Freeze
+pyparsing
+async-timeout

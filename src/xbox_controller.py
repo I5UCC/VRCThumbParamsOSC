@@ -106,7 +106,9 @@ class XboxController:
 
     @property
     def is_plugged(self):
-        return self.joystick is not None
+        return (
+            isinstance(self.joystick, XInputJoystick) and self.joystick.is_connected()
+        )
 
     def _init_joystick(self):
         joysticks = XInputJoystick.enumerate_devices()
@@ -135,11 +137,11 @@ class XboxController:
                 logging.warning(f"Button not found: {button} = {pressed}")
 
     def poll(self):
-        if self.joystick is None:
+        if not self.is_plugged:
             if time.time() - self.last_check > 10000:
                 self._init_joystick()
                 self.last_check = time.time()
-        if isinstance(self.joystick, XInputJoystick):
+        if self.is_plugged:
             self.joystick.dispatch_events()
 
     async def polling_loop(self):

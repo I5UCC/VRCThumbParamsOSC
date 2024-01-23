@@ -292,12 +292,3 @@ def dz_scaled_radial(x: float, y: float, deadzone: float) -> tuple[float, float]
         new_x = x_normalized * mapped_magnitude
         new_y = y_normalized * mapped_magnitude
         return new_x, new_y
-
-
-def test_controller():
-    controller = XboxController()
-    asyncio.run(controller.polling_loop())
-
-
-if __name__ == "__main__":
-    test_controller()

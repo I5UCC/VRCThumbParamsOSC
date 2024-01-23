@@ -165,7 +165,7 @@ class XboxController:
     def poll(self):
         try:
             if not self.is_plugged:
-                if time.time() - self.last_check > 10000:
+                if time.time() - self.last_check > 1:
                     self._init_joystick()
                     self.last_check = time.time()
             if self.is_plugged:

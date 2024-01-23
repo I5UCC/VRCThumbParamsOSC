@@ -125,7 +125,6 @@ class XboxController:
             if axis in axis_mapping:
                 mapping, func = axis_mapping[axis]
                 self.actions[mapping] = func(value)
-                logging.info(f"{mapping}: {self.actions[mapping]}")
             else:
                 logging.warning(f"Axis not found: {axis} = {value}")
 

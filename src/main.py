@@ -1,11 +1,12 @@
 import argparse
-import asyncio
 import ctypes
 import json
 import logging
 import os
 import sys
+import time
 import traceback
+from threading import Thread
 
 from zeroconf._exceptions import NonUniqueNameException
 
@@ -268,29 +269,22 @@ logging.info(f"StickMoveTolerance: {osc.stick_tolerance} ({config['StickMoveTole
 logging.info("Open Configurator.exe to change sent Parameters and other Settings.")
 
 
-async def main_loop():
+def main_loop():
     # Main Loop
     while True:
-        try:
-            handle_input()
-            await asyncio.sleep(POLLINGRATE)
-        except Exception:
-            logging.error("UNEXPECTED ERROR\n")
-            logging.error("Please Create an Issue on GitHub with the following information:\n")
-            logging.error(traceback.format_exc())
-            input("\nPress ENTER to exit")
-            break
-    stop()
+        handle_input()
+        time.sleep(POLLINGRATE)
 
 
-async def main():
-    async with asyncio.TaskGroup() as tg:
-        tg.create_task(main_loop())
-        tg.create_task(xinput.polling_loop())
-
-
-# start the main loop with asyncio
 try:
-    asyncio.run(main())
+    thread = Thread(target=xinput.polling_loop, daemon=True)
+    thread.start()
+    main_loop()
 except KeyboardInterrupt:
-    stop()
+    pass
+except Exception:
+    logging.error("UNEXPECTED ERROR\n")
+    logging.error("Please Create an Issue on GitHub with the following information:\n")
+    logging.error(traceback.format_exc())
+    input("\nPress ENTER to exit")
+stop()

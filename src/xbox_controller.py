@@ -94,15 +94,31 @@ class XboxController:
     MAX_TRIG_VAL = math.pow(2, 8)
     MAX_JOY_VAL = math.pow(2, 15)
 
-    def __init__(self, polling_rate=1000, deadzone=0.2):
+    def __init__(
+        self,
+        polling_rate=1000,
+        deadzone=0.2,
+        tune_sleep_time=True,
+        tune_polling_rate=False,
+        target_reliability=0.99,
+    ):
         self.polling_rate = polling_rate
         self.deadzone = deadzone
+        self.tune_sleep_time = tune_sleep_time
+        self.tune_polling_rate = tune_polling_rate
+        self.target_reliability = target_reliability
+
+        self.sleep_time = 1 / self.polling_rate
         self.actions = DEFAULT_ACTIONS
         self.running = True
 
         self.last_check = 0
         self.joystick = None
         self._init_joystick()
+
+        # use this to measure actual polling rate
+        self.num_polls = 0
+        self.start_polling_time = 0
 
     @property
     def is_plugged(self):
@@ -135,18 +151,52 @@ class XboxController:
             else:
                 logging.warning(f"Button not found: {button} = {pressed}")
 
-    def poll(self):
-        if not self.is_plugged:
-            if time.time() - self.last_check > 10000:
-                self._init_joystick()
-                self.last_check = time.time()
-        if self.is_plugged:
-            self.joystick.dispatch_events()
+        if self.tune_polling_rate:
 
-    async def polling_loop(self):
+            @j.event
+            def on_missed_packet(number):
+                total = j.received_packets + j.missed_packets
+                reliability = j.received_packets / float(total)
+                if reliability < self.target_reliability:
+                    j.missed_packets = j.received_packets = 0
+                    self.polling_rate *= 1.2
+                    self.sleep_time /= 1.2
+
+    def poll(self):
+        try:
+            if not self.is_plugged:
+                if time.time() - self.last_check > 10000:
+                    self._init_joystick()
+                    self.last_check = time.time()
+            if self.is_plugged:
+                self.joystick.dispatch_events()
+        except RuntimeError:
+            self.joystick = None
+
+    def polling_loop(self):
         while self.running:
             self.poll()
-            await asyncio.sleep(1 / self.polling_rate)
+            self.measure_effective_polling_rate()
+            time.sleep(self.sleep_time)
+
+    def measure_effective_polling_rate(self):
+        self.num_polls += 1
+        current_time = time.time()
+        # measure effective polling rate every 10 seconds
+        target_start_time = current_time - 2
+        if self.start_polling_time < target_start_time:
+            # Don't measure over a too long of a period
+            delta_time = 0.1
+            if target_start_time - delta_time < self.start_polling_time:
+                period_time = current_time - self.start_polling_time
+                rate = self.num_polls / period_time
+                if self.tune_sleep_time:
+                    self.sleep_time *= 1 - (
+                        (self.polling_rate - rate) / self.polling_rate
+                    )
+
+            self.start_polling_time = current_time
+            self.num_polls = 0
 
     def get_value(self, action: dict) -> bool | tuple[float, float]:
         """

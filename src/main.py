@@ -1,15 +1,18 @@
+import argparse
+import ctypes
 import json
-import sys
+import logging
 import os
+import sys
 import time
 import traceback
-import ctypes
-import argparse
-import logging
+from threading import Thread
+
+from zeroconf._exceptions import NonUniqueNameException
+
 from osc import OSC
 from ovr import OVR
-from xinput import XInputController
-from zeroconf._exceptions import NonUniqueNameException
+from xbox_controller import XboxController
 
 
 def get_absolute_path(relative_path) -> str:
@@ -133,7 +136,6 @@ def handle_input() -> None:
         None
     """
     ovr.poll_next_events()
-    xinput.poll_next_events()
     osc.refresh_time()
 
     if config["ControllerType"]["enabled"] and (osc.curr_time - config["ControllerType"]["timestamp"] > 10.0 or config["ControllerType"]["always"]):
@@ -197,9 +199,9 @@ def stop() -> None:
     Returns:
         None
     """
+    xinput.running = False
     ovr.shutdown()
     osc.shutdown()
-    sys.exit()
 
 
 logging.basicConfig(level=logging.DEBUG if len(sys.argv) > 1 else logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S', handlers=[logging.StreamHandler(), logging.FileHandler(get_absolute_path("log.log"))])
@@ -240,7 +242,7 @@ POLLINGRATE = 1 / float(config['PollingRate'])
 try:
     ovr: OVR = OVR(config, CONFIG_PATH, MANIFEST_PATH, FIRST_LAUNCH_FILE)
     osc: OSC = OSC(config, lambda addr, value: resend_parameters(value), get_server_needed())
-    xinput = XInputController(config)
+    xinput = XboxController(polling_rate=config.get("XInputPollingRate", 1000))
 except OSError as e:
     logging.error("You can only bind to the port 9001 once.")
     logging.error(traceback.format_exc())
@@ -266,16 +268,23 @@ logging.info(f"PollingRate: {POLLINGRATE}s ({config['PollingRate']} Hz)")
 logging.info(f"StickMoveTolerance: {osc.stick_tolerance} ({config['StickMoveTolerance']}%)")
 logging.info("Open Configurator.exe to change sent Parameters and other Settings.")
 
-# Main Loop
-while True:
-    try:
+
+def main_loop():
+    # Main Loop
+    while True:
         handle_input()
         time.sleep(POLLINGRATE)
-    except KeyboardInterrupt:
-        stop()
-    except Exception:
-        logging.error("UNEXPECTED ERROR\n")
-        logging.error("Please Create an Issue on GitHub with the following information:\n")
-        logging.error(traceback.format_exc())
-        input("\nPress ENTER to exit")
-        stop()
+
+
+try:
+    thread = Thread(target=xinput.polling_loop, daemon=True)
+    thread.start()
+    main_loop()
+except KeyboardInterrupt:
+    pass
+except Exception:
+    logging.error("UNEXPECTED ERROR\n")
+    logging.error("Please Create an Issue on GitHub with the following information:\n")
+    logging.error(traceback.format_exc())
+    input("\nPress ENTER to exit")
+stop()

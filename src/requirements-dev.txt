@@ -5,3 +5,6 @@ argparse
 requests
 psutil
 pyglet
+cx_Freeze
+pyparsing
+async-timeout

@@ -206,6 +206,8 @@ def stop() -> None:
 
 logging.basicConfig(level=logging.DEBUG if len(sys.argv) > 1 else logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S', handlers=[logging.StreamHandler(), logging.FileHandler(get_absolute_path("log.log"))])
 
+VERSION = open(get_absolute_path("VERSION")).read().strip()
+
 # Argument Parser
 parser = argparse.ArgumentParser(description='ThumbParamsOSC: Takes button data from SteamVR and sends it to an OSC-Client')
 parser.add_argument('-d', '--debug', required=False, action='store_true', help='prints values for debugging')
@@ -227,7 +229,7 @@ except Exception as e:
 
 if os.name == 'nt':
     try:
-        ctypes.windll.kernel32.SetConsoleTitleW("ThumbParamsOSC v2.1.0-Beta1" + (" (Debug)" if debug else ""))
+        ctypes.windll.kernel32.SetConsoleTitleW(f"ThumbParamsOSC {VERSION}" + (" (Debug)" if debug else ""))
     except Exception:
         pass
 
@@ -259,7 +261,7 @@ except Exception as e:
     input("\nPress ENTER to exit")
     stop()
 
-logging.info("ThumbParamsOSC running...")
+logging.info(f"ThumbParamsOSC {VERSION} running...")
 logging.info(f"IP: {osc.ip}")
 logging.info(f"Port: {osc.port}")
 logging.info(f"Server Port: {osc.server_port}")

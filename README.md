@@ -1,11 +1,112 @@
 # <img src="https://github.com/I5UCC/VRCThumbParamsOSC/blob/468e25fb16f03daac756d693656c784094518efb/src/icon.ico" width="32" height="32"> ThumbParamsOSC [![Github All Releases](https://img.shields.io/github/downloads/i5ucc/VRCThumbParamsOSC/total.svg)](https://github.com/I5UCC/VRCThumbParamsOSC/releases/latest) <a href='https://ko-fi.com/i5ucc' target='_blank'><img height='35' style='border:0px;height:25px;' src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' />
-OSC program that makes SteamVR controller actions accessible as Avatar Parameters.
 
-Currently supports ***Valve-Index*** and ***Oculus(Meta)-Touch*** Controllers.
+OSC program that makes SteamVR controller actions, Tracker button actions and XInput actions accessible as Avatar Parameters.
+
+Currently supports ***Valve-Index***, ***Oculus(Meta)-Touch***, SteamVR Trackers and XInput Controllers.
 
 ### [<img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6ca814282eca7172c6_icon_clyde_white_RGB.svg"  width="20" height="20"> Discord Support Server](https://discord.gg/rqcWHje3hn)
 
 ### [🢃 Download Latest release](https://github.com/I5UCC/VRCThumbParamsOSC/releases/latest)
+
+## Available Parameters
+
+All parameters are **case-sensitive**.
+
+### Special Parameters
+
+The two int parameters ***RightThumb*** and ***LeftThumb*** represent the position of each thumb with the numbers from 0 to 4:
+
+| Value | Real Position |
+| ----- | ------------- |
+| 0     | Not Touching  |
+| 1     | A/X Button      |
+| 2     | B/Y Button      |
+| 3     | Trackpad      |
+| 4     | Thumbstick    |
+
+The int ***ControllerType*** gives what controller is currently being used:
+- Meta/Oculus Touch (2)
+- Index (1)
+- Xinput Controller (10)
+- Any other controller/No Controller (0)
+
+***\[Left/Right]ABButtons*** detects if the thumb is on *either* the A or B buttons, or Touching both *at the same time*.
+
+Tracker Power button parameters require Tracker roles to be set up in SteamVR: <br>
+Go to `SteamVR-Settings > Manage Trackers` and set up tracking roles for each tracker respectively:
+![268513445-16f47092-6f8b-4de6-9d5d-118fc9135c29](https://github.com/I5UCC/VRCThumbParamsOSC/assets/43730681/d2f771d8-dec4-46a0-9a55-6f02ce449eb1)
+
+### SteamVR Controller Parameters
+| Parameter | Type |
+|-----------|------|
+| ControllerType | int |
+| RightThumb | int |
+| LeftThumb | int |
+| LeftAButton | bool |
+| LeftBButton | bool |
+| LeftABButtons | bool |
+| LeftTrackPad | bool |
+| LeftThumbStick | bool |
+| RightAButton | bool |
+| RightBButton | bool |
+| RightABButtons | bool |
+| RightTrackPad | bool |
+| RightThumbStick | bool |
+| LeftAButtonClick | bool |
+| LeftBButtonClick | bool |
+| LeftTrackPadClick | bool |
+| LeftThumbStickClick | bool |
+| RightAButtonClick | bool |
+| RightBButtonClick | bool |
+| RightTrackPadClick | bool |
+| RightThumbStickClick | bool |
+| LeftGrab | bool |
+| RightGrab | bool |
+| LeftTrigger | float |
+| RightTrigger | float |
+| LeftGrabForce | float |
+| RightGrabForce | float |
+| RightTrackpadForce | float |
+| LeftTrackpadForce | float |
+| LeftStickMoved | bool |
+| RightStickMoved | bool |
+| LeftTrackPadY | float |
+| RightTrackPadY | float |
+
+### Tracker Parameters
+| Parameter | Type |
+|-----------|------|
+| LeftFootTracker | bool |
+| RightFootTracker | bool |
+| WaistTracker | bool |
+| ChestTracker | bool |
+| LeftElbowTracker | bool |
+| RightElbowTracker | bool |
+| LeftKneeTracker | bool |
+| RightKneeTracker | bool |
+
+### XInput Parameters
+| Parameter | Type |
+|-----------|------|
+| XInputAButton | bool |
+| XInputBButton | bool |
+| XInputXButton | bool |
+| XInputYButton | bool |
+| XInputLeftThumbstick | bool |
+| XInputRightThumbstick | bool |
+| XInputLeftBumper | bool |
+| XInputRightBumper | bool |
+| XInputBackButton | bool |
+| XInputStartButton | bool |
+| XInputLeftDPad | bool |
+| XInputRightDPad | bool |
+| XInputUpDPad | bool |
+| XInputDownDPad | bool |
+| XInputLeftTrigger | float |
+| XInputRightTrigger | float |
+| XInputLeftStickMoved | bool |
+| XInputRightStickMoved | bool |
+| XInputDPadMoved | bool |
 
 ## How to use
 
@@ -31,83 +132,6 @@ If you have problems with this program, try this to fix it:
   - Type in `%APPDATA%\..\LocalLow\VRChat\VRChat\OSC`
   - Delete the folders that start with 'usr_*'.
   - Startup VRChat again and it should work.
-
-## Available Parameters
-
-All parameters are **case-sensitive**.
-
-Two int parameters for the Thumb position on each controller:
-
-- ***RightThumb***
-- ***LeftThumb***
-
-The Integer represents the position of each thumb with the numbers from 0 to 4:
-
-| Value | Real Position |
-| ----- | ------------- |
-| 0     | Not Touching  |
-| 1     | A/X Button      |
-| 2     | B/Y Button      |
-| 3     | Trackpad      |
-| 4     | Thumbstick    |
-
-Additionally, bool versions of the thumb positions are available, They're mapped the following:
-
-- \[Left/Right]AButton
-- \[Left/Right]BButton
-- \[Left/Right]TrackPad
-- \[Left/Right]ThumbStick
-
-Another bool is also available to detect if the thumb is on *either* the A or B buttons, or Touching both *at the same time*.
-
-- \[Left/Right]ABButtons
-
-All button clicks are available as bool parameters, They're mapped the following:
-
-- \[Left/Right]AButtonClick
-- \[Left/Right]BButtonClick
-- \[Left/Right]TrackPadClick
-- \[Left/Right]ThumbStickClick
-
-If you also need the Trigger pull values, you'll have to add two additional parameters of "float" type.
-
-- \[Left/Right]Trigger
-
-The values range from 0.0 to 1.0 for both of these parameters, depending on how much you pull the trigger.
-
-4 Float Parameters for the thumb position on the trackpad:
-- \[Left/Right]TrackPad\[X/Y]
-
-4 Float Parameters for the Thumbstick position:
-- \[Left/Right]ThumbStick\[X/Y]
-
-The Trackpad Parameters range from -1.0 to 1.0. you can think of it like a coordinate system, with the middle of the Trackpad being the origin. These parameters are only available on Index Controllers.
-
-A few more bools to determine if the Left or Right stick was moved:
-- \[Left/Right]StickMoved
-
-Two bools and two Floats to determine if the controller is gripped and how strongly its gripped:
-- \[Left/Right]Grab
-- \[Left/Right]GrabForce
-
-Bools for every available Tracker Power button is available aswell. This does require Tracker roles to be set up in SteamVR: <br>
-Go to `SteamVR-Settings > Manage Trackers` and set up tracking roles for each tracker respectively:
-![268513445-16f47092-6f8b-4de6-9d5d-118fc9135c29](https://github.com/I5UCC/VRCThumbParamsOSC/assets/43730681/d2f771d8-dec4-46a0-9a55-6f02ce449eb1)
-- LeftFootTracker
-- RightFootTracker
-- WaistTracker
-- ChestTracker
-- LeftElbowTracker
-- RightElbowTracker
-- LeftKneeTracker
-- RightKneeTracker
-
-Finally, the int ***ControllerType*** gives what controller is currently being used:
-- Meta/Oculus Touch (2)
-- Index (1)
-- Any other controller/No Controller (0)
-
-After adding any of those Parameter, you can use them just like other parameters in your Animation Controllers.
 
 # Command line Arguments
 You can run this by using ```ThumbParamsOSC.exe {Arguments}``` in command line.

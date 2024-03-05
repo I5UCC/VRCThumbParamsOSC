@@ -144,6 +144,8 @@ def handle_input() -> None:
         _controller_type = ovr.get_controllertype()
         if _controller_type == 0 and xinput.is_plugged:
             _controller_type = 10
+        elif _controller_type != 0 and xinput.is_plugged:
+            _controller_type += 10
         osc.send("ControllerType", _controller_type)
 
     _strinputs = ""

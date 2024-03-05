@@ -101,10 +101,15 @@ The two int parameters ***RightThumb*** and ***LeftThumb*** represent the positi
 | 4     | Thumbstick    |
 
 The int ***ControllerType*** gives what controller is currently being used:
-- Meta/Oculus Touch (2)
-- Index (1)
-- Xinput Controller (10)
-- Any other controller/No Controller (0)
+
+| Controller | Value |
+| ----- | ------------- |
+| Meta/Oculus Touch | 2 |
+| Index | 1 |
+| XInput Controller | 10 |
+| XInput+Meta | 12 |
+| XInput+Index | 11 |
+| Any other controller/No Controller | 0 |
 
 ***\[Left/Right]ABButtons*** detects if the thumb is on *either* the A or B buttons, or Touching both *at the same time*.
 

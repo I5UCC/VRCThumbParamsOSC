@@ -6,6 +6,8 @@ import os
 import sys
 import time
 import traceback
+import glob
+import shutil
 from threading import Thread
 
 from zeroconf._exceptions import NonUniqueNameException
@@ -240,6 +242,17 @@ config: dict = json.load(open(CONFIG_PATH))
 config["IP"] = ip if ip else config["IP"]
 config["Port"] = port if port else config["Port"]
 POLLINGRATE = 1 / float(config['PollingRate'])
+
+try:
+    if os.path.isfile(FIRST_LAUNCH_FILE):
+        logging.info("First Launch, deleting OSC cache. Registering app to run on SteamVR start...")
+        cache_path = os.getenv('APPDATA') + '\\..\\LocalLow\\VRChat\\VRChat\\OSC\\usr_*'
+        user_folders = glob.glob(cache_path)
+        for folder in user_folders:
+            shutil.rmtree(folder)
+except Exception as e:
+    logging.error("Error while deleting OSC cache.")
+    logging.error(traceback.format_exc())
 
 try:
     ovr: OVR = OVR(config, CONFIG_PATH, MANIFEST_PATH, FIRST_LAUNCH_FILE)

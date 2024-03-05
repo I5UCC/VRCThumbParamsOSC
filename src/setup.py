@@ -2,7 +2,7 @@ from cx_Freeze import setup, Executable
 
 VERSION = open("VERSION").read().strip()
 
-packages = ["argparse", "async_timeout", "certifi", "charset_normalizer", "idna", "ifaddr", "inputs", "lief", "openvr", "psutil", "pyparsing", "pythonosc", "requests", "urllib3", "zeroconf", "ctypes"]
+packages = ["argparse", "certifi", "charset_normalizer", "idna", "ifaddr", "lief", "openvr", "psutil", "pyglet", "pythonosc", "requests", "urllib3", "zeroconf", "ctypes"]
 exclude = ["tkinter", "lib2to3", "test", "unittest", "xmlrpc"]
 file_include = ["config.json", "Run Debug Mode.bat", "bindings/", "app.vrmanifest", "VERSION"]
 bin_excludes = ["_bz2.pyd", "_decimal.pyd", "_hashlib.pyd", "_lzma.pyd", "_queue.pyd", "_ssl.pyd", "libcrypto-1_1.dll", "libssl-1_1.dll", "ucrtbase.dll", "VCRUNTIME140.dll"]

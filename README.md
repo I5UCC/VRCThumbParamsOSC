@@ -10,33 +10,11 @@ Currently supports ***Valve-Index***, ***Oculus(Meta)-Touch***, SteamVR Trackers
 
 ## Available Parameters
 
+Following sections go over all available parameters.
 All parameters are **case-sensitive**.
 
-### Special Parameters
-
-The two int parameters ***RightThumb*** and ***LeftThumb*** represent the position of each thumb with the numbers from 0 to 4:
-
-| Value | Real Position |
-| ----- | ------------- |
-| 0     | Not Touching  |
-| 1     | A/X Button      |
-| 2     | B/Y Button      |
-| 3     | Trackpad      |
-| 4     | Thumbstick    |
-
-The int ***ControllerType*** gives what controller is currently being used:
-- Meta/Oculus Touch (2)
-- Index (1)
-- Xinput Controller (10)
-- Any other controller/No Controller (0)
-
-***\[Left/Right]ABButtons*** detects if the thumb is on *either* the A or B buttons, or Touching both *at the same time*.
-
-Tracker Power button parameters require Tracker roles to be set up in SteamVR: <br>
-Go to `SteamVR-Settings > Manage Trackers` and set up tracking roles for each tracker respectively:
-![268513445-16f47092-6f8b-4de6-9d5d-118fc9135c29](https://github.com/I5UCC/VRCThumbParamsOSC/assets/43730681/d2f771d8-dec4-46a0-9a55-6f02ce449eb1)
-
 ### SteamVR Controller Parameters
+
 | Parameter | Type |
 |-----------|------|
 | ControllerType | int |
@@ -74,6 +52,7 @@ Go to `SteamVR-Settings > Manage Trackers` and set up tracking roles for each tr
 | RightTrackPadY | float |
 
 ### Tracker Parameters
+
 | Parameter | Type |
 |-----------|------|
 | LeftFootTracker | bool |
@@ -86,6 +65,7 @@ Go to `SteamVR-Settings > Manage Trackers` and set up tracking roles for each tr
 | RightKneeTracker | bool |
 
 ### XInput Parameters
+
 | Parameter | Type |
 |-----------|------|
 | XInputAButton | bool |
@@ -107,6 +87,30 @@ Go to `SteamVR-Settings > Manage Trackers` and set up tracking roles for each tr
 | XInputLeftStickMoved | bool |
 | XInputRightStickMoved | bool |
 | XInputDPadMoved | bool |
+
+### Special Parameters
+
+The two int parameters ***RightThumb*** and ***LeftThumb*** represent the position of each thumb with the numbers from 0 to 4:
+
+| Value | Real Position |
+| ----- | ------------- |
+| 0     | Not Touching  |
+| 1     | A/X Button      |
+| 2     | B/Y Button      |
+| 3     | Trackpad      |
+| 4     | Thumbstick    |
+
+The int ***ControllerType*** gives what controller is currently being used:
+- Meta/Oculus Touch (2)
+- Index (1)
+- Xinput Controller (10)
+- Any other controller/No Controller (0)
+
+***\[Left/Right]ABButtons*** detects if the thumb is on *either* the A or B buttons, or Touching both *at the same time*.
+
+Tracker Power button parameters require Tracker roles to be set up in SteamVR: <br>
+Go to `SteamVR-Settings > Manage Trackers` and set up tracking roles for each tracker respectively:
+![268513445-16f47092-6f8b-4de6-9d5d-118fc9135c29](https://github.com/I5UCC/VRCThumbParamsOSC/assets/43730681/d2f771d8-dec4-46a0-9a55-6f02ce449eb1)
 
 ## How to use
 
@@ -146,11 +150,16 @@ You can run this by using ```ThumbParamsOSC.exe {Arguments}``` in command line.
 
 Running `Configurator.exe` lets you customize the Parameters that you want to have sent to VRChat, and some more things:
 
-![image](https://github.com/I5UCC/VRCThumbParamsOSC/assets/43730681/5a535be7-94aa-4b29-a56f-b25ae7dd3687)
+![grafik](https://github.com/I5UCC/VRCThumbParamsOSC/assets/43730681/bcac43cf-539f-4a50-b2a7-03ee62a83892)
 
 Unchecking or checking any of the parameters and the hitting `save` will save the current settings. <br>
-`Floating Time` allows values "float" on the last value registered, it is measured in seconds. <br>
-If `Floating Time` is set to -1 for boolean values, they will act like a toggle instead of always updating to the current state.
+- `Floating Time` allows values "float" on the last value registered, it is measured in seconds. <br>
+  - If `Floating Time` is set to -1 for boolean values, they will act like a toggle instead of always updating to the current state.
+- Tick the `Unsigned` Box for any supported parameter to map the float value to [0, 1] instead of [-1, 1]
+- `Mode` has 3 different values: 
+  - "Send On Change" (Default) As the name might suggest, it sends a parameter only when it has changed from its previous value.
+  - "Send On Positive" It sends a Parameter when it changes, but also continuosly sends Positive values every Poll.
+  - "Always Send" This is like the old behaviour, just sends the parameters current state every Poll.
 
 # Automatic launch with SteamVR
 On first launch of the program, it registers as an Overlay app on SteamVR just like other well known programs like XSOverlay or OVRAdvancedSettings and can be launched on startup:

@@ -144,9 +144,10 @@ If you have problems with this program, try this to fix it:
 
 # Decreasing OSC Traffic
 ThumbparamsOSC consistently sends the current state of each parameter, with a lot of parameters the OSC traffic can increase significantly. <br>
-To mitigate this there are a two things you can do:
+To mitigate this there are a three things you can do:
 - Disable all parameters that you do not need.
 - Switch to a different mode then "Always Send"
+- Lower the Polling Rate
 You can read on how to do that in [#Configuration](https://github.com/I5UCC/VRCThumbParamsOSC?tab=readme-ov-file#configuration)
 
 # Configuration

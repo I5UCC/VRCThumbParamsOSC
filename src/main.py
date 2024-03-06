@@ -49,10 +49,10 @@ def print_debugoutput() -> None:
         else:
             floating = ""
         match always:
+            case 0:
+                always = "SOC"
             case 1:
-                always = "-Always send-"
-            case 2:
-                always = "-Send on change-"
+                always = "SOP"
             case _:
                 always = ""
         

@@ -247,6 +247,8 @@ POLLINGRATE = 1 / float(config['PollingRate'])
 
 try:
     if os.path.isfile(FIRST_LAUNCH_FILE):
+        if os.name == "nt":
+            ctypes.windll.user32.MessageBoxW(0, "ThumbParamsOSC is now running and has registered as an Overlay on Steam.\nIt will now open automatically with SteamVR\nOpen Configurator.exe to change sent Parameters and other Settings if you havent yet.\n.This is only shown once.", "ThumbparamsOSC", 0)
         logging.info("First Launch, deleting OSC cache. Registering app to run on SteamVR start...")
         cache_path = os.getenv('APPDATA') + '\\..\\LocalLow\\VRChat\\VRChat\\OSC\\usr_*'
         user_folders = glob.glob(cache_path)

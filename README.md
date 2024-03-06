@@ -8,12 +8,12 @@ Currently supports ***Valve-Index***, ***Oculus(Meta)-Touch***, SteamVR Trackers
 
 ### [🢃 Download Latest release](https://github.com/I5UCC/VRCThumbParamsOSC/releases/latest)
 
-## Available Parameters
+# Available Parameters
 
 Following sections go over all available parameters.
 All parameters are **case-sensitive**.
 
-### SteamVR Controller Parameters
+## SteamVR Controller Parameters
 
 | Parameter | Type |
 |-----------|------|
@@ -51,7 +51,7 @@ All parameters are **case-sensitive**.
 | LeftTrackPadY | float |
 | RightTrackPadY | float |
 
-### Tracker Parameters
+## Tracker Parameters
 
 | Parameter | Type |
 |-----------|------|
@@ -64,7 +64,7 @@ All parameters are **case-sensitive**.
 | LeftKneeTracker | bool |
 | RightKneeTracker | bool |
 
-### XInput Parameters
+## XInput Parameters
 
 | Parameter | Type |
 |-----------|------|
@@ -88,7 +88,7 @@ All parameters are **case-sensitive**.
 | XInputRightStickMoved | bool |
 | XInputDPadMoved | bool |
 
-### Special Parameters
+## Special Parameters
 
 The two int parameters ***RightThumb*** and ***LeftThumb*** represent the position of each thumb with the numbers from 0 to 4:
 
@@ -117,7 +117,7 @@ Tracker Power button parameters require Tracker roles to be set up in SteamVR: <
 Go to `SteamVR-Settings > Manage Trackers` and set up tracking roles for each tracker respectively:
 ![268513445-16f47092-6f8b-4de6-9d5d-118fc9135c29](https://github.com/I5UCC/VRCThumbParamsOSC/assets/43730681/d2f771d8-dec4-46a0-9a55-6f02ce449eb1)
 
-## How to use
+# How to use
 
 Activate OSC in VRChat: <br/><br/>
 ![EnableOSC](https://user-images.githubusercontent.com/43730681/172059335-db3fd6f9-86ae-4f6a-9542-2a74f47ff826.gif)
@@ -128,7 +128,7 @@ Run `Configurator.exe` to configure the program.
   
 Then just run the `ThumbParamsOSC.exe` and you are all set! <br/>
 
-## OSC Troubleshoot
+# OSC Troubleshoot
 
 If you have problems with this program, try this to fix it:
 - Automatic way:
@@ -142,14 +142,12 @@ If you have problems with this program, try this to fix it:
   - Delete the folders that start with 'usr_*'.
   - Startup VRChat again and it should work.
 
-# Command line Arguments
-You can run this by using ```ThumbParamsOSC.exe {Arguments}``` in command line.
-
-| Option | Value |
-| ----- | ------------- |
-| -d, --debug     | prints values for debugging |
-| -i IP, --ip IP    | set OSC IP. Default=127.0.0.1  |
-| -p PORT, --port PORT    | set OSC port. Default=9000      |
+# Decreasing OSC Traffic
+ThumbparamsOSC consistently sends the current state of each parameter, with a lot of parameters the OSC traffic can increase significantly. <br>
+To mitigate this there are a two things you can do:
+- Disable all parameters that you do not need.
+- Switch to a different mode then "Always Send"
+You can read on how to do that in [#Configuration](https://github.com/I5UCC/VRCThumbParamsOSC?tab=readme-ov-file#configuration)
 
 # Configuration
 
@@ -158,6 +156,7 @@ Running `Configurator.exe` lets you customize the Parameters that you want to ha
 ![grafik](https://github.com/I5UCC/VRCThumbParamsOSC/assets/43730681/bcac43cf-539f-4a50-b2a7-03ee62a83892)
 
 Unchecking or checking any of the parameters and the hitting `save` will save the current settings. <br>
+You can use the buttons below to do quick unticking or ticking of groups of parameters <br>
 - `Floating Time` allows values "float" on the last value registered, it is measured in seconds. <br>
   - If `Floating Time` is set to -1 for boolean values, they will act like a toggle instead of always updating to the current state.
 - Tick the `Unsigned` Box for any supported parameter to map the float value to [0, 1] instead of [-1, 1]
@@ -165,6 +164,7 @@ Unchecking or checking any of the parameters and the hitting `save` will save th
   - "Send On Change" (Default) As the name might suggest, it sends a parameter only when it has changed from its previous value.
   - "Send On Positive" It sends a Parameter when it changes, but also continuosly sends Positive values every Poll.
   - "Always Send" This is like the old behaviour, just sends the parameters current state every Poll.
+  - You can use the three buttons below to quickly switch between modes for every parameter
 
 # Automatic launch with SteamVR
 On first launch of the program, it registers as an Overlay app on SteamVR just like other well known programs like XSOverlay or OVRAdvancedSettings and can be launched on startup:
@@ -172,6 +172,15 @@ On first launch of the program, it registers as an Overlay app on SteamVR just l
 ![Screenshot 2022-12-04 184907](https://user-images.githubusercontent.com/43730681/205506956-7c397360-e14a-4783-a2c2-e5311749e2d4.png)
 
 After setting the option to ON it will launch the program ***without the console*** on SteamVR startup.
+
+# Command line Arguments
+You can run this by using ```ThumbParamsOSC.exe {Arguments}``` in command line.
+
+| Option | Value |
+| ----- | ------------- |
+| -d, --debug     | prints values for debugging |
+| -i IP, --ip IP    | set OSC IP. Default=127.0.0.1  |
+| -p PORT, --port PORT    | set OSC port. Default=9000      |
 
 # Credit
 - [pyopenvr](https://github.com/cmbruns/pyopenvr) thank you.

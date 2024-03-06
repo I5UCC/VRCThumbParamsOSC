@@ -134,6 +134,24 @@ namespace Configurator
                     }
                 }
             }
+            foreach (Action a in config.xinput_actions)
+            {
+                if (a.type == "vector2")
+                {
+                    JArray tmp = ((JArray)a.osc_parameter);
+                    JArray tmp2 = ((JArray)a.unsigned);
+
+                    for (int i = 0; i < tmp.Count; i++)
+                    {
+                        if (tmp[i].ToString() == name)
+                        {
+                            tmp2[i] = check;
+                            a.unsigned = tmp2;
+                            return;
+                        }
+                    }
+                }
+            }
 
         }
 
@@ -194,7 +212,33 @@ namespace Configurator
                     }
                 }
             }
-            
+            foreach (Action a in config.xinput_actions)
+            {
+                if (a.type != "vector2")
+                {
+                    if (a.osc_parameter.ToString() == name)
+                    {
+                        a.enabled = check;
+                        return;
+                    }
+                }
+                else
+                {
+                    JArray tmp = ((JArray)a.osc_parameter);
+                    JArray tmp2 = ((JArray)a.enabled);
+
+                    for (int i = 0; i < tmp.Count; i++)
+                    {
+                        if (tmp[i].ToString() == name)
+                        {
+                            tmp2[i] = check;
+                            a.enabled = tmp2;
+                            return;
+                        }
+                    }
+                }
+            }
+
         }
 
         private void TextChanged(object sender, TextChangedEventArgs e)
@@ -370,6 +414,20 @@ namespace Configurator
                     a.always = value;
                 }
             }
+            foreach (Action a in config.xinput_actions)
+            {
+                if (a.type == "vector2")
+                {
+                    if (((JArray)a.enabled).Count > 2)
+                        a.always = new JArray(new int[3] { value, value, value });
+                    else
+                        a.always = new JArray(new int[2] { value, value });
+                }
+                else
+                {
+                    a.always = value;
+                }
+            }
             Startup = false;
             Lbx_Params.Items.Refresh();
         }
@@ -414,6 +472,38 @@ namespace Configurator
                 }
 
             }
+            for (int i = 0; i < config.xinput_actions.Count; i++)
+            {
+                Action a = config.xinput_actions[i];
+                if (a.osc_parameter is string)
+                {
+                    if (a.osc_parameter.ToString() == ((TextBox)sender).ToolTip.ToString())
+                    {
+                        a.floating = float.Parse(text.Replace(".", ","));
+                        return;
+                    }
+                }
+                else
+                {
+                    string[] temp = ((JArray)a.osc_parameter).ToObject<string[]>();
+                    float[] floats = null;
+
+                    if (a.floating is Single[])
+                        floats = (Single[])a.floating;
+                    else
+                        floats = ((JArray)a.floating).ToObject<float[]>();
+
+                    for (int j = 0; j < temp.Length; j++)
+                    {
+                        if (temp[j].ToString() == ((TextBox)sender).ToolTip.ToString())
+                        {
+                            floats[j] = float.Parse(text.Replace(".", ","));
+                            config.xinput_actions[i].floating = floats;
+                        }
+                    }
+                }
+
+            }
         }
 
         private void TextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
@@ -452,6 +542,33 @@ namespace Configurator
             }
 
             foreach (Action a in config.actions)
+            {
+                if (a.type != "vector2")
+                {
+                    if (a.osc_parameter.ToString() == name)
+                    {
+                        a.always = value;
+                        return;
+                    }
+                }
+                else
+                {
+                    JArray tmp = ((JArray)a.osc_parameter);
+                    JArray tmp2 = ((JArray)a.always);
+
+                    for (int i = 0; i < tmp.Count; i++)
+                    {
+                        if (tmp[i].ToString() == name)
+                        {
+                            tmp2[i] = value;
+                            a.always = tmp2;
+                            return;
+                        }
+                    }
+                }
+            }
+
+            foreach (Action a in config.xinput_actions)
             {
                 if (a.type != "vector2")
                 {

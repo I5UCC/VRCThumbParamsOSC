@@ -211,12 +211,12 @@ class OSC:
 
         if _do_send:
             if action["binary"]:
-                value = self._float_to_binary(value)
-                self.send_parameter(action["osc_parameter"] + "_Negative", value[-1])
-                value = value[:-1]
-                value.reverse()
-                for i in range(len(value)):
-                    self.send_parameter(action["osc_parameter"] + str(self.binary_potencies), value[i])
+                tmp = self._float_to_binary(value)
+                self.send_parameter(action["osc_parameter"] + "_Negative", tmp[-1])
+                tmp = tmp[:-1]
+                tmp.reverse()
+                for i in range(len(tmp)):
+                    self.send_parameter(action["osc_parameter"] + str(self.binary_potencies), tmp[i])
             else:
                 self.send_parameter(action["osc_parameter"], value)
             action["last_value"] = value
@@ -256,11 +256,12 @@ class OSC:
             if action["always"][i] == 2 or (action["always"][i] == 0 and action["last_value"][i] != value[i]) or (action["always"][i] == 1 and value[i]):
                 if action["binary"][i]:
                     value[i] = self._float_to_binary(value[i])
-                    self.send_parameter(action["osc_parameter"][i] + "_Negative", value[i][-1])
-                    value[i] = value[i][:-1]
-                    value[i].reverse()
-                    for j in range(len(value[i])):
-                        self.send_parameter(action["osc_parameter"][i] + str(self.binary_potencies), value[i][j])
+                    tmp = value[i]
+                    self.send_parameter(action["osc_parameter"][i] + "_Negative", tmp[-1])
+                    tmp = tmp[:-1]
+                    tmp.reverse()
+                    for j in range(len(tmp)):
+                        self.send_parameter(action["osc_parameter"][i] + str(self.binary_potencies), tmp[j])
                 else:
                     self.send_parameter(action["osc_parameter"][i], value[i])
                 action["last_value"][i] = value[i]

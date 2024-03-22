@@ -13,7 +13,8 @@ namespace Configurator
         public object floating { get; set; }
         public object timestamp { get; set; }
         public object last_value { get; set; }
-        public object unsigned { get; set; } 
+        public object unsigned { get; set; }
+        public object binary { get; set; }
     }
 
     public class ControllerType
@@ -45,6 +46,7 @@ namespace Configurator
         public int HTTP_Port { get; set; }
         public int PollingRate { get; set; }
         public int StickMoveTolerance { get; set; }
+        public int Binary_bits { get; set; }
         public ControllerType ControllerType { get; set; }
         public SpecialParameter LeftThumb { get; set; }
         public SpecialParameter RightThumb { get; set; }

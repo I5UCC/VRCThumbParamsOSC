@@ -32,18 +32,19 @@ namespace Configurator
             Tbx_http_port.Text = config.HTTP_Port.ToString();
             Tbx_PollingRate.Text = config.PollingRate.ToString();
             Tbx_StickMoveTolerance.Text = config.StickMoveTolerance.ToString();
+            Tbx_Binary.Text = config.Binary_bits.ToString();
 
-            ParameterList.Add(new BoolStringClass("ControllerType", config.ControllerType.enabled, config.ControllerType.always, "Integer", "Unavailable", false, false, "Hidden"));
-            ParameterList.Add(new BoolStringClass("LeftThumb", config.LeftThumb.enabled, config.LeftThumb.always, "Integer", "Infl. by bools", false, false, "Hidden"));
-            ParameterList.Add(new BoolStringClass("RightThumb", config.RightThumb.enabled, config.RightThumb.always, "Integer", "Infl. by bools", false, false, "Hidden"));
+            ParameterList.Add(new BoolStringClass("ControllerType", config.ControllerType.enabled, config.ControllerType.always, "Integer", "Unavailable", false, false, false, "Hidden"));
+            ParameterList.Add(new BoolStringClass("LeftThumb", config.LeftThumb.enabled, config.LeftThumb.always, "Integer", "Infl. by bools", false, false, false, "Hidden"));
+            ParameterList.Add(new BoolStringClass("RightThumb", config.RightThumb.enabled, config.RightThumb.always, "Integer", "Infl. by bools", false, false, false, "Hidden"));
 
-            ParameterList.Add(new BoolStringClass("LeftABButtons", config.LeftABButtons.enabled, config.LeftABButtons.always, "Boolean", "Infl. by A,B", false, false, "Hidden"));
-            ParameterList.Add(new BoolStringClass("RightABButtons", config.RightABButtons.enabled, config.RightABButtons.always, "Boolean", "Infl. by A,B", false, false, "Hidden"));
+            ParameterList.Add(new BoolStringClass("LeftABButtons", config.LeftABButtons.enabled, config.LeftABButtons.always, "Boolean", "Infl. by A,B", false, false, false, "Hidden"));
+            ParameterList.Add(new BoolStringClass("RightABButtons", config.RightABButtons.enabled, config.RightABButtons.always, "Boolean", "Infl. by A,B", false, false, false, "Hidden"));
 
             foreach (Action a in config.ConcatenateActions()) {
                 if (a.type != "vector2")
                 {
-                    ParameterList.Add(new BoolStringClass((string)a.osc_parameter, (bool)a.enabled, int.Parse(a.always.ToString()), a.type == "boolean" ? "Boolean" : "Float", a.floating.ToString(), true, false, "Hidden"));
+                    ParameterList.Add(new BoolStringClass((string)a.osc_parameter, (bool)a.enabled, int.Parse(a.always.ToString()), a.type == "boolean" ? "Boolean" : "Float", a.floating.ToString(), true, false, false, "Hidden"));
                 }
                 else {
                     String[] tmp = ((JArray)a.osc_parameter).ToObject<String[]>();
@@ -51,9 +52,10 @@ namespace Configurator
                     float[] tmp3 = ((JArray)a.floating).ToObject<float[]>();
                     int[] tmp4 = ((JArray)a.always).ToObject<int[]>();
                     bool[] tmp5 = ((JArray)a.unsigned).ToObject<bool[]>();
+                    bool[] tmp6 = ((JArray)a.binary).ToObject<bool[]>();
                     for (int i = 0; i < tmp.Length; i++)
                     {
-                        ParameterList.Add(new BoolStringClass(tmp[i], tmp2[i], tmp4[i], i > 1 ? "Boolean" : "Float", tmp3[i] == -100 ? "Infl. by X,Y" : tmp3[i].ToString(), tmp3[i] != -100, i < 2 ? tmp5[i] : true, i >= 2 ? "Hidden" : "Visible"));
+                        ParameterList.Add(new BoolStringClass(tmp[i], tmp2[i], tmp4[i], i > 1 ? "Boolean" : "Float", tmp3[i] == -100 ? "Infl. by X,Y" : tmp3[i].ToString(), tmp3[i] != -100, i < 2 ? tmp5[i] : true, i < 2 ? tmp6[i] : true, i >= 2 ? "Hidden" : "Visible"));
                     }
                 }
             }
@@ -64,7 +66,7 @@ namespace Configurator
 
         public class BoolStringClass
         {
-            public BoolStringClass(string Text, bool IsSelected, int AlwaysSend, string Type, string Floating = "0.0", bool isEnabled = true, bool Unsigned = true, string Unsigned_Visibility = "Visible")
+            public BoolStringClass(string Text, bool IsSelected, int AlwaysSend, string Type, string Floating = "0.0", bool isEnabled = true, bool Unsigned = true, bool Binary = true, string Unsigned_Visibility = "Visible")
             {
                 this.Text = Text;
                 this.IsSelected = IsSelected;
@@ -73,6 +75,7 @@ namespace Configurator
                 this.Floating = Floating;
                 this.isEnabled = isEnabled;
                 this.Unsigned = Unsigned;
+                this.Binary = Binary;
                 this.Unsigned_Visibility = Unsigned_Visibility;
             }
 
@@ -89,6 +92,8 @@ namespace Configurator
             public bool isEnabled { get; set; }
 
             public bool Unsigned { get; set; }
+
+            public bool Binary { get; set; }
 
             public string Unsigned_Visibility { get; set; }
 
@@ -147,6 +152,55 @@ namespace Configurator
                         {
                             tmp2[i] = check;
                             a.unsigned = tmp2;
+                            return;
+                        }
+                    }
+                }
+            }
+
+        }
+
+        private void CheckBox_Checked_Binary(object sender, RoutedEventArgs e)
+        {
+            if (Startup)
+                return;
+
+            CheckBox checkBox = sender as CheckBox;
+
+            bool check = (bool)checkBox.IsChecked;
+            string name = checkBox.ToolTip.ToString();
+
+            foreach (Action a in config.actions)
+            {
+                if (a.type == "vector2")
+                {
+                    JArray tmp = ((JArray)a.osc_parameter);
+                    JArray tmp2 = ((JArray)a.binary);
+
+                    for (int i = 0; i < tmp.Count; i++)
+                    {
+                        if (tmp[i].ToString() == name)
+                        {
+                            tmp2[i] = check;
+                            a.binary = tmp2;
+                            return;
+                        }
+                    }
+                }
+            }
+            foreach (Action a in config.xinput_actions)
+            {
+                if (a.type == "vector2")
+                {
+                    JArray tmp = ((JArray)a.osc_parameter);
+                    JArray tmp2 = ((JArray)a.binary);
+
+                    for (int i = 0; i < tmp.Count; i++)
+                    {
+                        if (tmp[i].ToString() == name)
+                        {
+                            tmp2[i] = check;
+                            a.binary = tmp2;
                             return;
                         }
                     }
@@ -256,6 +310,8 @@ namespace Configurator
             Tbx_PollingRate.SelectionStart = Tbx_PollingRate.Text.Length;
             Tbx_StickMoveTolerance.Text = Regex.Replace(Tbx_StickMoveTolerance.Text, "[^0-9]", "");
             Tbx_StickMoveTolerance.SelectionStart = Tbx_StickMoveTolerance.Text.Length;
+            Tbx_Binary.Text = Regex.Replace(Tbx_Binary.Text, "[^0-9]", "");
+            Tbx_Binary.SelectionStart = Tbx_Binary.Text.Length;
 
             config.IP = Tbx_IP.Text;
             config.Port = Tbx_Port.Text != "" ? int.Parse(Tbx_Port.Text) : 0;
@@ -263,6 +319,7 @@ namespace Configurator
             config.HTTP_Port = Tbx_http_port.Text != "" ? int.Parse(Tbx_http_port.Text) : 0;
             config.PollingRate = Tbx_PollingRate.Text != "" ? int.Parse(Tbx_PollingRate.Text) : 0;
             config.StickMoveTolerance = Tbx_StickMoveTolerance.Text != "" ? int.Parse(Tbx_StickMoveTolerance.Text) : 0;
+            config.Binary_bits = Tbx_Binary.Text != "" ? int.Parse(Tbx_Binary.Text) : 0;
         }
 
         private void Button_Param_Click(object sender, RoutedEventArgs e)

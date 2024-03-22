@@ -21,6 +21,9 @@ class OSC:
         self.stick_tolerance = int(conf['StickMoveTolerance']) / 100
         self.curr_avatar = ""
         self.curr_time = 0
+        self.binary_num_bits = int(conf["Binary_bits"])
+        self.binary_potencies = [2**i for i in range(self.binary_num_bits)]
+        self.binary_potency = (2**self.binary_num_bits) - 1
 
         self.osc_client = udp_client.SimpleUDPClient(self.ip, self.port)
         if run_server:
@@ -99,7 +102,7 @@ class OSC:
         self.server.serve_forever(2)
 
     
-    def _float_to_binary(self, float_value, num_bits = 4):
+    def _float_to_binary(self, float_value):
         """
         Converts a float value to binary parameters.
         Parameters:
@@ -112,10 +115,10 @@ class OSC:
         float_value = abs(float_value)
 
         # Calculate the total base-10 value based on the float value and number of bits
-        total_base_10 = int(float_value * ((2**num_bits) - 1))
+        total_base_10 = int(float_value * self.binary_potency)
         
         # Convert the total base-10 value to binary parameters
-        binary_params = [int(bit) for bit in format(total_base_10, f'0{num_bits}b')]
+        binary_params = [int(bit) for bit in format(total_base_10, f'0{self.binary_num_bits}b')]
         
         # Add the negative flag to the end of the binary parameters and return
         return binary_params + [negative]
@@ -134,7 +137,7 @@ class OSC:
         total_base_10 = int(''.join(map(str, binary_params)), 2)
         
         # Map the total base-10 value to a float in the range [0.0, 1.0]
-        float_value = total_base_10 / ((2**len(binary_params)) - 1)
+        float_value = total_base_10 / self.binary_potency
 
         return -float_value if negative else float_value
 
@@ -210,9 +213,10 @@ class OSC:
             if action["binary"]:
                 value = self._float_to_binary(value)
                 self.send_parameter(action["osc_parameter"] + "_Negative", value[-1])
-                value = value[:-1].reverse()
+                value = value[:-1]
+                value.reverse()
                 for i in range(len(value)):
-                    self.send_parameter(action["osc_parameter"] + str(2**i), value[i])
+                    self.send_parameter(action["osc_parameter"] + str(self.binary_potencies), value[i])
             else:
                 self.send_parameter(action["osc_parameter"], value)
             action["last_value"] = value
@@ -253,9 +257,10 @@ class OSC:
                 if action["binary"][i]:
                     value[i] = self._float_to_binary(value[i])
                     self.send_parameter(action["osc_parameter"][i] + "_Negative", value[i][-1])
-                    value[i] = value[i][:-1].reverse()
+                    value[i] = value[i][:-1]
+                    value[i].reverse()
                     for j in range(len(value[i])):
-                        self.send_parameter(action["osc_parameter"][i] + str(2**j), value[i][j])
+                        self.send_parameter(action["osc_parameter"][i] + str(self.binary_potencies), value[i][j])
                 else:
                     self.send_parameter(action["osc_parameter"][i], value[i])
                 action["last_value"][i] = value[i]

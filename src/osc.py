@@ -98,6 +98,46 @@ class OSC:
         logging.info(f"Starting OSC client on {self.ip}:{self.server_port}:{self.http_port}")
         self.server.serve_forever(2)
 
+    
+    def _float_to_binary(self, float_value, num_bits = 4):
+        """
+        Converts a float value to binary parameters.
+        Parameters:
+            float_value (float): Float value to convert
+            num_bits (int): Number of bits to use
+        Returns:
+            list: Binary parameters + negative flag
+        """
+        negative = float_value < 0
+        float_value = abs(float_value)
+
+        # Calculate the total base-10 value based on the float value and number of bits
+        total_base_10 = int(float_value * ((2**num_bits) - 1))
+        
+        # Convert the total base-10 value to binary parameters
+        binary_params = [int(bit) for bit in format(total_base_10, f'0{num_bits}b')]
+        
+        # Add the negative flag to the end of the binary parameters and return
+        return binary_params + [negative]
+
+
+    def _binary_to_float(self, binary_params: list):
+        """
+        Reconstructs binary parameters back to a float value.
+        Parameters:
+            binary_params (list): Binary parameters + negative flag
+        Returns:
+            float: Float value
+        """
+        negative = binary_params.pop()
+        # Calculate the total base-10 value from the binary parameters
+        total_base_10 = int(''.join(map(str, binary_params)), 2)
+        
+        # Map the total base-10 value to a float in the range [0.0, 1.0]
+        float_value = total_base_10 / ((2**len(binary_params)) - 1)
+
+        return -float_value if negative else float_value
+
 
     def _send_boolean_toggle(self, action: dict, value: bool) -> None:
         """
@@ -167,7 +207,14 @@ class OSC:
                 value = action["last_value"]
 
         if _do_send:
-            self.send_parameter(action["osc_parameter"], value)
+            if action["binary"]:
+                value = self._float_to_binary(value)
+                self.send_parameter(action["osc_parameter"] + "_Negative", value[-1])
+                value = value[:-1].reverse()
+                for i in range(len(value)):
+                    self.send_parameter(action["osc_parameter"] + str(2**i), value[i])
+            else:
+                self.send_parameter(action["osc_parameter"], value)
             action["last_value"] = value
 
 
@@ -203,7 +250,14 @@ class OSC:
             if not action["enabled"][i]:
                 continue
             if action["always"][i] == 2 or (action["always"][i] == 0 and action["last_value"][i] != value[i]) or (action["always"][i] == 1 and value[i]):
-                self.send_parameter(action["osc_parameter"][i], value[i])
+                if action["binary"][i]:
+                    value[i] = self._float_to_binary(value[i])
+                    self.send_parameter(action["osc_parameter"][i] + "_Negative", value[i][-1])
+                    value[i] = value[i][:-1].reverse()
+                    for j in range(len(value[i])):
+                        self.send_parameter(action["osc_parameter"][i] + str(2**j), value[i][j])
+                else:
+                    self.send_parameter(action["osc_parameter"][i], value[i])
                 action["last_value"][i] = value[i]
 
 

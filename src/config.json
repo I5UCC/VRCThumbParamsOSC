@@ -85,7 +85,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/leftbbutton",
@@ -97,7 +97,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/lefttrackpad",
@@ -109,7 +109,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/leftstick",
@@ -121,7 +121,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/rightabutton",
@@ -133,7 +133,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/rightbbutton",
@@ -145,7 +145,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/righttrackpad",
@@ -157,7 +157,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/rightstick",
@@ -169,7 +169,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/leftabuttonclick",
@@ -181,7 +181,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/leftbbuttonclick",
@@ -193,7 +193,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/lefttrackpadclick",
@@ -205,7 +205,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/leftstickclick",
@@ -217,7 +217,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/rightabuttonclick",
@@ -229,7 +229,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/rightbbuttonclick",
@@ -241,7 +241,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/righttrackpadclick",
@@ -253,7 +253,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/rightstickclick",
@@ -265,7 +265,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/leftgrab",
@@ -277,7 +277,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/rightgrab",
@@ -289,7 +289,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/leftfoottracker",
@@ -301,7 +301,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/rightfoottracker",
@@ -313,7 +313,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/waisttracker",
@@ -325,7 +325,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/chesttracker",
@@ -337,7 +337,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/leftelbowtracker",
@@ -349,7 +349,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/rightelbowtracker",
@@ -361,7 +361,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/leftkneetracker",
@@ -373,7 +373,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/rightkneetracker",
@@ -385,7 +385,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/lefttrigger",
@@ -397,7 +397,7 @@
       "timestamp": 0,
       "last_value": 0.0,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/righttrigger",
@@ -409,7 +409,7 @@
       "timestamp": 0,
       "last_value": 0.0,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/leftgrabforce",
@@ -421,7 +421,7 @@
       "timestamp": 0,
       "last_value": 0.0,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/rightgrabforce",
@@ -433,7 +433,7 @@
       "timestamp": 0,
       "last_value": 0.0,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/righttrackpadforce",
@@ -445,7 +445,7 @@
       "timestamp": 0,
       "last_value": 0.0,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/lefttrackpadforce",
@@ -457,7 +457,7 @@
       "timestamp": 0,
       "last_value": 0.0,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "/actions/thumbparams/in/leftstickxy",
@@ -631,7 +631,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "B",
@@ -643,7 +643,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "X",
@@ -655,7 +655,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "Y",
@@ -667,7 +667,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "LeftThumb",
@@ -679,7 +679,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "RightThumb",
@@ -691,7 +691,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "LeftBumper",
@@ -703,7 +703,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "RightBumper",
@@ -715,7 +715,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "Back",
@@ -727,7 +727,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "Start",
@@ -739,7 +739,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "LeftDPad",
@@ -751,7 +751,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "RightDPad",
@@ -763,7 +763,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "UpDPad",
@@ -775,7 +775,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "DownDPad",
@@ -787,7 +787,7 @@
       "timestamp": 0,
       "last_value": false,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "LeftTrigger",
@@ -799,7 +799,7 @@
       "timestamp": 0,
       "last_value": 0.0,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "RightTrigger",
@@ -811,7 +811,7 @@
       "timestamp": 0,
       "last_value": 0.0,
       "unsigned": null,
-      "binary": null
+      "binary": false
     },
     {
       "name": "LeftJoystickXY",

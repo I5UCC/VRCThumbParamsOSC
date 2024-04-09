@@ -44,7 +44,7 @@ namespace Configurator
             foreach (Action a in config.ConcatenateActions()) {
                 if (a.type != "vector2")
                 {
-                    ParameterList.Add(new BoolStringClass((string)a.osc_parameter, (bool)a.enabled, int.Parse(a.always.ToString()), a.type == "boolean" ? "Boolean" : "Float", a.floating.ToString(), true, false, false, "Hidden"));
+                    ParameterList.Add(new BoolStringClass((string)a.osc_parameter, (bool)a.enabled, int.Parse(a.always.ToString()), a.type == "boolean" ? "Boolean" : "Float", a.floating.ToString(), true, false, (bool)a.binary, "Hidden"));
                 }
                 else {
                     String[] tmp = ((JArray)a.osc_parameter).ToObject<String[]>();
@@ -77,6 +77,7 @@ namespace Configurator
                 this.Unsigned = Unsigned;
                 this.Binary = Binary;
                 this.Unsigned_Visibility = Unsigned_Visibility;
+                this.Binary_Visibility = this.Type == "Float" ? "Visible" : "Hidden";
             }
 
             public string Text { get; set; }
@@ -96,6 +97,8 @@ namespace Configurator
             public bool Binary { get; set; }
 
             public string Unsigned_Visibility { get; set; }
+
+            public string Binary_Visibility { get; set; }
 
             public string DisplayString
             {
@@ -187,6 +190,11 @@ namespace Configurator
                         }
                     }
                 }
+                else
+                {
+                    if (a.osc_parameter.ToString() == name)
+                        a.binary = check;
+                }
             }
             foreach (Action a in config.xinput_actions)
             {
@@ -204,6 +212,11 @@ namespace Configurator
                             return;
                         }
                     }
+                }
+                else
+                {
+                    if (a.osc_parameter.ToString() == name)
+                        a.binary = check;
                 }
             }
 

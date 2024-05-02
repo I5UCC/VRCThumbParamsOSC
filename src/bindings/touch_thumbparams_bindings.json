@@ -202,6 +202,30 @@
                },
                "mode" : "button",
                "path" : "/user/hand/right/input/grip"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/thumbparams/in/lefttrackpadclick"
+                  },
+                  "touch" : {
+                     "output" : "/actions/thumbparams/in/lefttrackpad"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/thumbrest"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/thumbparams/in/righttrackpadclick"
+                  },
+                  "touch" : {
+                     "output" : "/actions/thumbparams/in/righttrackpad"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/thumbrest"
             }
          ]
       }

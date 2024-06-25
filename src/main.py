@@ -148,8 +148,14 @@ def handle_input() -> None:
             _controller_type += 10
         osc.send("ControllerType", _controller_type)
 
+    lefthandskeleton = ovr.get_value(config["actions"][0])
+    osc.send(config["actions"][0], lefthandskeleton)
+
+    righthandskeleton = ovr.get_value(config["actions"][1])
+    osc.send(config["actions"][1], righthandskeleton)
+
     _strinputs = ""
-    for action in config["actions"][:8]: # Touch Actions
+    for action in config["actions"][2:10]: # Touch Actions
         val = ovr.get_value(action)
         _strinputs += "1" if val else "0"
         osc.send(action, val)
@@ -158,7 +164,7 @@ def handle_input() -> None:
     osc.send("LeftABButtons", _strinputs[0] == "1" and _strinputs[1] == "1")
     osc.send("RightABButtons", _strinputs[4] == "1" and _strinputs[5] == "1")
 
-    for action in config["actions"][8:]:
+    for action in config["actions"][10:]:
         val = ovr.get_value(action)
         osc.send(action, val)
 

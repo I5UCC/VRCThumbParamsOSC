@@ -76,6 +76,32 @@
   ],
   "actions": [
     {
+      "name": "/actions/thumbparams/in/RightHandSkeleton",
+      "type": "skeleton",
+      "skeleton": "/skeleton/hand/right",
+      "osc_parameter": "RightHandSkeleton",
+      "enabled": true,
+      "always": 2,
+      "floating": 0.0,
+      "timestamp": 0,
+      "last_value": false,
+      "unsigned": null,
+      "binary": false
+    },
+    {
+      "name": "/actions/thumbparams/in/LeftHandSkeleton",
+      "type": "skeleton",
+      "skeleton": "/skeleton/hand/left",
+      "osc_parameter": "LeftHandSkeleton",
+      "enabled": true,
+      "always": 2,
+      "floating": 0.0,
+      "timestamp": 0,
+      "last_value": false,
+      "unsigned": null,
+      "binary": false
+    },
+    {
       "name": "/actions/thumbparams/in/leftabutton",
       "type": "boolean",
       "osc_parameter": "LeftAButton",

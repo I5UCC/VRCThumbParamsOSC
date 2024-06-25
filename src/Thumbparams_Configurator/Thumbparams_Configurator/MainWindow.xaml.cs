@@ -44,7 +44,7 @@ namespace Configurator
             foreach (Action a in config.ConcatenateActions()) {
                 if (a.type != "vector2")
                 {
-                    ParameterList.Add(new BoolStringClass((string)a.osc_parameter, (bool)a.enabled, int.Parse(a.always.ToString()), a.type == "boolean" ? "Boolean" : "Float", a.floating.ToString(), true, false, (bool)a.binary, "Hidden"));
+                    ParameterList.Add(new BoolStringClass((string)a.osc_parameter, (bool)a.enabled, int.Parse(a.always.ToString()), a.type == "boolean" ? "Boolean" : a.type == "skeleton" ? "Skeleton" : "Float", a.floating.ToString(), true, false, (bool)a.binary, "Hidden"));
                 }
                 else {
                     String[] tmp = ((JArray)a.osc_parameter).ToObject<String[]>();
@@ -72,12 +72,13 @@ namespace Configurator
                 this.IsSelected = IsSelected;
                 this.AlwaysSend = AlwaysSend;
                 this.Type = Type;
-                this.Floating = Floating;
-                this.isEnabled = isEnabled;
+                this.Floating = this.Type == "Skeleton" ? "Unavailable" : Floating;
+                this.isEnabled = this.Type == "Skeleton" ? false : isEnabled;
                 this.Unsigned = Unsigned;
                 this.Binary = Binary;
                 this.Unsigned_Visibility = Unsigned_Visibility;
                 this.Binary_Visibility = this.Type == "Float" ? "Visible" : "Hidden";
+                this.isModesEnabled = this.Type == "Skeleton" ? false : true;
             }
 
             public string Text { get; set; }
@@ -99,6 +100,8 @@ namespace Configurator
             public string Unsigned_Visibility { get; set; }
 
             public string Binary_Visibility { get; set; }
+
+            public bool isModesEnabled { get; set; }
 
             public string DisplayString
             {

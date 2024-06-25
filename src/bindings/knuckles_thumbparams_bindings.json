@@ -4,6 +4,16 @@
    "app_key" : "i5ucc.thumbparamsosc",
    "bindings" : {
       "/actions/thumbparams" : {
+         "skeleton": [
+               {
+                  "output": "/actions/thumbparams/in/LeftHandSkeleton",
+                  "path": "/user/hand/left/input/skeleton/left"
+               },
+               {
+                  "output": "/actions/thumbparams/in/RightHandSkeleton",
+                  "path": "/user/hand/right/input/skeleton/right"
+               }
+         ],
          "sources" : [
             {
                "inputs" : {

@@ -7,6 +7,8 @@ import os
 from threading import Thread
 from psutil import process_iter
 import logging
+from ovr import FINGERS, SPLAYFINGERS
+import copy
 
 AVATAR_PARAMETERS_PREFIX = "/avatar/parameters/"
 AVATAR_CHANGE_PARAMETER = "/avatar/change"
@@ -267,6 +269,23 @@ class OSC:
                 action["last_value"][i] = value[i]
 
 
+    def _send_skeleton(self, action: dict, skeleton) -> None:
+        
+        if skeleton is None or not action["enabled"]:
+            return
+
+        tmp = copy.deepcopy(action)
+
+        for fname, fidx in FINGERS.items():
+            tmp["osc_parameter"] = f"{action['osc_parameter']}/Curl/{fname}"
+            self._send_vector1(tmp, skeleton.flFingerCurl[fidx])
+            print(tmp["osc_parameter"])
+        for fname, fidx in SPLAYFINGERS.items():
+            tmp["osc_parameter"] = f"{action['osc_parameter']}/Splay/{fname}"
+            self._send_vector1(tmp, skeleton.flFingerSplay[fidx])
+            print(tmp["osc_parameter"])
+
+
     def refresh_time(self) -> None:
         """
         Refreshes the current time.
@@ -314,6 +333,8 @@ class OSC:
                 self._send_vector1(action, value)
             case "vector2":
                 self._send_vector2(action, value)
+            case "skeleton":
+                self._send_skeleton(action, value)
             case _:
                 raise TypeError("Unknown action type: " + action['type'])
 

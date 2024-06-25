@@ -1,6 +1,22 @@
 import openvr
+import openvr.error_code
 import os
 import logging
+
+FINGERS = {
+    "Thumb": openvr.VRFinger_Thumb,
+    "Index": openvr.VRFinger_Index,
+    "Middle": openvr.VRFinger_Middle,
+    "Ring": openvr.VRFinger_Ring,
+    "Pinky": openvr.VRFinger_Pinky
+}
+
+SPLAYFINGERS = {
+    "Index": openvr.VRFingerSplay_Thumb_Index,
+    "Middle": openvr.VRFingerSplay_Index_Middle,
+    "Ring": openvr.VRFingerSplay_Middle_Ring,
+    "Pinky": openvr.VRFingerSplay_Ring_Pinky
+}
 
 class OVR:
     def __init__(self, config:dict, config_path: str, manifest_path: str, first_launch_file: str):
@@ -40,7 +56,7 @@ class OVR:
         return 0
 
 
-    def get_value(self, action: dict) -> bool | float | tuple:
+    def get_value(self, action: dict) -> bool | float | tuple | openvr.VRSkeletalSummaryData_t | None:
         """
         Gets the value of an action by querying SteamVR.
         Parameters:
@@ -56,6 +72,12 @@ class OVR:
             case "vector2":
                 tmp = openvr.VRInput().getAnalogActionData(action['handle'], openvr.k_ulInvalidInputValueHandle)
                 return tmp.x, tmp.y
+            case "skeleton":
+                try:
+                    tmp = openvr.VRInput().getSkeletalSummaryData(action['handle'], openvr.VRSummaryType_FromDevice)
+                    return tmp
+                except openvr.error_code.InputError_NoData:
+                    return None
             case _:
                 raise TypeError("Unknown action type: " + action['type'])
 

@@ -8,6 +8,7 @@ import time
 import traceback
 import glob
 import shutil
+from tray_icon import TrayIcon
 from threading import Thread
 
 from zeroconf._exceptions import NonUniqueNameException
@@ -210,13 +211,16 @@ def stop() -> None:
         None
     """
     xinput.running = False
+    tray.stop()
     ovr.shutdown()
     osc.shutdown()
-
 
 logging.basicConfig(level=logging.DEBUG if len(sys.argv) > 1 else logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S', handlers=[logging.StreamHandler(), logging.FileHandler(get_absolute_path("log.log"))])
 
 VERSION = open(get_absolute_path("VERSION")).read().strip()
+
+tray = TrayIcon(stop, get_absolute_path("icon.ico"))
+tray.run()
 
 # Argument Parser
 parser = argparse.ArgumentParser(description='ThumbParamsOSC: Takes button data from SteamVR and sends it to an OSC-Client')

@@ -26,7 +26,8 @@ class OSC:
         self.binary_num_bits = int(conf["Binary_bits"])
         self.binary_potencies = [2**i for i in range(self.binary_num_bits)]
         self.binary_potency = (2**self.binary_num_bits) - 1
-
+        self.server = None
+        self.oscqs = None
         self.osc_client = udp_client.SimpleUDPClient(self.ip, self.port)
         if run_server:
             self.start_server(avatar_change_function)

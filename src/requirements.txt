@@ -5,3 +5,4 @@ argparse
 requests
 psutil
 pyglet
+pillow

@@ -87,7 +87,10 @@ class OVR:
         _has_events = True
         while _has_events:
             _has_events = self.application.pollNextEvent(_event)
-        openvr.VRInput().updateActionState(self.actionsets)
+        try:
+            openvr.VRInput().updateActionState(self.actionsets)
+        except openvr.error_code.InputError_NoData:
+            logging.error("No data available for action state update.")
 
 
     def shutdown(self) -> bool:

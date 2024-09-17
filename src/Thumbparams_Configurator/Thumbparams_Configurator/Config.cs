@@ -7,6 +7,7 @@ namespace Configurator
     {
         public string name { get; set; }
         public string type { get; set; }
+        public string skeleton { get; set; }
         public object osc_parameter { get; set; }
         public object enabled { get; set; }
         public object always { get; set; }

@@ -1,7 +1,7 @@
 # <img src="https://github.com/I5UCC/VRCThumbParamsOSC/blob/468e25fb16f03daac756d693656c784094518efb/src/icon.ico" width="32" height="32"> ThumbParamsOSC
 [![Github All Releases](https://img.shields.io/github/downloads/i5ucc/VRCThumbParamsOSC/total.svg)](https://github.com/I5UCC/VRCThumbParamsOSC/releases/latest) 
 [![GitHub release (latest by date)](https://img.shields.io/github/downloads/i5ucc/VRCThumbParamsOSC/latest/total?label=Latest%20version%20downloads)](https://github.com/I5UCC/VRCThumbParamsOSC/releases/latest)
-<a href='https://ko-fi.com/i5ucc' target='_blank'><img height='35' style='border:0px;height:25px;' src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' />
+<a href='https://ko-fi.com/i5ucc' target='_blank'><img height='35' style='border:0px;height:25px;' src='https://github.com/user-attachments/assets/8e34a7ee-641a-4bce-ab72-b6b647eb892d' border='0' alt='Buy Me a Coffee at ko-fi.com' />
 
 OSC program that makes SteamVR controller actions, Tracker button actions and XInput actions accessible as Avatar Parameters.
 

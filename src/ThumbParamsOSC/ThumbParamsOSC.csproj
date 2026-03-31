@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <ApplicationIcon>../icon.ico</ApplicationIcon>
+    <AssemblyName>ThumbParamsOSC</AssemblyName>
+    <RootNamespace>ThumbParamsOSC</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="OpenVR.NET" Version="0.8.5" />
+    <PackageReference Include="Makaretu.Dns.Multicast" Version="0.27.0" />
+    <!-- Override the vulnerable transitive SixLabors.ImageSharp dependency with a patched version -->
+    <PackageReference Include="SixLabors.ImageSharp" Version="2.1.11" />
+  </ItemGroup>
+
+</Project>

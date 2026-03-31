@@ -4,7 +4,7 @@
 		{
 			"app_key": "i5ucc.thumbparamsosc",
 			"launch_type": "binary",
-			"binary_path_windows": "./ThumbParamsOSC_NoConsole.exe",
+			"binary_path_windows": "./ThumbParamsOSC.exe",
 			"is_dashboard_overlay": true,
 			"action_manifest_path": "./config.json",
 

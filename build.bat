@@ -20,7 +20,9 @@ cd ..
 
 REM Copy Configurator.exe into the build output directory
 powershell -c "copy Thumbparams_Configurator\Thumbparams_Configurator\bin\Release\net4.8.1-windows\win-x64\publish\Thumbparams_Configurator.exe build\ThumbparamsOSC\Configurator.exe"
-powershell -c "copy Thumbparams_Configurator\Thumbparams_Configurator\bin\Release\net4.8.1-windows\win-x64\publish\Newtonsoft.Json.dll build\ThumbparamsOSC\Newtonsoft.Json.dll" 2>NUL
+powershell -c "copy Thumbparams_Configurator\Thumbparams_Configurator\bin\Release\net4.8.1-windows\win-x64\publish\Newtonsoft.Json.dll build\ThumbparamsOSC\Newtonsoft.Json.dll"
+REM The copy above may be a no-op if the Configurator already ships without a separate Newtonsoft.Json.dll;
+REM ThumbParamsOSC bundles its own copy via its publish output.
 
 REM Copy supporting files (config, manifest, icon, VERSION, bindings)
 powershell -c "copy config.json build\ThumbparamsOSC\config.json"

@@ -27,7 +27,7 @@ internal sealed class XInputController
     private const ushort X = 0x4000;
     private const ushort Y = 0x8000;
 
-    private const float MAX_TRIG_VAL = 256f;   // 2^8
+    private const float MAX_TRIG_VAL = 255f;   // XInput byte range 0–255
     private const float MAX_JOY_VAL = 32768f;   // 2^15
     private const float DEADZONE = 0.2f;
 

@@ -153,9 +153,15 @@ internal sealed class OSC : IDisposable
         if (pressed)
         {
             bool last = action["last_value"]?.Value<bool>() ?? false;
-            action["last_value"] = !last;
-            Thread.Sleep(100);
-            SendParameter(action["osc_parameter"]!.Value<string>()!, action["last_value"]!.Value<bool>());
+            bool newVal = !last;
+            action["last_value"] = newVal;
+            string paramName = action["osc_parameter"]!.Value<string>()!;
+            // Delay asynchronously so the polling loop is not blocked.
+            _ = Task.Run(async () =>
+            {
+                await Task.Delay(100);
+                SendParameter(paramName, newVal);
+            });
             return;
         }
 
@@ -593,8 +599,8 @@ internal sealed class OSC : IDisposable
     {
         if (a == null && b == null) return true;
         if (a == null || b == null) return false;
-        if (a is float fa && b is float fb) return Math.Abs(fa - fb) < float.Epsilon;
-        if (a is double da && b is double db) return Math.Abs(da - db) < double.Epsilon;
+        if (a is float fa && b is float fb) return Math.Abs(fa - fb) < 1e-6f;
+        if (a is double da && b is double db) return Math.Abs(da - db) < 1e-9;
         return a.Equals(b);
     }
 

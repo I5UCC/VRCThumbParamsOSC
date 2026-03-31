@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/Thumbparams_Configurator/">
+    <Project Path="Thumbparams_Configurator/Thumbparams_Configurator/Thumbparams_Configurator.csproj" />
+  </Folder>
+  <Project Path="ThumbParamsOSC/ThumbParamsOSC.csproj" />
+</Solution>

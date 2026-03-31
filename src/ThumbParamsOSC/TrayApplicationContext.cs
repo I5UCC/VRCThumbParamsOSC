@@ -386,10 +386,20 @@ internal sealed class TrayApplicationContext : ApplicationContext
 
     private void LoadConfig(string? ipOverride, string? portOverride)
     {
+        if (!File.Exists(_configPath))
+            CreateDefaultConfig();
         _config = JObject.Parse(File.ReadAllText(_configPath));
         if (ipOverride != null) _config["IP"] = ipOverride;
         if (portOverride != null) _config["Port"] = int.Parse(portOverride, CultureInfo.InvariantCulture);
         _pollingRateSec = 1.0 / _config["PollingRate"]!.Value<double>();
+    }
+
+    private void CreateDefaultConfig()
+    {
+        using var stream = GetType().Assembly.GetManifestResourceStream("config.json")
+            ?? throw new InvalidOperationException("Embedded default config.json resource not found.");
+        using var fs = File.Create(_configPath);
+        stream.CopyTo(fs);
     }
 
     private void HandleFirstLaunch()

@@ -14,6 +14,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- Copy the default config to the output directory so the app can find it on first run -->
+    <Content Include="../config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>config.json</Link>
+    </Content>
+    <!-- Embed the default config so the app can create it programmatically if it is missing -->
+    <EmbeddedResource Include="../config.json">
+      <LogicalName>config.json</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="OpenVR.NET" Version="0.8.5" />
     <PackageReference Include="Makaretu.Dns.Multicast" Version="0.27.0" />

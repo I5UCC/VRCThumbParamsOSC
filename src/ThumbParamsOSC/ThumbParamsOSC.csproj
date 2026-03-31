@@ -23,11 +23,16 @@
     <EmbeddedResource Include="../config.json">
       <LogicalName>config.json</LogicalName>
     </EmbeddedResource>
+    <!-- Copy the OpenVR native DLL to the output directory (copyToOutput is false in the package's contentFiles) -->
+    <Content Include="$(PkgOpenVR_NET)/content/openvr_api.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>openvr_api.dll</Link>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="OpenVR.NET" Version="0.8.5" />
+    <PackageReference Include="OpenVR.NET" Version="0.8.5" GeneratePathProperty="true" />
     <PackageReference Include="Makaretu.Dns.Multicast" Version="0.27.0" />
     <!-- Override the vulnerable transitive SixLabors.ImageSharp dependency with a patched version -->
     <PackageReference Include="SixLabors.ImageSharp" Version="2.1.11" />

@@ -1,0 +1,82 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build ThumbParamsOSC
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Publish application
+        run: dotnet publish src/ThumbParamsOSC/ThumbParamsOSC.csproj -c Release -r win-x64 --self-contained true -o build
+        shell: pwsh
+
+      - name: Copy runtime assets into build directory
+        run: |
+          Copy-Item -Path src\app.vrmanifest -Destination build\app.vrmanifest
+          Copy-Item -Path src\config.json    -Destination build\config.json
+          Copy-Item -Path src\bindings       -Destination build\bindings -Recurse
+        shell: pwsh
+
+      - name: Create zip archive
+        run: Compress-Archive -Path build\* -DestinationPath ThumbParamsOSC.zip
+        shell: pwsh
+
+      - name: Create Inno Setup installer script
+        run: |
+          $TAG = "${{ github.ref_name }}"
+          @"
+          [Setup]
+          AppName=ThumbParamsOSC
+          AppVersion=$TAG
+          AppPublisher=i5ucc
+          DefaultDirName={autopf}\ThumbParamsOSC
+          DefaultGroupName=ThumbParamsOSC
+          OutputDir=.
+          OutputBaseFilename=ThumbParamsOSC-Setup
+          Compression=lzma2
+          SolidCompression=yes
+          ArchitecturesInstallIn64BitMode=x64compatible
+
+          [Files]
+          Source: "build\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+
+          [Icons]
+          Name: "{group}\ThumbParamsOSC"; Filename: "{app}\ThumbParamsOSC.exe"
+          Name: "{group}\Uninstall ThumbParamsOSC"; Filename: "{uninstallexe}"
+          Name: "{autodesktop}\ThumbParamsOSC"; Filename: "{app}\ThumbParamsOSC.exe"; Tasks: desktopicon
+
+          [Tasks]
+          Name: "desktopicon"; Description: "Create a desktop shortcut"; GroupDescription: "Additional icons:"
+
+          [Run]
+          Filename: "{app}\ThumbParamsOSC.exe"; Description: "Launch ThumbParamsOSC"; Flags: nowait postinstall skipifsilent
+          "@ | Set-Content installer.iss
+        shell: pwsh
+
+      - name: Build installer with Inno Setup
+        uses: Minionguyjpro/Inno-Setup-Action@v1.2.4
+        with:
+          path: installer.iss
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ThumbParamsOSC.zip
+            ThumbParamsOSC-Setup.exe
+          generate_release_notes: false

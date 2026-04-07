@@ -36,6 +36,7 @@
     <PackageReference Include="Makaretu.Dns.Multicast" Version="0.27.0" />
     <!-- Override the vulnerable transitive SixLabors.ImageSharp dependency with a patched version -->
     <PackageReference Include="SixLabors.ImageSharp" Version="2.1.11" />
+    <PackageReference Include="VRChat.OSCQuery" Version="0.0.7" />
   </ItemGroup>
 
 </Project>

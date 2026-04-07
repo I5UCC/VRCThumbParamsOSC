@@ -33,10 +33,9 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="OpenVR.NET" Version="0.8.5" GeneratePathProperty="true" />
-    <PackageReference Include="Makaretu.Dns.Multicast" Version="0.27.0" />
-    <!-- Override the vulnerable transitive SixLabors.ImageSharp dependency with a patched version -->
-    <PackageReference Include="SixLabors.ImageSharp" Version="2.1.11" />
     <PackageReference Include="VRChat.OSCQuery" Version="0.0.7" />
+    <!-- Override the vulnerable transitive SixLabors.ImageSharp dependency (pulled in by MeaMod.DNS) with a patched version -->
+    <PackageReference Include="SixLabors.ImageSharp" Version="2.1.11" />
   </ItemGroup>
 
 </Project>
